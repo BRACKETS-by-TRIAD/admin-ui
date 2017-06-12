@@ -3,6 +3,7 @@
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class AdminListing {
 
@@ -12,13 +13,23 @@ class AdminListing {
     protected $query;
 
     /**
+     * @var int
+     */
+    protected $currentPage;
+
+    /**
+     * @var int
+     */
+    protected $perPage;
+
+    /**
      * @var string
      */
-    protected $defaultOrderBy;
+    protected $pageColumnName = 'page';
 
     public function __construct(\Eloquent $model) {
+        $this->model = $model;
         $this->query = $model->newQuery();
-        $this->defaultOrderBy = $model->getKeyName();
     }
 
     public static function instance($modelName) {
@@ -28,31 +39,117 @@ class AdminListing {
     /**
      * Process request and get data
      *
-     * Note that request should be authorized and validated already,
-     * as long as this method does not perform any authorization nor
-     * validation.
+     * You should always specify an array of columns that are about to be queried
+     *
+     * You should specify columns which should be searched
      *
      * If you need to include additional filters, you can manage it by
      * modifying a query using $modifyQuery function, which receives
      * a query as a parameter.
      *
+     * Note that request should be authorized and validated already,
+     * as long as this method does not perform any authorization nor
+     * validation.
+     *
      * @param Request $request
+     * @param array $columns
+     * @param array $searchIn
      * @param callable $modifyQuery
      * @return LengthAwarePaginator
      */
-    public function processRequestAndGet(Request $request, callable $modifyQuery = null) : LengthAwarePaginator {
-        $this->attachAllFromRequest($request);
-        return $this->processAndGet($modifyQuery);
+    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = ['id'], callable $modifyQuery = null) : LengthAwarePaginator {
+        // process all the basic stuff
+        $this->attachAllFromRequest($request, $searchIn);
+
+        // add custom modifications
+        if (!is_null($modifyQuery)) {
+            $this->modifyQuery($modifyQuery);
+        }
+
+        // execute query and get the results
+        return $this->execute($columns);
     }
 
     /**
-     * Attaches the ordering functionality
+     * Attach ordering, search and pagination
+     *
+     * After calling this method, everything is prepared for a typical scenario
+     * and you are ready to attach custom filters or execute a query for your own.
+     *
+     * @param Request $request
+     * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
+     */
+    public function attachAllFromRequest(Request $request, $searchIn = ['id']) {
+
+        $this->attachOrdering($request->input('orderBy', $this->model->getKeyName()), $request->input('orderDirection', 'asc'));
+        $this->attachSearch($request->input('search', null), $searchIn);
+        $this->attachPagination($request->input('page', 1), $request->input('per_page', 10));
+
+    }
+
+    /**
+     * Attach the ordering functionality
      *
      * @param $orderBy
-     * @param string $orderDirectoin
+     * @param string $orderDirection
      */
-    public function attachOrdering($orderBy, $orderDirectoin = 'asc') {
-        $this->query->orderBy($request->input('orderBy', 'id'), $request->input('orderDirection', 'asc'));
+    public function attachOrdering($orderBy, $orderDirection = 'asc') {
+        $this->query->orderBy($orderBy, $orderDirection);
+    }
+
+
+    /**
+     * Attach the searching functionality
+     *
+     * @param $search
+     * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
+     */
+    public function attachSearch($search, $searchIn = ['id']) {
+
+        $searchIn = collect($searchIn);
+
+        $tokens = collect(explode(' ', (string) $search));
+
+        $tokens->map(function($token) use ($searchIn) {
+            $this->query->where(function(Builder $query) use ($token, $searchIn) {
+                $searchIn->map(function($column) use ($token, $query) {
+                    $query->orWhere($column, 'ilike', '%'.$token.'%');
+                    if ($this->model->getKeyName() == $column && is_numeric($token) && $token === strval(intval($token))) {
+                        $query->orWhere($this->model->getKeyName(), intval($token));
+                    }
+                });
+            });
+        });
+    }
+
+    /**
+     * Attach the pagination functionality
+     *
+     * @param $currentPage
+     * @param int $perPage
+     */
+    public function attachPagination($currentPage, $perPage = 10) {
+        $this->currentPage = $currentPage;
+        $this->perPage = $perPage;
+    }
+
+    /**
+     * This is alias for modifyQuery()
+     *
+     * @param callable $modifyQuery
+     */
+    public function attachFilters(callable $modifyQuery) {
+        $this->modifyQuery($modifyQuery);
+    }
+
+
+    /**
+     * Modify built query in any way
+     *
+     * @param callable $modifyQuery
+     */
+    public function modifyQuery(callable $modifyQuery) {
+        $modifyQuery($this->query);
     }
 
     /**
@@ -71,78 +168,11 @@ class AdminListing {
      * as long as this method does not perform any authorization nor
      * validation.
      *
-     * @param $params
-     * @param callable $modifyQuery
+     * @param array $columns
      * @return LengthAwarePaginator
      */
-    public function processAndGet($params, callable $modifyQuery = null) : LengthAwarePaginator {
-        if (!is_null(null)) {
-            $modifyQuery($this->query);
-        }
-
-        return $this->executeAndGetData();
+    public function execute(array $columns = ['*']) : LengthAwarePaginator {
+        return $this->query->paginate($this->perPage, $columns, $this->pageColumnName, $this->currentPage);
     }
-
-    /**
-     * Process request and prepare
-     *
-     * @param Request $request
-     */
-    public function attachAllFromRequest(Request $request) {
-
-        $this->attachOrdering($request->input('orderBy', $this->defaultOrderBy), $request->input('per_page', 10));
-
-        /*return [
-            'search' => $request->input('search', null),
-            'orderBy' => $request->input('orderBy', $this->defaultOrderBy),
-            'orderDirection' => $request->input('orderDirection', 'asc'),
-            'per_page' => $request->input('per_page', 10),
-            'page' => $request->input('page', 1),
-        ];*/
-    }
-
-
-//
-//    public function getData($filters, ...) {
-//
-//        public function getData(){
-//            $this->buildFilters();
-//            $this->buildOrdering();
-//            $this->buildPagination();
-//            $this->buildSearch();
-//            if (!is_null(null)) {
-//                $modifyQuery($this->query);
-//            }
-//            return $this->executeAndGetData();
-//        }
-//
-//        public function getDataFromRequest(Request $request, callable $modifyQuery = null, $defaultOrderBy = 'id', $defaultOrderDirection = 'asc', $defaultPerPage = 10) {
-//
-//        }
-//        $this->getData();
-//    }
-//
-//    protected function buildQuery(Request $request) {
-//        $query = Post::query();
-////        $query = app(AdminListingRepository::class, [ArticleRepository::class]);
-////        $query = AdminListingRepository::instance(ArticleRepository::class);
-//
-//        if ($request->has('filter_is_top')) {
-//            $query->where('is_top', $request->input('filter_is_top'));
-//        }
-//
-//        if ($request->has('publish_at_from')) {
-//            $query->where('publish_at', '>=', $request->input('publish_at_from'));
-//        }
-//
-//        if ($request->has('publish_at_to')) {
-//            $query->where('publish_at', '<=', $request->input('publish_at_to'));
-//        }
-//    }
-//
-//    protected  function getData(Request $request) {
-//
-//        $data = $query->paginate($request->input('per_page', 50));
-//    }
 
 }
