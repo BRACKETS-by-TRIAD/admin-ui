@@ -2,10 +2,15 @@
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class AdminListing {
+
+    /**
+     * @var Model
+     */
+    protected $model;
 
     /**
      * @var Builder
@@ -27,7 +32,7 @@ class AdminListing {
      */
     protected $pageColumnName = 'page';
 
-    public function __construct(\Eloquent $model) {
+    public function __construct(Model $model) {
         $this->model = $model;
         $this->query = $model->newQuery();
     }
@@ -53,11 +58,11 @@ class AdminListing {
      *
      * @param Request $request
      * @param array $columns
-     * @param array $searchIn
+     * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
      * @param callable $modifyQuery
      * @return LengthAwarePaginator
      */
-    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = ['id'], callable $modifyQuery = null) : LengthAwarePaginator {
+    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = null, callable $modifyQuery = null) : LengthAwarePaginator {
         // process all the basic stuff
         $this->attachAllFromRequest($request, $searchIn);
 
@@ -104,18 +109,34 @@ class AdminListing {
      * @param $search
      * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
      */
-    public function attachSearch($search, $searchIn = ['id']) {
+    public function attachSearch($search, array $searchIn) {
+
+        // when passed null, search is disabled
+        if (is_null($searchIn)) {
+            return ;
+        }
+
+        // if empty string, then we don't search at all
+        $search = trim((string) $search);
+        if ($search == '') {
+            return ;
+        }
+
+        $tokens = collect(explode(' ', $search));
 
         $searchIn = collect($searchIn);
 
-        $tokens = collect(explode(' ', (string) $search));
+        // FIXME there is an issue, if you pass primary key as the only column to search in, it may not work properly
 
         $tokens->map(function($token) use ($searchIn) {
             $this->query->where(function(Builder $query) use ($token, $searchIn) {
                 $searchIn->map(function($column) use ($token, $query) {
-                    $query->orWhere($column, 'ilike', '%'.$token.'%');
-                    if ($this->model->getKeyName() == $column && is_numeric($token) && $token === strval(intval($token))) {
-                        $query->orWhere($this->model->getKeyName(), intval($token));
+                    if ($this->model->getKeyName() == $column) {
+                        if (is_numeric($token) && $token === strval(intval($token))) {
+                            $query->orWhere($this->model->getKeyName(), intval($token));
+                        }
+                    } else {
+                        $query->orWhere($column, 'ilike', '%'.$token.'%');
                     }
                 });
             });
