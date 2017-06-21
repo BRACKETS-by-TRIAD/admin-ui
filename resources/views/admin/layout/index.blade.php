@@ -7,3 +7,9 @@
     @yield('table')
 
 @endsection
+
+@section('scripts')
+
+    @yield('scripts')
+
+@endsection

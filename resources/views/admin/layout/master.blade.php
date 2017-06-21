@@ -100,24 +100,26 @@
         <span class="float-right">Powered by <a href="https://www.brackets.sk/en">BRACKETS</a></span>
     </footer>
 
-<!-- Bootstrap and necessary plugins -->
-{{--<script src="bower_components/jquery/dist/jquery.min.js"></script>--}}
-{{--<script src="bower_components/tether/dist/js/tether.min.js"></script>--}}
-{{--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>--}}
-{{--<script src="bower_components/pace/pace.min.js"></script>--}}
+    <!-- Bootstrap and necessary plugins -->
+    {{--<script src="bower_components/jquery/dist/jquery.min.js"></script>--}}
+    {{--<script src="bower_components/tether/dist/js/tether.min.js"></script>--}}
+    {{--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>--}}
+    {{--<script src="bower_components/pace/pace.min.js"></script>--}}
 
 
-{{--<!-- Plugins and scripts required by all views -->--}}
-{{--<script src="bower_components/chart.js/dist/Chart.min.js"></script>--}}
+    {{--<!-- Plugins and scripts required by all views -->--}}
+    {{--<script src="bower_components/chart.js/dist/Chart.min.js"></script>--}}
 
 
-<!-- GenesisUI main scripts -->
+    <!-- GenesisUI main scripts -->
 
 
-<!-- Plugins and scripts required by this views -->
+    <!-- Plugins and scripts required by this views -->
 
-<!-- Custom scripts required by this view -->
-<script src="{{ mix('/js/admin/admin.js') }}"></script>
+    <!-- Custom scripts required by this view -->
+    <script src="{{ mix('/js/admin/admin.js') }}"></script>
+
+    @yield('scripts')
 
 </body>
 
