@@ -14,6 +14,9 @@ module.exports = {
 
         'callback': {
             type: Function,
+            default: function() {
+                return this.$parent.loadData();
+            }
         }
     },
 
@@ -27,11 +30,9 @@ module.exports = {
                 this.orderBy.direction = 'asc'; // I guess we do want to reset direction when changing column, but I'm not sure :)
             }
 
-            if (!!this.callback) {
-                this.callback();
-            } else {
-                this.$parent.loadData();
-            }
+            this.callback();
+
+            // FIXME callback should have return a Promise which can success or end with an error
         },
 
     },
