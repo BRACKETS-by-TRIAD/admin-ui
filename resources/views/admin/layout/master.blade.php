@@ -119,8 +119,6 @@
     <!-- Custom scripts required by this view -->
     <script src="{{ mix('/js/admin/admin.js') }}"></script>
 
-    @yield('scripts')
-
 </body>
 
 </html>

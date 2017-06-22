@@ -1,6 +1,6 @@
 module.exports = {
     template: `<nav>
-        <ul class="pagination" v-if="pagination.last_page > 0" :class="sizeClass">
+        <ul class="pagination" v-if="pagination.last_page > 1" :class="sizeClass">
             <li v-if="showPrevious()" :class="{ 'disabled' : pagination.current_page <= 1 }">
                 <span v-if="pagination.current_page <= 1" class="page-link">
                     <span aria-hidden="true">{{ config.previousText }}</span>
@@ -29,14 +29,25 @@ module.exports = {
     props: {
         pagination: {
             type: Object,
-            required: true
+            default: function() {
+                return this.$parent.pagination.state;
+            }
         },
         callback: {
             type: Function,
-            required: true
+            default: function() {
+                return this.$parent.loadData();
+            }
         },
         options: {
-            type: Object
+            type: Object,
+            default: function() {
+                if (!!this.$parent.pagination.options) {
+                    return this.$parent.pagination.options;
+                } else {
+                    return {};
+                }
+            }
         },
         size: {
             type: String

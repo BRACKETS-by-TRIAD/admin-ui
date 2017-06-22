@@ -34,7 +34,7 @@ module.exports = {
        }
     },
     components: {
-       'pagination': require('./Pagination.js'),
+       'pagination': require('./components/Pagination.js'),
        'sortable': require('./components/Sortable.js'),
     },
 
