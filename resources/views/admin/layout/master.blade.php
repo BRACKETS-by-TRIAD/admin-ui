@@ -57,18 +57,7 @@
     </header>
 
     <div class="app-body">
-        <div class="sidebar">
-            <nav class="sidebar-nav">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/post"><i class="icon-speedometer"></i> Posts</a>
-                        <a class="nav-link" href="/admin/article"><i class="icon-speedometer"></i> Articles</a>
-                        <a class="nav-link" href="/admin/vineyard"><i class="icon-speedometer"></i> Vineyards</a>
-                    </li>
-
-                </ul>
-            </nav>
-        </div>
+        @include('admin.layout.sidebar')
 
         <!-- Main content -->
         <main class="main">
