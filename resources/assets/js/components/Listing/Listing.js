@@ -35,7 +35,7 @@ module.exports = {
     },
     components: {
        'pagination': require('./Pagination.js'),
-       'sortable-th': require('./SortableTh.js'),
+       'sortable': require('./components/Sortable.js'),
     },
 
     created: function() {
@@ -47,16 +47,6 @@ module.exports = {
     },
 
     methods: {
-
-        sort(newColumn) {
-            if (this.orderBy.column == newColumn) {
-                this.orderBy.direction = this.orderBy.direction == 'asc' ? 'desc' : 'asc';
-            } else {
-                this.orderBy.column = newColumn;
-                this.orderBy.direction = 'asc'; // I guess we do want to reset direction when changing column, but I'm not sure :)
-            }
-            this.loadData();
-        },
 
         loadData (resetCurrentPage) {
             let options = {
