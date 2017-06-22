@@ -90,7 +90,13 @@ module.exports = {
         },
 
         populateCurrentStateAndData(object) {
-            // FIXME Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "collection" found in
+
+            if (object.current_page > object.last_page) {
+                this.pagination.state.current_page = object.last_page;
+                this.loadData();
+                return ;
+            }
+
             this.collection = object.data;
             this.pagination.state.current_page = object.current_page;
             this.pagination.state.last_page = object.last_page;
