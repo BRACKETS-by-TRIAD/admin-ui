@@ -12,11 +12,9 @@ class AdminProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'brackets/admin');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'brackets/admin');
 
-        $this->publishes([
-            __DIR__.'/../resources/assets/js' => resource_path('assets/js')
-        ], 'assets');
+        // TODO publish stub (js assets)
 
         // TODO register also CSS
     }
