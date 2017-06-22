@@ -81,7 +81,7 @@ module.exports = {
 
         populateCurrentStateAndData(object) {
 
-            if (object.current_page > object.last_page) {
+            if (object.current_page > object.last_page && object.total > 0) {
                 this.pagination.state.current_page = object.last_page;
                 this.loadData();
                 return ;
