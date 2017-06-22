@@ -18,6 +18,7 @@
 
     <!-- Main styles for this application -->
     <link href="/coreui/css/style.css" rel="stylesheet">
+    <link href="{{ mix('css/admin/app.css') }}" rel="stylesheet">
 
 </head>
 
