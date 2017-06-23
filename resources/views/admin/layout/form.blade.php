@@ -14,12 +14,6 @@
         </div>
     @endif
 
-    <form class="form-horizontal" action="{{ $action }}" method="post" @submit.prevent="onSubmit">
-
-        {{ csrf_field() }}
-
-        @yield('body')
-
-    </form>
+    @yield('body')
 
 @stop
