@@ -2,7 +2,7 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-item">
-                {{-- Auto generated --}}
+                {{-- Do not delete me :) I'm used for auto-generation menu items --}}
             </li>
         </ul>
     </nav>
