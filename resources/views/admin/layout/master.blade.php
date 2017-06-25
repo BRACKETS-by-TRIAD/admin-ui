@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="app header-fixed sidebar-compact sidebar-fixed">
+<body class="app header-fixed sidebar-fixed">
     <header class="app-header navbar">
         <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">☰</button>
         <a class="navbar-brand" href="#"></a>
