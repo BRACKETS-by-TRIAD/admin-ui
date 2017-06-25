@@ -46,6 +46,21 @@ module.exports = {
         }
     },
 
+    filters: {
+        date: function (date) {
+            var date = moment(date);
+            return date.isValid() ? date.format('DD.MM.YYYY') : "";
+        },
+        datetime: function (date) {
+            var date = moment(date);
+            return date.isValid() ? date.format('DD.MM.YYYY kk:mm:ss') : "";
+        },
+        time: function (date) {
+            var date = moment(date);
+            return date.isValid() ? date.format('kk:mm:ss') : "";
+        }
+    },
+
     methods: {
 
         loadData (resetCurrentPage) {
