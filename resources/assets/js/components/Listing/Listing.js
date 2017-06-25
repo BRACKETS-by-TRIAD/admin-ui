@@ -49,11 +49,11 @@ module.exports = {
     filters: {
         date: function (date) {
             var date = moment(date);
-            return date.isValid() ? date.format('DD.MM.YYYY') : "";
+            return date.isValid() ? date.format('YYYY-MM-DD') : "";
         },
         datetime: function (date) {
             var date = moment(date);
-            return date.isValid() ? date.format('DD.MM.YYYY kk:mm:ss') : "";
+            return date.isValid() ? date.format('YYYY-MM-DD kk:mm:ss') : "";
         },
         time: function (date) {
             var date = moment(date);
