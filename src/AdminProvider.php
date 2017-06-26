@@ -15,14 +15,10 @@ class AdminProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'brackets/admin');
 
         $this->publishes([
-            __DIR__.'/../install-stubs/resources/assets/js' => resource_path('assets/js')
+            __DIR__.'/../install-stubs/resources/assets' => resource_path('assets')
         ], 'assets');
 
-        $this->publishes([
-            __DIR__.'/../install-stubs/resources/views' => resource_path('views')
-        ], 'views');
-
-        // TODO register also CSS
+        $this->app->register(\Dimsav\Translatable\TranslatableServiceProvider::class,);
     }
 
     /**
