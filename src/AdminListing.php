@@ -1,16 +1,24 @@
 <?php namespace Brackets\Admin;
 
+use Dimsav\Translatable\Translatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class AdminListing {
 
     /**
-     * @var Model
+     * @var Model|Translatable
      */
     protected $model;
+
+    /**
+     * @var Model
+     */
+    protected $translationModel;
 
     /**
      * @var Builder
@@ -32,9 +40,16 @@ class AdminListing {
      */
     protected $pageColumnName = 'page';
 
+    protected $modelHasTranslations = false;
+
     public function __construct(Model $model) {
         $this->model = $model;
         $this->query = $model->newQuery();
+
+        if (in_array(Translatable::class, class_uses($this->model))) {
+            $this->modelHasTranslations = true;
+            $this->translationModel = app($this->model->getTranslationModelName());
+        }
     }
 
     public static function instance($modelName) {
@@ -60,9 +75,17 @@ class AdminListing {
      * @param array $columns
      * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
      * @param callable $modifyQuery
+     * @param string $locale
      * @return LengthAwarePaginator
      */
-    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = null, callable $modifyQuery = null) : LengthAwarePaginator {
+    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = null, callable $modifyQuery = null, $locale = null) : LengthAwarePaginator {
+
+        $columns = collect($columns)->map(function($column) {
+            return $this->parseFullColumnName($column);
+        });
+
+        $this->queryTranslations($columns, $locale);
+
         // process all the basic stuff
         $this->attachAllFromRequest($request, $searchIn);
 
@@ -99,7 +122,8 @@ class AdminListing {
      * @param string $orderDirection
      */
     public function attachOrdering($orderBy, $orderDirection = 'asc') {
-        $this->query->orderBy($orderBy, $orderDirection);
+        $orderBy = $this->parseFullColumnName($orderBy);
+        $this->query->orderBy($orderBy['table'].'.'.$orderBy['column'], $orderDirection);
     }
 
 
@@ -124,19 +148,22 @@ class AdminListing {
 
         $tokens = collect(explode(' ', $search));
 
-        $searchIn = collect($searchIn);
+        $searchIn = collect($searchIn)->map(function($column){
+            return $this->parseFullColumnName($column);
+        });
 
         // FIXME there is an issue, if you pass primary key as the only column to search in, it may not work properly
 
         $tokens->map(function($token) use ($searchIn) {
             $this->query->where(function(Builder $query) use ($token, $searchIn) {
                 $searchIn->map(function($column) use ($token, $query) {
-                    if ($this->model->getKeyName() == $column) {
+
+                    if ($this->model->getKeyName() == $column['column'] && $this->model->getTable() == $column['table']) {
                         if (is_numeric($token) && $token === strval(intval($token))) {
-                            $query->orWhere($this->model->getKeyName(), intval($token));
+                            $query->orWhere($column['table'].'.'.$column['column'], intval($token));
                         }
                     } else {
-                        $query->orWhere($column, 'ilike', '%'.$token.'%');
+                        $query->orWhere($column['table'].".".$column['column'], 'ilike', '%'.$token.'%');
                     }
                 });
             });
@@ -189,11 +216,74 @@ class AdminListing {
      * as long as this method does not perform any authorization nor
      * validation.
      *
-     * @param array $columns
+     * @param Collection $columns
      * @return LengthAwarePaginator
      */
-    public function execute(array $columns = ['*']) : LengthAwarePaginator {
-        return $this->query->paginate($this->perPage, $columns, $this->pageColumnName, $this->currentPage);
+    public function execute(Collection $columns = null) : LengthAwarePaginator {
+        return $this->query->paginate($this->perPage, $this->filterModelColumns($columns), $this->pageColumnName, $this->currentPage);
+    }
+
+    public function queryTranslations(Collection $columns, $locale = null) {
+        if ($this->modelHasTranslations()) {
+
+            if (is_null($locale)) {
+                $locale = app()->getLocale();
+            }
+
+            $translationColumns = $this->filterTranslationModelColumns($columns);
+            array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getRelationKey());
+            array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getLocaleKey());
+
+            // we set eager loading, but only if there is anything to select
+            if (count($translationColumns) > 0) {
+                $this->query->with([
+                    'translations' => function (Relation $query) use ($translationColumns, $locale) {
+                        $query->addSelect($translationColumns)
+                            ->where($this->translationModel->getTable() . '.' . $this->model->getLocaleKey(), $locale);
+                    },
+                ]);
+            }
+
+            // but in order to get searching, filtering and ordering working, we have to also join the translation using locale we want to search/filter/order in
+            $this->query->join($this->translationModel->getTable(), function ($join) use ($locale) {
+                $join->on($this->model->getTable().'.'.$this->model->getKeyName(), '=', $this->translationModel->getTable().'.'.$this->model->getRelationKey())
+                    ->where($this->translationModel->getTable().'.'.$this->model->getLocaleKey(), $locale);
+            });
+        }
+    }
+
+    protected function parseFullColumnName($column) {
+        if (str_contains($column, '.')) {
+            list($table, $column) = explode('.', $column, 2);
+        } else {
+            if($this->modelHasTranslations() && $this->model->isTranslationAttribute($column)) {
+                $table = $this->translationModel->getTable();
+            } else {
+                $table = $this->model->getTable();
+            }
+        }
+
+        return compact('table', 'column');
+    }
+
+    protected function modelHasTranslations() {
+        return $this->modelHasTranslations;
+    }
+
+    private function filterModelColumns(Collection $columns) {
+        return $this->filterColumns($this->model, $columns);
+    }
+
+    private function filterTranslationModelColumns(Collection $columns) {
+        return $this->filterColumns($this->translationModel, $columns);
+    }
+
+    private function filterColumns(Model $object, Collection $columns) {
+        return $columns->filter(function($column) use ($object) {
+            return $column['table'] == $object->getTable();
+        })->map(function($column) {
+            return $column['table'].'.'.$column['column'];
+        })->toArray();
     }
 
 }
