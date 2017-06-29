@@ -1,5 +1,5 @@
 // core stuff like axios, ...
-require('./../bootstrap')
+require('../bootstrap')
 
 // brackets/admin overloaded files
 require('./components/bootstrap');
@@ -7,7 +7,12 @@ require('./components/bootstrap');
 // custom files
 require('./bootstrap');
 
-var admin = new Vue({
-    mixins: [require('admin')]
-});
+window.moment = require('moment');
 
+Vue.use(require('vee-validate')
+    , { strict: true }
+);
+
+new Vue({
+    mixins: [require('admin')],
+});
