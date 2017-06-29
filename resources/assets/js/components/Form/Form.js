@@ -5,17 +5,31 @@ module.exports = {
             type: String,
             required: true
         },
+        'locales': {
+            type: Array
+        },
+        'defaultLocale': {
+            type: String,
+        },
         'default': {
             type: Object,
             default: function() {
-                return {};
+                var o = {};
+
+                if (!!this.locales && this.locales.length > 0) {
+                    this.locales.map(x => o[x] = {});
+                }
+
+                return o;
             }
         },
     },
 
     data: function() {
         return {
-            form: this.default
+            form: this.default,
+            isFormLocalized: false,
+            currentLocale: 'sk',
         }
     },
 
@@ -32,10 +46,25 @@ module.exports = {
                 });
         },
         onSuccess(data) {
-            window.location.replace(data.redirect)
+            // window.location.replace(data.redirect)
         },
         onFail(errors) {
-            Object.keys(errors).map(key => this.$validator.errorBag.add(key, errors[key][0]));
+            var bag = this.$validator.errorBag;
+            Object.keys(errors).map(function(key) {
+                var splitted = key.split('.', 2);
+                if (splitted.length > 1) {
+                    bag.add(splitted[1], errors[key][0], null, splitted[0]);
+                } else {
+                    bag.add(key, errors[key][0]);
+                }
+            });
+        },
+
+        showLocalization() {
+            this.isFormLocalized = true;
+        },
+        hideLocalization() {
+            this.isFormLocalized = false;
         }
     }
 };
