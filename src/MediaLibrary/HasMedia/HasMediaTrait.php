@@ -19,18 +19,9 @@ trait HasMediaTrait {
                     if(isset($file['deleted']) && $file['deleted']) {
                         //pokial mame deleted, tak ideme subor zmazat
 
-                        $medium = $this->getMedia($file['collection'])->filter(function ($item, $key) use ($file){
-                            return $item->id == $file['id'];
-                        });
-
-                        if($medium->count() > 0) {
-                            $medium->first()->delete();
+                        if($medium = app(MediaModel::class)->find($file['id'])) {
+                            $medium->delete();
                         }
-
-                        //FIXME: toto preco nefunguje? nic sa nezmaze
-                        // if($medium = app(MediaModel::class)->find($file['id'])->first()) {
-                        //     $medium->delete();
-                        // }
                     }
                 }
                 else {
