@@ -9,7 +9,7 @@ module.exports = {
     },
     collection: {
     	type: String,
-      required: false,
+      required: true,
       default: 'vueDropzoneUpload'
     },
     uploadedImages : {
