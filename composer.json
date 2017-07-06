@@ -20,7 +20,9 @@
     "require": {
         "php": ">=5.6.4",
         "illuminate/support": "5.4.*",
-        "dimsav/laravel-translatable": "7.*"
+        "dimsav/laravel-translatable": "7.*",
+        "spatie/laravel-medialibrary": "^5.0.0",
+        "matriphe/imageupload": "^5.4"
     },
     "autoload": {
         "classmap": [],
