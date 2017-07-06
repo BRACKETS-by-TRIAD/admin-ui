@@ -9,7 +9,7 @@ trait HasMediaTrait {
 
     use ParentHasMediaTrait;
 
-    public function processMedia($files, $clearAllMedia = true, $clearMediumId = null) {
+    public function processMedia($files) {
         $mediaCollections = $this->getCollections();
 
         foreach ($files['files'] as $key => $file) {
