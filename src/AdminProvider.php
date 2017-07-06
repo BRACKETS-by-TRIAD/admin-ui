@@ -19,6 +19,7 @@ class AdminProvider extends ServiceProvider
             __DIR__.'/MediaLibrary/config' => base_path('config')
         ], 'config');
 
+
         $this->publishes([
             __DIR__.'/../install-stubs/resources/assets' => resource_path('assets')
         ], 'assets');
@@ -37,6 +38,9 @@ class AdminProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        //FIXME: lepsie by bolo keby sa to dalo publishnut do filesystems
+        $this->mergeConfigFrom(
+            __DIR__.'/MediaLibrary/config/filesystems.php', 'filesystems.disks'
+        );
     }
 }
