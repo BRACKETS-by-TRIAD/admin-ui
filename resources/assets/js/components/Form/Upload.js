@@ -12,6 +12,26 @@ module.exports = {
       required: true,
       default: 'vueDropzoneUpload'
     },
+    maxNumberOfFiles:{
+      type: Number,
+      required: false,
+      default: 1
+    },
+    maxFileSizeInMb:{
+      type: Number,
+      required: false,
+      default: 2
+    },
+    acceptedFileTypes: {
+      type: String,
+      required: false,
+      default: '*'
+    },
+    thumbnailWidth: {
+      type: Number,
+      required: false,
+      default: 200
+    },
     uploadedImages : {
       type: Array,
       required: false,
@@ -28,7 +48,11 @@ module.exports = {
                        v-on:vdropzone-success="onSuccess"
                        v-on:vdropzone-removed-file="onFileDelete"
                        :useFontAwesome="true" 
-                       :ref="collection">
+                       :ref="collection"
+                       :maxNumberOfFiles="maxNumberOfFiles"
+                       :maxFileSizeInMB="maxFileSizeInMb"
+                       :acceptedFileTypes="acceptedFileTypes"
+                       :thumbnailWidth="thumbnailWidth">
                 
                 <!-- Optional parameters if any! -->
                 <input type="hidden" name="token" value="xxx">
@@ -53,7 +77,9 @@ module.exports = {
 
       if(deletedFilePath) {
         var deletedFileIndex = _.findIndex(this.mutableUploadedImages, {path: deletedFilePath});
-        this.mutableUploadedImages[deletedFileIndex]['deleted'] = true;
+        if(this.mutableUploadedImages[deletedFileIndex]) {
+          this.mutableUploadedImages[deletedFileIndex]['deleted'] = true;
+        }
       }
     },
 
