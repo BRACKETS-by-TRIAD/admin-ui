@@ -4,15 +4,16 @@ namespace Brackets\Admin\MediaLibrary\HasMedia;
 
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait as ParentHasMediaTrait;
 use Spatie\MediaLibrary\Media as MediaModel;
+use Illuminate\Support\Collection;
 
 trait HasMediaTrait {
 
     use ParentHasMediaTrait;
 
-    public function processMedia($files) {
+    public function processMedia(Collection $files) {
         $mediaCollections = $this->getCollections();
 
-        foreach ($files['files'] as $key => $file) {
+        $files->map(function($file) use ($mediaCollections) {
             if(isset($mediaCollections[$file['collection']])) {
                 if(isset($file['id']) && $file['id']) {
                     //pokial mame id, tak ide o update
@@ -28,10 +29,10 @@ trait HasMediaTrait {
                     $this->addMedia($file['path'])->toMediaCollection($file['collection'], config('simpleweb-medialibrary.disc'));
                 }
             }
-        }
+        });
     }
 
-    public function getMediaForForm($collection) {
+    public function getMediaForUploadComponent(String $collection) {
         return $this->getMedia($collection)->map(function($medium) use ($collection) { 
             return [ 
                 'id'         => $medium->id,
