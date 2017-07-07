@@ -26,7 +26,7 @@ trait HasMediaTrait {
                     }
                 }
                 else {
-                    $this->addMedia($file['path'])->toMediaCollection($file['collection'], config('simpleweb-medialibrary.disc'));
+                    $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($file['collection'], config('simpleweb-medialibrary.disc'));
                 }
             }
         });

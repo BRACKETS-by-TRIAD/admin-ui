@@ -83,6 +83,18 @@ module.exports = {
       }
     },
 
+    // onFileAdded: function(file) {
+    //   console.log(file);
+    //   if (file.type && !file.type.match(/image.*/)) {
+    //     // This is not an image, so Dropzone doesn't create a thumbnail.
+    //     // Set a default thumbnail:
+    //     this.$refs[this.collection].dropzone.emit("thumbnail", file, "http://path/to/image");
+
+    //     // You could of course generate another image yourself here,
+    //     // and set it as a data url.
+    //   }
+    // },
+
     getFiles: function() {
       var files = this.mutableUploadedImages;
 
@@ -92,7 +104,7 @@ module.exports = {
         if(response.success) {
           files.push({
               collection: this.collection,
-              path: response.data.original_filepath
+              path: response.path
           });
         }
       });

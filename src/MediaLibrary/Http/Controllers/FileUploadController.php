@@ -4,7 +4,6 @@ namespace Brackets\Admin\MediaLibrary\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Brackets\Simpleweb\Http\Middleware\Admin;
-use Imageupload;
 use Illuminate\Http\Request;
 
 class FileUploadController extends Controller {
@@ -19,17 +18,12 @@ class FileUploadController extends Controller {
         // $this->wysiwygUploadPath = '/uploads/wysiwyg';
     }
 
-    //FIXME: potrebujeme tu Imageupload ?
     public function upload(Request $request) {
         if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $temp = explode('.', $file->getClientOriginalName());
-            $ext  = array_pop($temp);
-            $name = implode('.', $temp);
-            $newFileName = $name.'-'.time();
-            $fileInfo = Imageupload::upload($request->file('file'), $newFileName);
-
-            return ['success' => true, 'data' => $fileInfo];
+            //FIXME: nezachovava sa filename, vadi/nevadi? 
+            //mozme si radsej ukladat filename alebo nazov suboru ktory zada user do medialibrary meta dat
+            $path = $request->file('file')->store('medialibray_temp_uploads');
+            return ['success' => true, 'path' => $path];
         }
 
         return ['success' => false, 'error' => 'File is not provided'];
