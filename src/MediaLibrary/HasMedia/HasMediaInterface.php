@@ -14,6 +14,6 @@ interface HasMediaInterface extends HasMediaConversions {
     /**
      * @return array
      */
-    public function getConversions();
+    public function getConversions(string $collectionName);
 
 }

@@ -32,7 +32,7 @@ trait HasMediaTrait {
         });
     }
 
-    public function getMediaForUploadComponent(String $collection) {
+    public function getMediaForUploadComponent(string $collection) {
         return $this->getMedia($collection)->map(function($medium) use ($collection) { 
             return [ 
                 'id'         => $medium->id,
@@ -44,22 +44,11 @@ trait HasMediaTrait {
             ];
         });
     }
-
-
-    // FIXME: stare veci, refactor
     
     public function registerMediaConversions() {
 
-        $collections = array_merge($this->getImageCollections(), $this->getGalleryCollections());
-        foreach($collections as $collectionName => $collectionProperties) {
-
-            $this->addMediaConversion('thumb')
-                ->width(200)
-                ->height(150)
-                ->fit('crop', 200, 150)
-                ->nonQueued()
-                ->performOnCollections($collectionName);
-
+        $this->getImageCollections()->map(function($collectionProperties, $collectionName) {
+            //FIXME: upload thumb pri editaci, tam nam zatial nefunguje browser resize 
             $this->addMediaConversion('square200')
                 ->width(200)
                 ->height(200)
@@ -67,95 +56,67 @@ trait HasMediaTrait {
                 ->nonQueued()
                 ->performOnCollections($collectionName);
 
-            //FIXME: alebo staci pouzit ->preservingOriginal();
             $this->addMediaConversion('original')
-                ->nonQueued()
-                ->performOnCollections($collectionName);
+                 ->nonQueued()
+                 ->performOnCollections($collectionName);
 
-            foreach($this->getConversions($collectionName) as $name => $properties) {
-                if(empty($properties["w"]) && !empty($properties["width"])) {
-                    $properties["w"] = $properties["width"];
+            $this->getConversions($collectionName)->map(function($conversionProperties, $conversionName) use ($collectionName) {
+
+                $mediaConversion = $this->addMediaConversion($conversionName);
+                   
+                if(!empty($conversionProperties["width"])) {
+                    $mediaConversion->width($conversionProperties["width"]);
                 }
-                if(empty($properties["h"]) && !empty($properties["height"])) {
-                    $properties["h"] = $properties["height"];
+
+                if(!empty($conversionProperties["height"])) {
+                    $mediaConversion->height($conversionProperties["height"]);
                 }
-                if(empty($properties["fit"])) {
-                    $properties["fit"] = 'crop';
+
+                //FIXME: https://docs.spatie.be/image/v1/introduction
+                //setManipulations je deprecated, cize teraz treba vsetky manipulations definovat explicitne tu
+
+                if(!empty($conversionProperties["fit"]) && !empty($conversionProperties["width"]) && !empty($conversionProperties["height"])) {
+                    $mediaConversion->fit($conversionProperties["fit"], $conversionProperties["width"], $conversionProperties["height"]);
                 }
-                $conversion = $this->addMediaConversion($name)
-                    ->setManipulations($properties);
-                if(!empty($properties["queue"]) && $properties["queue"]) {
-                    $conversion->queued();
+
+                if(!empty($conversionProperties["queue"]) && $conversionProperties["queue"]) {
+                    $mediaConversion->queued();
                 } else {
-                    $conversion->nonQueued();
+                    $mediaConversion->nonQueued();
                 }
-                $conversion->performOnCollections($collectionName);
-            }
-
-        }
+              
+                $mediaConversion->performOnCollections($collectionName);     
+            });
+        });
     }
 
-    public function getImageCollections()
-    {
-        $collections = [];
-        foreach ($this->getCollections() as $key => $collection) {
-            if($collection['type'] == 'image' ) {
-                $collections[$key] = $collection;
-            }
-        }
-        return $collections;
+    public function getImageCollections(): Collection {
+        return collect($this->getCollections())->filter(function($collection) {
+            return $collection['type'] == 'image';
+        });
     }
 
-    public function getGalleryCollections()
-    {
-        $collections = [];
-        foreach ($this->getCollections() as $key => $collection) {
-            if($collection['type'] == 'gallery' ) {
-                $collections[$key] = $collection;
-            }
-        }
-        return $collections;
+    public function getFileCollections(): Collection {
+        return collect($this->getCollections())->filter(function($collection) {
+            return $collection['type'] == 'file';
+        });
     }
 
-    public function getFileCollections()
-    {
-        $collections = [];
-        foreach ($this->getCollections() as $key => $collection) {
-            if($collection['type'] == 'file' ) {
-                $collections[$key] = $collection;
-            }
-        }
-        return $collections;
-    }
-
-    public function getVideoCollections()
-    {
-        $collections = [];
-        foreach ($this->getCollections() as $key => $collection) {
-            if($collection['type'] == 'video' ) {
-                $collections[$key] = $collection;
-            }
-        }
-        return $collections;
+    public function getVideoCollections(): Collection {
+        return collect($this->getCollections())->filter(function($collection) {
+            return $collection['type'] == 'video';
+        });
     }
 
     /**
      * Media conversions
      *
-     * @return array
+     * @return Collection
      */
-    public function getConversions($collectionName = null) {
-        $conversions = [];
-        foreach ($this->getCollections() as $key => $collection) {
-            if(!empty($collection['conversions'])) {
-                if(!empty($collectionName) && $collectionName === $key ) {
-                    $conversions = $collection['conversions'];
-                } else if (empty($collectionName)){
-                    array_merge($conversions, $collection['conversions']);
-                }
-            }
-        }
-        return $conversions;
-    }
 
+    public function getConversions(string $collectionName): Collection {
+        $conversions = array_get($this->getCollections(), $collectionName.'.conversions');
+
+        return $conversions ? collect($conversions) : collect([]);
+    }
 }
