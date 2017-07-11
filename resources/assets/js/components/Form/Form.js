@@ -17,6 +17,7 @@ module.exports = {
         return {
             form: this.default,
             datePickerConfig: {
+                format: 'YYYY-MM-DD',
                 altInput: true,
                 altFormat: 'd.m.Y'
             },
@@ -24,12 +25,18 @@ module.exports = {
                 enableTime: true,
                 noCalendar: true,
                 time_24hr: true,
+                enableSeconds: true,
+                format: 'kk:mm:ss',
+                altInput: true,
+                altFormat: 'H:i:S'
             },
             datetimePickerConfig: {
                 enableTime: true,
                 time_24hr: true,
+                enableSeconds: true,
+                format: 'YYYY-MM-DD kk:mm:ss',
                 altInput: true,
-                altFormat: 'd.m.Y'
+                altFormat: 'd.m.Y H:i:S'
             }
         }
     },
