@@ -15,7 +15,22 @@ module.exports = {
 
     data: function() {
         return {
-            form: this.default
+            form: this.default,
+            datePickerConfig: {
+                altInput: true,
+                altFormat: 'd.m.Y'
+            },
+            timePickerConfig: {
+                enableTime: true,
+                noCalendar: true,
+                time_24hr: true,
+            },
+            datetimePickerConfig: {
+                enableTime: true,
+                time_24hr: true,
+                altInput: true,
+                altFormat: 'd.m.Y'
+            }
         }
     },
 
