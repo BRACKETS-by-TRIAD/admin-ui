@@ -109,6 +109,17 @@ module.exports = {
             this.pagination.state.per_page = object.per_page;
             this.pagination.state.to = object.to;
             this.pagination.state.from = object.from;
+        },
+
+        deleteItem(id, event){
+            event.preventDefault();
+            let url = this.url + '/destroy/' + id;
+
+            // TODO do we need confirmation?
+
+            axios.delete(url).then(response => this.loadData(), error => {
+                // TODO handle error
+            });
         }
     }
 
