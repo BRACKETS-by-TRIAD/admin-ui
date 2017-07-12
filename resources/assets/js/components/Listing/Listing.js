@@ -111,12 +111,8 @@ module.exports = {
             this.pagination.state.from = object.from;
         },
 
-        deleteItem(id, event){
-            event.preventDefault();
-            let url = this.url + '/destroy/' + id;
-
-            // TODO do we need confirmation?
-
+        deleteItem(url){
+            // TODO confirmation
             axios.delete(url).then(response => this.loadData(), error => {
                 // TODO handle error
             });
