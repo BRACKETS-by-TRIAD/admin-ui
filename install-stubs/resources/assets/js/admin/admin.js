@@ -13,6 +13,11 @@ Vue.use(require('vee-validate')
     , { strict: true }
 );
 
+// datepicker
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+Vue.component('datetime', flatPickr);
+
 new Vue({
     mixins: [require('admin')],
 });
