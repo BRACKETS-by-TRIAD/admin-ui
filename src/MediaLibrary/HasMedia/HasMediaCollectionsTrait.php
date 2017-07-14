@@ -24,7 +24,7 @@ trait HasMediaCollectionsTrait {
     static $FILE_DISC_PRIVATE = 'media-protected';
 
     public function processMedia(Collection $files) {
-        $mediaCollections = $this->registerMediaCollections();
+        $mediaCollections = $this->getMediaCollections();
 
         $files->map(function($file) use ($mediaCollections) {
             if(isset($mediaCollections[$file['collection']])) {
@@ -47,11 +47,6 @@ trait HasMediaCollectionsTrait {
     }
 
     public static function bootHasMediaCollectionsTrait() {
-
-        static::booted(function(HasMediaCollectionsTrait $model){
-            $model->initMediaCollections();
-        });
-
         // FIXME let's try if this works
         static::saving(function($model, Request $request)
         {
@@ -74,6 +69,10 @@ trait HasMediaCollectionsTrait {
     }
 
     public function getMediaCollections() {
+        if (is_null($this->mediaCollections)) {
+            $this->initMediaCollections();
+        }
+
         return $this->mediaCollections;
     }
 
