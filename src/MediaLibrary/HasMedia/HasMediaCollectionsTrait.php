@@ -2,6 +2,7 @@
 
 namespace Brackets\Admin\MediaLibrary\HasMedia;
 
+use Illuminate\Http\Request;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait as ParentHasMediaTrait;
 use Spatie\MediaLibrary\Media as MediaModel;
 use Illuminate\Support\Collection;
@@ -45,13 +46,26 @@ trait HasMediaCollectionsTrait {
         });
     }
 
+    public static function bootHasMediaCollectionsTrait() {
+
+        static::booted(function(HasMediaCollectionsTrait $model){
+            $model->initMediaCollections();
+        });
+
+        // FIXME let's try if this works
+        static::saving(function($model, Request $request)
+        {
+            $model->processMedia($request->files());
+        });
+    }
+
+    protected function initMediaCollections() {
+        $this->mediaCollections = collect();
+
+        $this->registerMediaCollections();
+    }
+
     public function addMediaCollection($name) : \Brackets\Admin\MediaLibrary\HasMedia\Collection {
-
-        // FIXME this should be inited elswhere
-        if (is_null($this->mediaCollections)) {
-            $this->mediaCollections = collect();
-        }
-
         $collection = \Brackets\Admin\MediaLibrary\HasMedia\Collection::create($name);
 
         $this->mediaCollections->push($collection);
