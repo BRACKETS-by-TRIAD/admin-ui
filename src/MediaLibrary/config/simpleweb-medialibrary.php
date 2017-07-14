@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'authorizeUpload' => false,
-    'authorizeView' => false,
-    'disc' => 'media-protected' //media
+    'default_public_disk' => 'media',
+	'default_protected_disk' => 'media-protected'
 ];

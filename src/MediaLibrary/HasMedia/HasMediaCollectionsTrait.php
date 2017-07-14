@@ -14,45 +14,37 @@ trait HasMediaCollectionsTrait {
     /** @var  Collection */
     protected $mediaCollections;
 
-    // FIXME should it be here?
-    static $FILE_PROTECTION_LOGGED_IN = 'logged_in';
-    static $FILE_PROTECTION_PERMISSION  = 'permission';
-    static $FILE_PROTECTION_POLICY = 'policy';
-
-    // FIXME should it be here?
-    static $FILE_DISC_PUBLIC = 'media';
-    static $FILE_DISC_PRIVATE = 'media-protected';
-
     public function processMedia(Collection $files) {
         $mediaCollections = $this->getMediaCollections();
 
-        $files->map(function($file) use ($mediaCollections) {
-            if(isset($mediaCollections[$file['collection']])) {
-                if(isset($file['id']) && $file['id']) {
-                    //pokial mame id, tak ide o update
-                    if(isset($file['deleted']) && $file['deleted']) {
-                        //pokial mame deleted, tak ideme subor zmazat
+        $files->each(function($file) use ($mediaCollections) {
+            $collection = $mediaCollections->filter(function($collection) use ($file){
+                return $collection->getName() == $file['collection'];
+            })->first();
 
+            if($collection) {
+                if(isset($file['id']) && $file['id']) {
+                    if(isset($file['deleted']) && $file['deleted']) {
                         if($medium = app(MediaModel::class)->find($file['id'])) {
                             $medium->delete();
                         }
                     }
                 }
                 else {
-                    // $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($file['collection'], config('simpleweb-medialibrary.disc'));
-                    $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($file['collection'], $this->getFileDisc());
+                    //path from config/disk
+                    $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($collection->getName(), $collection->getDisk());
                 }
             }
         });
     }
 
-    public static function bootHasMediaCollectionsTrait() {
-        // FIXME let's try if this works
-        static::saving(function($model, Request $request)
-        {
-            $model->processMedia($request->files());
-        });
-    }
+    // public static function bootHasMediaCollectionsTrait() {
+    //     // FIXME let's try if this works
+    //     static::saving(function($model, Request $request)
+    //     {
+    //         $model->processMedia($request->files());
+    //     });
+    // }
 
     protected function initMediaCollections() {
         $this->mediaCollections = collect();
@@ -82,27 +74,11 @@ trait HasMediaCollectionsTrait {
             return [ 
                 'id'         => $medium->id,
                 //FIXME: ked to je file, tak nema square200, treba zobrazit len ikonku a nazov na frontende
-                'path'       => $medium->getUrl('square200'), 
+                'path'       => $medium->getUrl(), 
                 'collection' => $collection,
                 'name'       => $medium->file_name, 
                 'size'       => $medium->size
             ];
         });
-    }
-
-    // FIXME should it be here?
-    //defaultne hodnoty, overridne si clovek v modeli
-    public function getFileDisc() {
-        return self::$FILE_DISC_PUBLIC;
-    }
-
-    // FIXME should it be here?
-    public function getFileUploadProtection() {
-        return self::$FILE_PROTECTION_LOGGED_IN;
-    }
-
-    // FIXME should it be here?
-    public function getFileViewProtection() {
-        return self::$FILE_PROTECTION_LOGGED_IN;
     }
 }

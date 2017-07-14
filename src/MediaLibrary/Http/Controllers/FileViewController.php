@@ -11,13 +11,15 @@ use Storage;
 use Spatie\MediaLibrary\Media as MediaModel;
 use Exception;
 
+use Illuminate\Support\Facades\Gate;
+
 class FileViewController extends Controller {
 
 	public function __construct() {
         // First, check user's permissions - ability to perform this request
-        if(config('simpleweb-medialibrary.authorizeView')) {
-            $this->authorize('medialibrary.view');  
-        }
+        // if(config('simpleweb-medialibrary.authorizeView')) {
+        //     $this->authorize('medialibrary.view');  
+        // }
     }
 
     public function view(Request $request) {
@@ -28,27 +30,30 @@ class FileViewController extends Controller {
         list($fileId) = explode("/", $request->get('path'), 2);
 
         if($medium = app(MediaModel::class)->find($fileId)) {
-            $model = app($medium->model_type);
-            
-            if($model->getFileViewProtection() == $model::$FILE_PROTECTION_PERMISSION) {
-                $this->authorize(strtolower(str_replace("\\",".", $medium->model_type)).".file.view.permission");
-            }
-            elseif($model->getFileViewProtection() == $model::$FILE_PROTECTION_POLICY) {
-                $this->authorize(strtolower(str_replace("\\",".", $medium->model_type)).".file.view.policy");
-            }
-        
-            $storagePath = '/media/'.$request->get('path');
+            $mediaCollections = $medium->model->getMediaCollections();
 
-            if(!Storage::has($storagePath)) {
-                abort(404);
+            $collection = $mediaCollections->filter(function($collection) use ($medium){
+                return $collection->getName() == $medium->collection_name;
+            })->first();
+
+            if($collection) {
+                if($collection->getViewPermission()) {
+                    $this->authorize($collection->getViewPermission(), $medium->model);
+                }
+
+                $storagePath = '/media/'.$request->get('path');
+
+                if(!Storage::has($storagePath)) {
+                    abort(404);
+                }
+
+                $fileOnDisc  = Storage::get($storagePath);
+
+                return Response::make($fileOnDisc, 200, [
+                    'Content-Type' => Storage::mimeType($storagePath),
+                    'Content-Disposition' => 'inline; filename="'.basename($request->get('path')).'"'
+                ]);
             }
-
-            $fileOnDisc  = Storage::get($storagePath);
-
-            return Response::make($fileOnDisc, 200, [
-                'Content-Type' => Storage::mimeType($storagePath),
-                'Content-Disposition' => 'inline; filename="'.basename($request->get('path')).'"'
-            ]);
         }
 
         abort(404);
