@@ -47,17 +47,18 @@ module.exports = {
     },
 
     filters: {
-        date: function (date) {
+        date: function (date, format = 'YYYY-MM-DD') {
             var date = moment(date);
-            return date.isValid() ? date.format('YYYY-MM-DD') : "";
+            return date.isValid() ? date.format(format) : "";
         },
-        datetime: function (date) {
-            var date = moment(date);
-            return date.isValid() ? date.format('YYYY-MM-DD kk:mm:ss') : "";
+        datetime: function (datetime, format = 'YYYY-MM-DD kk:mm:ss') {
+            var date = moment(datetime);
+            return date.isValid() ? date.format(format) : "";
         },
-        time: function (date) {
-            var date = moment(date);
-            return date.isValid() ? date.format('kk:mm:ss') : "";
+        time: function (time, format = 'kk:mm:ss') {
+            // '2000-01-01' is here just because momentjs needs a date
+            var date = moment('2000-01-01 ' + time);
+            return date.isValid() ? date.format(format) : "";
         }
     },
 
@@ -115,6 +116,12 @@ module.exports = {
             // TODO confirmation
             axios.delete(url).then(response => this.loadData(), error => {
                 // TODO handle error
+            });
+        },
+
+        toggleSwitch(url, col, row){
+            axios.post(url, row).then(response => {}, error => {
+                row[col] = !row[col];
             });
         }
     }
