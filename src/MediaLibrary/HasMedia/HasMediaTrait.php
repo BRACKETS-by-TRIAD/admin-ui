@@ -10,6 +10,13 @@ trait HasMediaTrait {
 
     use ParentHasMediaTrait;
 
+    static $FILE_PROTECTION_LOGGED_IN = 'logged_in';
+    static $FILE_PROTECTION_PERMISSION  = 'permission';
+    static $FILE_PROTECTION_POLICY = 'policy';
+
+    static $FILE_DISC_PUBLIC = 'media';
+    static $FILE_DISC_PRIVATE = 'media-protected';
+
     public function processMedia(Collection $files) {
         $mediaCollections = $this->getCollections();
 
@@ -26,7 +33,8 @@ trait HasMediaTrait {
                     }
                 }
                 else {
-                    $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($file['collection'], config('simpleweb-medialibrary.disc'));
+                    // $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($file['collection'], config('simpleweb-medialibrary.disc'));
+                    $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($file['collection'], $this->getFileDisc());
                 }
             }
         });
@@ -118,5 +126,19 @@ trait HasMediaTrait {
         $conversions = array_get($this->getCollections(), $collectionName.'.conversions');
 
         return $conversions ? collect($conversions) : collect([]);
+    }
+
+
+    //defaultne hodnoty, overridne si clovek v modeli
+    public function getFileDisc() {
+        return self::$FILE_DISC_PUBLIC;
+    }
+
+    public function getFileUploadProtection() {
+        return self::$FILE_PROTECTION_LOGGED_IN;
+    }
+
+    public function getFileViewProtection() {
+        return self::$FILE_PROTECTION_LOGGED_IN;
     }
 }
