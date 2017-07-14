@@ -11,14 +11,4 @@ interface HasMediaCollections extends HasMedia {
      */
     public function registerMediaCollections();
 
-    /**
-     * @return array
-     */
-    public function addCollection();
-
-    /**
-     * @return array
-     */
-    public function getCollections();
-
 }

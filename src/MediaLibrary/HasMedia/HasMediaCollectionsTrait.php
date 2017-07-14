@@ -13,10 +13,12 @@ trait HasMediaCollectionsTrait {
     /** @var  Collection */
     protected $mediaCollections;
 
+    // FIXME should it be here?
     static $FILE_PROTECTION_LOGGED_IN = 'logged_in';
     static $FILE_PROTECTION_PERMISSION  = 'permission';
     static $FILE_PROTECTION_POLICY = 'policy';
 
+    // FIXME should it be here?
     static $FILE_DISC_PUBLIC = 'media';
     static $FILE_DISC_PRIVATE = 'media-protected';
 
@@ -61,6 +63,7 @@ trait HasMediaCollectionsTrait {
         return $this->mediaCollections;
     }
 
+    // FIXME should it be here?
     public function getMediaForUploadComponent(string $collection) {
         return $this->getMedia($collection)->map(function($medium) use ($collection) { 
             return [ 
@@ -74,15 +77,18 @@ trait HasMediaCollectionsTrait {
         });
     }
 
+    // FIXME should it be here?
     //defaultne hodnoty, overridne si clovek v modeli
     public function getFileDisc() {
         return self::$FILE_DISC_PUBLIC;
     }
 
+    // FIXME should it be here?
     public function getFileUploadProtection() {
         return self::$FILE_PROTECTION_LOGGED_IN;
     }
 
+    // FIXME should it be here?
     public function getFileViewProtection() {
         return self::$FILE_PROTECTION_LOGGED_IN;
     }
