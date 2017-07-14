@@ -1,3 +1,5 @@
+const userLanguage = document.documentElement.lang;
+
 module.exports = {
 
     props: {
@@ -19,7 +21,8 @@ module.exports = {
             datePickerConfig: {
                 format: 'YYYY-MM-DD',
                 altInput: true,
-                altFormat: 'd.m.Y'
+                altFormat: 'd.m.Y',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
             },
             timePickerConfig: {
                 enableTime: true,
@@ -28,7 +31,8 @@ module.exports = {
                 enableSeconds: true,
                 format: 'kk:mm:ss',
                 altInput: true,
-                altFormat: 'H:i:S'
+                altFormat: 'H:i:S',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
             },
             datetimePickerConfig: {
                 enableTime: true,
@@ -36,7 +40,8 @@ module.exports = {
                 enableSeconds: true,
                 format: 'YYYY-MM-DD kk:mm:ss',
                 altInput: true,
-                altFormat: 'd.m.Y H:i:S'
+                altFormat: 'd.m.Y H:i:S',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
             }
         }
     },
