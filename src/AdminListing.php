@@ -51,6 +51,11 @@ class AdminListing {
     protected $modelHasTranslations = false;
 
     /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
      * @param $modelName
      * @return static
      */
@@ -78,12 +83,15 @@ class AdminListing {
         }
 
         $this->model = $model;
-        $this->query = $model->newQuery();
 
         if (in_array(Translatable::class, class_uses($this->model))) {
             $this->modelHasTranslations = true;
             $this->translationModel = app($this->model->getTranslationModelName());
+            $this->locale = $this->model->getDefaultLocale() ?: app()->getLocale();
         }
+
+        $this->query = $model->newQuery();
+
         return $this;
     }
 
@@ -123,8 +131,25 @@ class AdminListing {
             $this->modifyQuery($modifyQuery);
         }
 
+        if (!is_null($locale)) {
+            $this->setLocale($locale);
+        }
+
         // execute query and get the results
-        return $this->get($columns, $locale);
+        return $this->get($columns);
+    }
+
+    /**
+     * Set the locale you want to query
+     *
+     * This method is only valid for Translatable models
+     *
+     * @param $locale
+     * @return $this
+     */
+    public function setLocale($locale) {
+        $this->locale = $locale;
+        return $this;
     }
 
     /**
@@ -226,7 +251,7 @@ class AdminListing {
      * @param string $locale
      * @return LengthAwarePaginator|Collection The result is either LengthAwarePaginator (when pagination was attached) or simple Collection otherwise
      */
-    public function get(array $columns = ['*'], $locale = null) {
+    public function get(array $columns = ['*']) {
 
         // if '*' was passed, we are going to transliterate it to [table.*, translation_table.*] so columns from both will get loaded
         if (count($columns) == 1 && head($columns) == '*' && $this->modelHasTranslations()) {
@@ -240,39 +265,53 @@ class AdminListing {
             return $this->parseFullColumnName($column);
         });
 
-        $this->attachTranslations($columns, $locale);
+        $this->attachTranslations($columns);
 
         if ($this->hasPagination) {
-            return $this->query->paginate($this->perPage, $this->filterModelColumns($columns), $this->pageColumnName, $this->currentPage);
+            $result = $this->query->paginate($this->perPage, $this->filterModelColumns($columns), $this->pageColumnName, $this->currentPage);
         } else {
-            return $this->query->get($this->filterModelColumns($columns));
+            $result = $this->query->get($this->filterModelColumns($columns));
+            $this->processResultCollection($result);
+        }
+
+        return $result;
+    }
+
+    protected function processResultCollection(Collection $collection) {
+        if ($this->modelHasTranslations()) {
+            // we need to set this ad hoc locale, it's for the toArray() method to work correctly
+            $collection->each(function ($model) {
+                $model->setDefaultLocale($this->locale);
+            });
         }
     }
 
-    protected function attachTranslations(Collection $columns, $locale = null) {
+    protected function attachTranslations(Collection $columns) {
         if ($this->modelHasTranslations()) {
 
-            if (is_null($locale)) {
-                $locale = app()->getLocale();
-            }
+            // We could have used $this->query->translatedIn($locale), but that would have load all columns and
+            // not only selected + it would load all locales, not only selected, I think the dimsav/laravel-translatable
+            // package is a bit buggy
+            // $this->query->translatedIn($locale);
 
+            // so first, let's filter columns we want to query
             $translationColumns = $this->filterTranslationModelColumns($columns);
-
             array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getRelationKey());
             array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getLocaleKey());
 
             // we will always eager load translations, because it is needed when converting result Collection toArray
             $this->query->with([
-                'translations' => function (Relation $query) use ($translationColumns, $locale) {
+                'translations' => function (Relation $query) use ($translationColumns) {
+                    // we will query only specific columns
                     $query->addSelect($translationColumns)
-                        ->where($this->translationModel->getTable() . '.' . $this->model->getLocaleKey(), $locale);
+                        ->where($this->translationModel->getTable() . '.' . $this->model->getLocaleKey(), $this->locale);
                 },
             ]);
 
             // but in order to get searching, filtering and ordering working, we have to also join the translation using locale we want to search/filter/order in
-            $this->query->join($this->translationModel->getTable(), function ($join) use ($locale) {
+            $this->query->join($this->translationModel->getTable(), function ($join) {
                 $join->on($this->model->getTable().'.'.$this->model->getKeyName(), '=', $this->translationModel->getTable().'.'.$this->model->getRelationKey())
-                    ->where($this->translationModel->getTable().'.'.$this->model->getLocaleKey(), $locale);
+                    ->where($this->translationModel->getTable().'.'.$this->model->getLocaleKey(), $this->locale);
             });
         }
     }

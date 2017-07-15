@@ -112,10 +112,6 @@ abstract class TestCase extends Test
                     'name' => 'Zeta '.$i,
                     'color' => 'yellow',
                 ],
-                'sk' => [
-                    'name' => 'Zeta '.$i,
-                    'color' => 'zlta',
-                ],
                 'number' => $i,
                 'published_at' => (2017+$i).'-01-01 00:00:00',
             ]);
