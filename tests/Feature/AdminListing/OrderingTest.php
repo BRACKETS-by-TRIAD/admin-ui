@@ -47,7 +47,7 @@ class OrderingTest extends TestCase
 
         $model = $result->first();
 
-        $this->assertEquals('2017-01-01 00:00:00', $model->published_at);
+        $this->assertEquals('2000-06-01 00:00:00', $model->published_at);
         $this->assertEquals('Alpha', $model->name);
         $this->assertEquals('red', $model->color);
         $this->assertArrayHasKey('translations', $model->toArray());
@@ -62,7 +62,7 @@ class OrderingTest extends TestCase
 
         $model = $result->first();
 
-        $this->assertEquals('2017-01-01 00:00:00', $model->published_at);
+        $this->assertEquals('2000-06-01 00:00:00', $model->published_at);
         $this->assertEquals('Alpha', $model->name);
         $this->assertEquals(null, $model->color);
         $this->assertEquals('Alpha', $model->translate('en')->name);
@@ -80,7 +80,7 @@ class OrderingTest extends TestCase
 
         $model = $result->first();
 
-        $this->assertEquals('2017-01-01 00:00:00', $model->published_at);
+        $this->assertEquals('2000-06-01 00:00:00', $model->published_at);
         $this->assertEquals('Alfa', $model->name);
         $this->assertEquals('cervena', $model->color);
         $this->assertEquals('cervena', $model->translate('sk')->color);
