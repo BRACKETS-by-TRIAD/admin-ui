@@ -130,6 +130,9 @@ class AdminListing {
     /**
      * Attach the ordering functionality
      *
+     * Any repeated call to this method is going to have no effect and original ordering is going to be used.
+     * This is due to the limitation of the Illuminate\Database\Eloquent\Builder.
+     *
      * @param $orderBy
      * @param string $orderDirection
      * @return $this
@@ -255,19 +258,16 @@ class AdminListing {
 
             $translationColumns = $this->filterTranslationModelColumns($columns);
 
-            // we set eager loading, but only if there is anything to select
-            if (count($translationColumns) > 0) {
+            array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getRelationKey());
+            array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getLocaleKey());
 
-                array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getRelationKey());
-                array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getLocaleKey());
-
-                $this->query->with([
-                    'translations' => function (Relation $query) use ($translationColumns, $locale) {
-                        $query->addSelect($translationColumns)
-                            ->where($this->translationModel->getTable() . '.' . $this->model->getLocaleKey(), $locale);
-                    },
-                ]);
-            }
+            // we will always eager load translations, because it is needed when converting result Collection toArray
+            $this->query->with([
+                'translations' => function (Relation $query) use ($translationColumns, $locale) {
+                    $query->addSelect($translationColumns)
+                        ->where($this->translationModel->getTable() . '.' . $this->model->getLocaleKey(), $locale);
+                },
+            ]);
 
             // but in order to get searching, filtering and ordering working, we have to also join the translation using locale we want to search/filter/order in
             $this->query->join($this->translationModel->getTable(), function ($join) use ($locale) {

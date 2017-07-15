@@ -19,7 +19,7 @@ class BasicStuffTest extends TestCase
     }
 
     /** @test */
-    function ability_to_specify_columns_to_filter() {
+    function listing_ability_to_specify_columns_to_filter() {
         $result = $this->listing
             ->get(['name', 'color']);
 
@@ -30,6 +30,23 @@ class BasicStuffTest extends TestCase
         $this->assertArrayHasKey('color', $model);
         $this->assertArrayNotHasKey('number', $model);
         $this->assertArrayNotHasKey('published_at', $model);
+    }
+
+    /** @test */
+    function it_should_be_possible_to_run_same_query_twice() {
+        $this->listing
+            ->get();
+
+        $result = $this->listing
+            ->get();
+
+        $this->assertCount(10, $result);
+        $model = $result->first();
+        $this->assertArrayHasKey('id', $model);
+        $this->assertArrayHasKey('name', $model);
+        $this->assertArrayHasKey('color', $model);
+        $this->assertArrayHasKey('number', $model);
+        $this->assertArrayHasKey('published_at', $model);
     }
 
 }

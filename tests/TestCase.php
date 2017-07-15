@@ -1,7 +1,6 @@
 <?php namespace Brackets\Admin\Tests;
 
 use Brackets\Admin\AdminListing;
-use Brackets\Admin\Tests\TestModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as Test;
@@ -19,12 +18,18 @@ abstract class TestCase extends Test
      */
     protected $listing;
 
+    /**
+     * @var AdminListing
+     */
+    protected $translatedListing;
+
     public function setUp()
     {
         parent::setUp();
         $this->setUpDatabase($this->app);
         $this->testModel = TestModel::first();
         $this->listing = AdminListing::create(TestModel::class);
+        $this->translatedListing = AdminListing::create(TestTranslatableModel::class);
     }
 
     /**
@@ -64,6 +69,53 @@ abstract class TestCase extends Test
             TestModel::create([
                 'name' => 'Zeta '.$i,
                 'color' => 'yellow',
+                'number' => $i,
+                'published_at' => (2017+$i).'-01-01 00:00:00',
+            ]);
+        });
+
+        app()->make('config')->set('translatable.locales', ['en', 'sk']);
+
+        $app['db']->connection()->getSchemaBuilder()->create('test_translatable_models', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('number');
+            $table->dateTime('published_at');
+        });
+        $app['db']->connection()->getSchemaBuilder()->create('test_translatable_model_translations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('test_translatable_model_id')->unsigned();
+            $table->string('locale')->index();
+
+            $table->string('name');
+            $table->string('color');
+
+            $table->unique(['test_translatable_model_id','locale']);
+            $table->foreign('test_translatable_model_id')->references('id')->on('test_translatable_models')->onDelete('cascade');
+        });
+
+        TestTranslatableModel::create([
+            'en' => [
+                'name' => 'Alpha',
+                'color' => 'red',
+            ],
+            'sk' => [
+                'name' => 'Alfa',
+                'color' => 'cervena',
+            ],
+            'number' => 999,
+            'published_at' => '2017-01-01 00:00:00',
+        ]);
+
+        collect(range(2, 10))->each(function($i){
+            TestTranslatableModel::create([
+                'en' => [
+                    'name' => 'Zeta '.$i,
+                    'color' => 'yellow',
+                ],
+                'sk' => [
+                    'name' => 'Zeta '.$i,
+                    'color' => 'zlta',
+                ],
                 'number' => $i,
                 'published_at' => (2017+$i).'-01-01 00:00:00',
             ]);
