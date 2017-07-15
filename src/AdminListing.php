@@ -207,7 +207,8 @@ class AdminListing {
                             $query->orWhere($column['table'].'.'.$column['column'], intval($token));
                         }
                     } else {
-                        $query->orWhere($column['table'].".".$column['column'], 'ilike', '%'.$token.'%');
+                        // FIXME how to make this case insensitive when using different databases? in SQLite "like" is case-insensitive but in PostgreSQL we use there is a "ilike" operator.. so maybe we need to extract this operator and initialize it depending on a database driver
+                        $query->orWhere($column['table'].".".$column['column'], 'like', '%'.$token.'%');
                     }
                 });
             });
