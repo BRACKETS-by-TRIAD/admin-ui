@@ -72,7 +72,7 @@ module.exports = {
                 });
         },
         onSuccess(data) {
-            // window.location.replace(data.redirect)
+            window.location.replace(data.redirect)
         },
         onFail(errors) {
             var bag = this.$validator.errorBag;
