@@ -1,6 +1,7 @@
 <?php namespace Brackets\Admin\Tests;
 
-use Brackets\Admin\Test\TestModel;
+use Brackets\Admin\AdminListing;
+use Brackets\Admin\Tests\TestModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as Test;
@@ -13,11 +14,30 @@ abstract class TestCase extends Test
      */
     protected $testModel;
 
+    /**
+     * @var AdminListing
+     */
+    protected $listing;
+
     public function setUp()
     {
         parent::setUp();
         $this->setUpDatabase($this->app);
         $this->testModel = TestModel::first();
+        $this->listing = AdminListing::create(TestModel::class);
+    }
+
+    /**
+     * @param \Illuminate\Foundation\Application $app
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('database.default', 'sqlite');
+        $app['config']->set('database.connections.sqlite', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
     }
 
     /**
@@ -48,8 +68,6 @@ abstract class TestCase extends Test
                 'published_at' => (2017+$i).'-01-01 00:00:00',
             ]);
         });
-
-        print_r(TestModel::all()->toArray());
     }
 
 }

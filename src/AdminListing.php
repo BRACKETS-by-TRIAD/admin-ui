@@ -50,6 +50,10 @@ class AdminListing {
      */
     protected $modelHasTranslations = false;
 
+    /**
+     * @param $modelName
+     * @return static
+     */
     public static function create($modelName) {
         return (new static)->setModel($modelName);
     }
@@ -61,7 +65,7 @@ class AdminListing {
      *
      * @param Model|string $model
      * @return $this
-     * @throws NotAModelClass
+     * @throws NotAModelClassException
      */
     public function setModel($model) {
 
@@ -70,7 +74,7 @@ class AdminListing {
         }
 
         if (!is_a($model, Model::class)) {
-            throw new NotAModelClass("AdminListing works only with Eloquent Models");
+            throw new NotAModelClassException("AdminListing works only with Eloquent Models");
         }
 
         $this->model = $model;
@@ -215,11 +219,20 @@ class AdminListing {
     /**
      * Execute query and get data
      *
-     * @param Collection $columns
+     * @param array $columns
      * @param string $locale
      * @return LengthAwarePaginator|Collection The result is either LengthAwarePaginator (when pagination was attached) or simple Collection otherwise
      */
-    public function get(Collection $columns = null, $locale = null) {
+    public function get(array $columns = ['*'], $locale = null) {
+
+        // if '*' was passed, we are going to transliterate it to [table.*, translation_table.*] so columns from both will get loaded
+        if (count($columns) == 1 && head($columns) == '*' && $this->modelHasTranslations()) {
+            $columns = [
+                $this->model->getTable().'.*',
+                $this->translationModel->getTable().'.*',
+            ];
+        }
+
         $columns = collect($columns)->map(function($column) {
             return $this->parseFullColumnName($column);
         });
