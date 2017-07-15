@@ -1,8 +1,6 @@
 <?php namespace Brackets\Admin\Tests\Feature\AdminListing;
 
 use Brackets\Admin\Tests\TestCase;
-use Brackets\Admin\Tests\TestTranslatableModel;
-use Dimsav\Translatable\Translatable;
 use Illuminate\Database\QueryException;
 
 class OrderingTest extends TestCase
@@ -66,9 +64,9 @@ class OrderingTest extends TestCase
 
         $this->assertEquals('2017-01-01 00:00:00', $model->published_at);
         $this->assertEquals('Alpha', $model->name);
-//        $this->assertEquals(null, $model->color);
-//        $this->assertEquals('Alpha', $model->translate('en')->name);
-//        $this->assertEquals(null, $model->translate('en')->color);
+        $this->assertEquals(null, $model->color);
+        $this->assertEquals('Alpha', $model->translate('en')->name);
+        $this->assertEquals(null, $model->translate('en')->color);
     }
 
     /** @test */
