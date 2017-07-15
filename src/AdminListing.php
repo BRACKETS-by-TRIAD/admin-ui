@@ -1,11 +1,11 @@
 <?php namespace Brackets\Admin;
 
 use Dimsav\Translatable\Translatable;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class AdminListing {
@@ -248,7 +248,6 @@ class AdminListing {
      * Execute query and get data
      *
      * @param array $columns
-     * @param string $locale
      * @return LengthAwarePaginator|Collection The result is either LengthAwarePaginator (when pagination was attached) or simple Collection otherwise
      */
     public function get(array $columns = ['*']) {
@@ -269,6 +268,7 @@ class AdminListing {
 
         if ($this->hasPagination) {
             $result = $this->query->paginate($this->perPage, $this->filterModelColumns($columns), $this->pageColumnName, $this->currentPage);
+            $this->processResultCollection($result->getCollection());
         } else {
             $result = $this->query->get($this->filterModelColumns($columns));
             $this->processResultCollection($result);
@@ -279,7 +279,7 @@ class AdminListing {
 
     protected function processResultCollection(Collection $collection) {
         if ($this->modelHasTranslations()) {
-            // we need to set this ad hoc locale, it's for the toArray() method to work correctly
+            // we need to set this default locale ad hoc
             $collection->each(function ($model) {
                 $model->setDefaultLocale($this->locale);
             });
