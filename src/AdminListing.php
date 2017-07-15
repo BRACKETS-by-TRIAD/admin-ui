@@ -201,7 +201,7 @@ class AdminListing {
         $tokens->each(function($token) use ($searchIn) {
             $this->query->where(function(Builder $query) use ($token, $searchIn) {
                 $searchIn->each(function($column) use ($token, $query) {
-
+                    // FIXME try to find out how to customize this default behaviour
                     if ($this->model->getKeyName() == $column['column'] && $this->model->getTable() == $column['table']) {
                         if (is_numeric($token) && $token === strval(intval($token))) {
                             $query->orWhere($column['table'].'.'.$column['column'], intval($token));

@@ -62,7 +62,7 @@ abstract class TestCase extends Test
             'name' => 'Alpha',
             'color' => 'red',
             'number' => 999,
-            'published_at' => '2017-01-01 00:00:00',
+            'published_at' => '2000-06-01 00:00:00',
         ]);
 
         collect(range(2, 10))->each(function($i){
@@ -70,7 +70,7 @@ abstract class TestCase extends Test
                 'name' => 'Zeta '.$i,
                 'color' => 'yellow',
                 'number' => $i,
-                'published_at' => (2017+$i).'-01-01 00:00:00',
+                'published_at' => (1998+$i).'-01-01 00:00:00',
             ]);
         });
 
@@ -103,7 +103,7 @@ abstract class TestCase extends Test
                 'color' => 'cervena',
             ],
             'number' => 999,
-            'published_at' => '2017-01-01 00:00:00',
+            'published_at' => '2000-06-01 00:00:00',
         ]);
 
         collect(range(2, 10))->each(function($i){
@@ -113,7 +113,7 @@ abstract class TestCase extends Test
                     'color' => 'yellow',
                 ],
                 'number' => $i,
-                'published_at' => (2017+$i).'-01-01 00:00:00',
+                'published_at' => (1998+$i).'-01-01 00:00:00',
             ]);
         });
     }
