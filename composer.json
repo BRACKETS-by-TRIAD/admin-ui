@@ -17,10 +17,21 @@
         "illuminate/support": "5.4.*",
         "dimsav/laravel-translatable": "7.*"
     },
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~5.7",
+        "orchestra/testbench": "~3.0"
+    },
     "autoload": {
         "classmap": [],
         "psr-4": {
             "Brackets\\Admin\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Brackets\\Admin\\Tests\\": "tests/"
         }
     }
 }

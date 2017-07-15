@@ -40,9 +40,39 @@ class AdminListing {
      */
     protected $pageColumnName = 'page';
 
+    /**
+     * @var bool
+     */
+    protected $hasPagination = false;
+
+    /**
+     * @var bool
+     */
     protected $modelHasTranslations = false;
 
-    public function __construct(Model $model) {
+    public static function create($modelName) {
+        return (new static)->setModel($modelName);
+    }
+
+    /**
+     * Set model admin listing works with
+     *
+     * Setting the model is required
+     *
+     * @param Model|string $model
+     * @return $this
+     * @throws NotAModelClass
+     */
+    public function setModel($model) {
+
+        if (is_string($model)) {
+            $model = app($model);
+        }
+
+        if (!is_a($model, Model::class)) {
+            throw new NotAModelClass("AdminListing works only with Eloquent Models");
+        }
+
         $this->model = $model;
         $this->query = $model->newQuery();
 
@@ -50,10 +80,7 @@ class AdminListing {
             $this->modelHasTranslations = true;
             $this->translationModel = app($this->model->getTranslationModelName());
         }
-    }
-
-    public static function instance($modelName) {
-        return new static(app($modelName));
+        return $this;
     }
 
     /**
@@ -61,33 +88,31 @@ class AdminListing {
      *
      * You should always specify an array of columns that are about to be queried
      *
-     * You should specify columns which should be searched
+     * You can specify columns which should be searched
+     *
      *
      * If you need to include additional filters, you can manage it by
      * modifying a query using $modifyQuery function, which receives
      * a query as a parameter.
      *
-     * Note that request should be authorized and validated already,
-     * as long as this method does not perform any authorization nor
-     * validation.
+     * If your model is Dimsav\Translatable\Translatable, translation will be automatically loaded. You can specify
+     * locale which should be loaded. When filtering, searching and ordering you can use columns from Translatable
+     * model as well.
+     *
+     * This method does not perform any authorization nor validation.
      *
      * @param Request $request
      * @param array $columns
      * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
      * @param callable $modifyQuery
      * @param string $locale
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator|Collection The result is either LengthAwarePaginator (when pagination was attached) or simple Collection otherwise
      */
-    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = null, callable $modifyQuery = null, $locale = null) : LengthAwarePaginator {
-
-        $columns = collect($columns)->map(function($column) {
-            return $this->parseFullColumnName($column);
-        });
-
-        $this->queryTranslations($columns, $locale);
-
+    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = null, callable $modifyQuery = null, $locale = null) {
         // process all the basic stuff
-        $this->attachAllFromRequest($request, $searchIn);
+        $this->attachOrdering($request->input('orderBy', $this->model->getKeyName()), $request->input('orderDirection', 'asc'))
+            ->attachSearch($request->input('search', null), $searchIn)
+            ->attachPagination($request->input('page', 1), $request->input('per_page', 10));
 
         // add custom modifications
         if (!is_null($modifyQuery)) {
@@ -95,24 +120,7 @@ class AdminListing {
         }
 
         // execute query and get the results
-        return $this->execute($columns);
-    }
-
-    /**
-     * Attach ordering, search and pagination
-     *
-     * After calling this method, everything is prepared for a typical scenario
-     * and you are ready to attach custom filters or execute a query for your own.
-     *
-     * @param Request $request
-     * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
-     */
-    public function attachAllFromRequest(Request $request, $searchIn = ['id']) {
-
-        $this->attachOrdering($request->input('orderBy', $this->model->getKeyName()), $request->input('orderDirection', 'asc'));
-        $this->attachSearch($request->input('search', null), $searchIn);
-        $this->attachPagination($request->input('page', 1), $request->input('per_page', 10));
-
+        return $this->get($columns, $locale);
     }
 
     /**
@@ -120,30 +128,34 @@ class AdminListing {
      *
      * @param $orderBy
      * @param string $orderDirection
+     * @return $this
      */
     public function attachOrdering($orderBy, $orderDirection = 'asc') {
         $orderBy = $this->parseFullColumnName($orderBy);
         $this->query->orderBy($orderBy['table'].'.'.$orderBy['column'], $orderDirection);
+
+        return $this;
     }
 
 
     /**
      * Attach the searching functionality
      *
-     * @param $search
+     * @param string $search searched string
      * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
+     * @return $this
      */
     public function attachSearch($search, array $searchIn) {
 
         // when passed null, search is disabled
         if (is_null($searchIn)) {
-            return ;
+            return $this;
         }
 
         // if empty string, then we don't search at all
         $search = trim((string) $search);
         if ($search == '') {
-            return ;
+            return $this;
         }
 
         $tokens = collect(explode(' ', $search));
@@ -154,9 +166,9 @@ class AdminListing {
 
         // FIXME there is an issue, if you pass primary key as the only column to search in, it may not work properly
 
-        $tokens->map(function($token) use ($searchIn) {
+        $tokens->each(function($token) use ($searchIn) {
             $this->query->where(function(Builder $query) use ($token, $searchIn) {
-                $searchIn->map(function($column) use ($token, $query) {
+                $searchIn->each(function($column) use ($token, $query) {
 
                     if ($this->model->getKeyName() == $column['column'] && $this->model->getTable() == $column['table']) {
                         if (is_numeric($token) && $token === strval(intval($token))) {
@@ -168,6 +180,8 @@ class AdminListing {
                 });
             });
         });
+
+        return $this;
     }
 
     /**
@@ -175,19 +189,14 @@ class AdminListing {
      *
      * @param $currentPage
      * @param int $perPage
+     * @return $this
      */
     public function attachPagination($currentPage, $perPage = 10) {
+        $this->hasPagination = true;
         $this->currentPage = $currentPage;
         $this->perPage = $perPage;
-    }
 
-    /**
-     * This is alias for modifyQuery()
-     *
-     * @param callable $modifyQuery
-     */
-    public function attachFilters(callable $modifyQuery) {
-        $this->modifyQuery($modifyQuery);
+        return $this;
     }
 
 
@@ -195,35 +204,36 @@ class AdminListing {
      * Modify built query in any way
      *
      * @param callable $modifyQuery
+     * @return $this
      */
     public function modifyQuery(callable $modifyQuery) {
         $modifyQuery($this->query);
+
+        return $this;
     }
 
     /**
-     * Process array of params and get data
-     *
-     * Params may include:
-     * - pagination
-     * - ordering
-     * - search query
-     *
-     * If you need to include additional filters, you can manage it by
-     * modifying a query using $modifyQuery function, which receives
-     * a query as a parameter.
-     *
-     * Note that request should be authorized and validated already,
-     * as long as this method does not perform any authorization nor
-     * validation.
+     * Execute query and get data
      *
      * @param Collection $columns
-     * @return LengthAwarePaginator
+     * @param string $locale
+     * @return LengthAwarePaginator|Collection The result is either LengthAwarePaginator (when pagination was attached) or simple Collection otherwise
      */
-    public function execute(Collection $columns = null) : LengthAwarePaginator {
-        return $this->query->paginate($this->perPage, $this->filterModelColumns($columns), $this->pageColumnName, $this->currentPage);
+    public function get(Collection $columns = null, $locale = null) {
+        $columns = collect($columns)->map(function($column) {
+            return $this->parseFullColumnName($column);
+        });
+
+        $this->attachTranslations($columns, $locale);
+
+        if ($this->hasPagination) {
+            return $this->query->paginate($this->perPage, $this->filterModelColumns($columns), $this->pageColumnName, $this->currentPage);
+        } else {
+            return $this->query->get($this->filterModelColumns($columns));
+        }
     }
 
-    public function queryTranslations(Collection $columns, $locale = null) {
+    protected function attachTranslations(Collection $columns, $locale = null) {
         if ($this->modelHasTranslations()) {
 
             if (is_null($locale)) {
@@ -231,11 +241,13 @@ class AdminListing {
             }
 
             $translationColumns = $this->filterTranslationModelColumns($columns);
-            array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getRelationKey());
-            array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getLocaleKey());
 
             // we set eager loading, but only if there is anything to select
             if (count($translationColumns) > 0) {
+
+                array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getRelationKey());
+                array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getLocaleKey());
+
                 $this->query->with([
                     'translations' => function (Relation $query) use ($translationColumns, $locale) {
                         $query->addSelect($translationColumns)
@@ -256,7 +268,7 @@ class AdminListing {
         if (str_contains($column, '.')) {
             list($table, $column) = explode('.', $column, 2);
         } else {
-            if($this->modelHasTranslations() && $this->model->isTranslationAttribute($column)) {
+            if ($this->modelHasTranslations() && $this->model->isTranslationAttribute($column)) {
                 $table = $this->translationModel->getTable();
             } else {
                 $table = $this->model->getTable();
