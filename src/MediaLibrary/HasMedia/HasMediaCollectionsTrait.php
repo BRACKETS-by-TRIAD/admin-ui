@@ -19,7 +19,7 @@ trait HasMediaCollectionsTrait {
 
         $files->each(function($file) use ($mediaCollections) {
             $collection = $mediaCollections->filter(function($collection) use ($file){
-                return $collection->getName() == $file['collection'];
+                return $collection->name == $file['collection'];
             })->first();
 
             if($collection) {
@@ -32,7 +32,7 @@ trait HasMediaCollectionsTrait {
                 }
                 else {
                     //path from config/disk
-                    $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($collection->getName(), $collection->getDisk());
+                    $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($collection->name, $collection->disk);
                 }
             }
         });

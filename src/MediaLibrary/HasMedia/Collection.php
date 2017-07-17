@@ -2,16 +2,29 @@
 
 namespace Brackets\Admin\MediaLibrary\HasMedia;
 
+/**
+ * TODO: popis
+ *
+ * @property-read string $name
+ * @property-read string $title
+ * @property-read string $disk
+ * @property-read string $is_image
+ * @property-read int $maxNumberOfFiles
+ * @property-read int $maxFilesize
+ * @property-read string $acceptedFileTypes 
+ * @property-read string $viewPermission
+ * @property-read string $uploadPermission
+ */
+
 class Collection  {
 
-    protected $is_image = false;
     protected $name;
+    protected $title;
     protected $disk;
+    protected $is_image = false;
     protected $maxNumberOfFiles;
     protected $maxFilesize;
-    protected $accepts;
-    protected $canView;
-    protected $canUpload;
+    protected $acceptedFileTypes;
     protected $viewPermission;
     protected $uploadPermission;
 
@@ -74,8 +87,8 @@ class Collection  {
         return $this;
     }
 
-    public function accepts($accepts) {
-        $this->accepts = $accepts;
+    public function accepts($acceptedFileTypes) {
+        $this->acceptedFileTypes = $acceptedFileTypes;
         return $this;
     }
 
@@ -90,41 +103,35 @@ class Collection  {
     }
 
 
-    //getters?
-    public function isImage() {
-        return $this->is_image;
-    }
+    public function __get($property) {
+        switch ($property)
+        {
+            case 'name':
+                return $this->name;
 
-    public function getDisk() {
-        return $this->disk;
-    }
+            case 'title':
+                return $this->title;
 
-    public function getTitle() {
-        return $this->title;
-    }
+            case 'disk':
+                return $this->disk;
 
-    public function getName() {
-        return $this->name;
-    }
+            case 'is_image':
+                return $this->is_image;
 
-    public function getMaxNumberOfFiles() {
-        return $this->maxNumberOfFiles;
-    }
+            case 'maxNumberOfFiles':
+                return $this->maxNumberOfFiles;
 
-    public function getMaxFilesize() {
-        return $this->maxFilesize;
-    }
+            case 'maxFilesize':
+                return $this->maxFilesize;
 
-    public function getAcceptedFileTypes() {
-        return $this->accepts;
-    }
+            case 'acceptedFileTypes':
+                return $this->acceptedFileTypes;
 
+            case 'viewPermission':
+                return $this->viewPermission;
 
-    public function getViewPermission() {
-        return $this->viewPermission;
-    }
-
-    public function getUploadPermission() {
-        return $this->uploadPermission;
+            case 'uploadPermission';
+                return $this->uploadPermission;
+        }
     }
 }

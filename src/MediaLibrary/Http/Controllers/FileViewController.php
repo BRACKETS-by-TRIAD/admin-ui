@@ -33,12 +33,12 @@ class FileViewController extends Controller {
             $mediaCollections = $medium->model->getMediaCollections();
 
             $collection = $mediaCollections->filter(function($collection) use ($medium){
-                return $collection->getName() == $medium->collection_name;
+                return $collection->name == $medium->collection_name;
             })->first();
 
             if($collection) {
-                if($collection->getViewPermission()) {
-                    $this->authorize($collection->getViewPermission(), $medium->model);
+                if($collection->viewPermission) {
+                    $this->authorize($collection->viewPermission, $medium->model);
                 }
 
                 $storagePath = '/media/'.$request->get('path');
