@@ -11,22 +11,26 @@ class FileUploadController extends Controller {
     // protected $wysiwygUploadPath;
 
     public function __construct() {
-        if(config('simpleweb-medialibrary.authorizeUpload')) {
-            $this->authorize('medialibrary.upload');  
-        }
-
         // $this->wysiwygUploadPath = '/uploads/wysiwyg';
     }
 
     public function upload(Request $request) {
-        if ($request->hasFile('file')) {
-            //FIXME: nezachovava sa filename, vadi/nevadi? 
-            //mozme si radsej ukladat filename alebo nazov suboru ktory zada user do medialibrary meta dat
-            $path = $request->file('file')->store('medialibray_temp_uploads');
-            return ['success' => true, 'path' => $path];
+        if ($request->hasFile('file') && $request->has('model') && $request->has('collection')) {
+            $model = app($request->get('model'));
+            if($model && $collection = $model->getMediaCollection($request->get('collection'))) {
+
+                if($collection->uploadPermission) {
+                    $this->authorize($collection->uploadPermission, $model);
+                }
+
+                //FIXME: nezachovava sa filename, vadi/nevadi? 
+                //mozme si radsej ukladat filename alebo nazov suboru ktory zada user do medialibrary meta dat
+                $path = $request->file('file')->store('medialibray_temp_uploads');
+                return ['success' => true, 'path' => $path];
+            }
         }
 
-        return ['success' => false, 'error' => 'File is not provided'];
+        return ['success' => false, 'error' => 'File, model or collection is not provided'];
     }
 
     // public function wysiwygDragDropUpload(Request $request) {

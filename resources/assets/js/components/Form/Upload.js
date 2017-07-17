@@ -7,10 +7,13 @@ module.exports = {
       type: String,
       required: true
     },
+    model: {
+      type: String,
+      required: true
+    },
     collection: {
     	type: String,
-      required: true,
-      default: 'vueDropzoneUpload'
+      required: true
     },
     maxNumberOfFiles:{
       type: Number,
@@ -54,8 +57,8 @@ module.exports = {
                        :acceptedFileTypes="acceptedFileTypes"
                        :thumbnailWidth="thumbnailWidth">
                 
-                <!-- Optional parameters if any! -->
-                <input type="hidden" name="token" value="xxx">
+                <input type="hidden" name="model" :value="model">
+                <input type="hidden" name="collection" :value="collection">
             </dropzone>`,
   mounted: function () { 
       this.$nextTick( () => {
@@ -104,6 +107,7 @@ module.exports = {
         if(response.success) {
           files.push({
               collection: this.collection,
+              model: this.model,
               path: response.path
           });
         }
