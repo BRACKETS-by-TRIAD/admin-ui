@@ -30,27 +30,21 @@ class FileViewController extends Controller {
         list($fileId) = explode("/", $request->get('path'), 2);
 
         if($medium = app(MediaModel::class)->find($fileId)) {
-            $mediaCollections = $medium->model->getMediaCollections();
-
-            $collection = $mediaCollections->filter(function($collection) use ($medium){
-                return $collection->name == $medium->collection_name;
-            })->first();
-
-            if($collection) {
+            if($collection = $medium->model->getMediaCollection($medium->collection_name)) {
+                
                 if($collection->viewPermission) {
                     $this->authorize($collection->viewPermission, $medium->model);
                 }
 
-                $storagePath = '/media/'.$request->get('path');
-
-                if(!Storage::has($storagePath)) {
+                $storagePath = $request->get('path');
+                $fileSystem = Storage::disk($collection->disk);
+             
+                if(!$fileSystem->has($storagePath)) {
                     abort(404);
                 }
 
-                $fileOnDisc  = Storage::get($storagePath);
-
-                return Response::make($fileOnDisc, 200, [
-                    'Content-Type' => Storage::mimeType($storagePath),
+                return Response::make($fileSystem->get($storagePath), 200, [
+                    'Content-Type' => $fileSystem->mimeType($storagePath),
                     'Content-Disposition' => 'inline; filename="'.basename($request->get('path')).'"'
                 ]);
             }

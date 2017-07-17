@@ -68,6 +68,14 @@ trait HasMediaCollectionsTrait {
         return $this->mediaCollections;
     }
 
+    public function getMediaCollection($collectionName) {
+        $foundCollections = $this->getMediaCollections()->filter(function($collection) use ($collectionName){
+            return $collection->name == $collectionName;
+        });
+
+        return $foundCollections->count() > 0 ? $foundCollections->first() : false;
+    }
+
     // FIXME should it be here?
     public function getMediaForUploadComponent(string $collection) {
         return $this->getMedia($collection)->map(function($medium) use ($collection) { 

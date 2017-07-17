@@ -2,6 +2,8 @@
 
 namespace Brackets\Admin\MediaLibrary\HasMedia;
 
+use Exception;
+
 /**
  * TODO: popis
  *
@@ -29,14 +31,45 @@ class Collection  {
     protected $uploadPermission;
 
 
-    public function __construct(string $name)
-    {
+    public function __construct(string $name) {
         $this->name = $name;
         $this->disk = config('simpleweb-medialibrary.default_public_disk', 'media');
     }
 
-    public static function create(string $name)
-    {
+    public function __get($property) {
+        switch ($property) {
+            case 'name':
+                return $this->name;
+
+            case 'title':
+                return $this->title;
+
+            case 'disk':
+                return $this->disk;
+
+            case 'is_image':
+                return $this->is_image;
+
+            case 'maxNumberOfFiles':
+                return $this->maxNumberOfFiles;
+
+            case 'maxFilesize':
+                return $this->maxFilesize;
+
+            case 'acceptedFileTypes':
+                return $this->acceptedFileTypes;
+
+            case 'viewPermission':
+                return $this->viewPermission;
+
+            case 'uploadPermission';
+                return $this->uploadPermission;
+        }
+
+        throw new Exception("Property [".$property."] does not exist");   
+    }
+
+    public static function create(string $name) {
         return new static($name);
     }
 
@@ -100,38 +133,5 @@ class Collection  {
     public function canUpload($uploadPermission) {
         $this->uploadPermission = $uploadPermission;
         return $this;
-    }
-
-
-    public function __get($property) {
-        switch ($property)
-        {
-            case 'name':
-                return $this->name;
-
-            case 'title':
-                return $this->title;
-
-            case 'disk':
-                return $this->disk;
-
-            case 'is_image':
-                return $this->is_image;
-
-            case 'maxNumberOfFiles':
-                return $this->maxNumberOfFiles;
-
-            case 'maxFilesize':
-                return $this->maxFilesize;
-
-            case 'acceptedFileTypes':
-                return $this->acceptedFileTypes;
-
-            case 'viewPermission':
-                return $this->viewPermission;
-
-            case 'uploadPermission';
-                return $this->uploadPermission;
-        }
     }
 }
