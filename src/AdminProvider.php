@@ -22,7 +22,7 @@ class AdminProvider extends ServiceProvider
             __DIR__.'/../install-stubs/resources/views' => resource_path('views')
         ], 'views');
 
-        $this->app->register(\Dimsav\Translatable\TranslatableServiceProvider::class);
+//        $this->app->register(\Dimsav\Translatable\TranslatableServiceProvider::class);
     }
 
     /**
