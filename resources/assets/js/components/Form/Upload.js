@@ -50,7 +50,6 @@ module.exports = {
                        v-bind:preview-template="template"
                        v-on:vdropzone-success="onSuccess"
                        v-on:vdropzone-removed-file="onFileDelete"
-                       v-on:vdropzone-thumbnail="onThumbGenerate"
                        v-on:vdropzone-file-added="onFileAdded"
                        :useFontAwesome="true" 
                        :ref="collection"
@@ -66,19 +65,23 @@ module.exports = {
       this.$nextTick( () => {
         if(this.mutableUploadedImages) {
           _.each(this.mutableUploadedImages, (file, key) => {
-            this.$refs[this.collection].manuallyAddFile({ name: file['name'], size: file['size'], type:  file['type']}, file['path']);
+
+            this.$refs[this.collection].manuallyAddFile({ name: file['name'], 
+                                                          size: file['size'], 
+                                                          type: file['type'], 
+                                                          url: file['url'],
+                                                        }, file['thumb_url']);
           });
         } 
       })
   },
   methods: {
     onSuccess: function (file, response) {
-      console.log('A file was successfully uploaded')
-    },
-
-    onThumbGenerate: function(file) {
-      //bug in dropzone
-      this.placeIcon(file);
+      if(!file.type.includes('image')) {
+        setTimeout(function() {
+            $(file.previewElement).removeClass('dz-file-preview');
+        }, 3000);
+      }
     },
 
     onFileAdded: function(file) {
@@ -86,28 +89,11 @@ module.exports = {
     },
 
     onFileDelete: function (file, error, xhr) {
-      //FIXME: bez jquery
-      var deletedFilePath = $(file.previewElement).find('img').attr('src');
-
-      if(deletedFilePath) {
-        var deletedFileIndex = _.findIndex(this.mutableUploadedImages, {path: deletedFilePath});
-        if(this.mutableUploadedImages[deletedFileIndex]) {
-          this.mutableUploadedImages[deletedFileIndex]['deleted'] = true;
-        }
+      var deletedFileIndex = _.findIndex(this.mutableUploadedImages, {url: file.url});
+      if(this.mutableUploadedImages[deletedFileIndex]) {
+        this.mutableUploadedImages[deletedFileIndex]['deleted'] = true;
       }
     },
-
-    // onFileAdded: function(file) {
-    //   console.log(file);
-    //   if (file.type && !file.type.match(/image.*/)) {
-    //     // This is not an image, so Dropzone doesn't create a thumbnail.
-    //     // Set a default thumbnail:
-    //     this.$refs[this.collection].dropzone.emit("thumbnail", file, "http://path/to/image");
-
-    //     // You could of course generate another image yourself here,
-    //     // and set it as a data url.
-    //   }
-    // },
 
     getFiles: function() {
       var files = this.mutableUploadedImages;
@@ -131,10 +117,16 @@ module.exports = {
     },
 
     placeIcon: function(file) {
-      //FIXME iconStyleString, nameStyleString
+      //FIXME iconStyleString, nameStyleString, linkStyleString
+      //FIXME cele to je jqueryoidne, asi si budeme musiet spravit vlastny vue wrapper, tento je zbugovany
       var iconStyleString = 'width:'+this.thumbnailWidth+'px; height:'+this.thumbnailWidth+'px; font-size: '+this.thumbnailWidth/2+'px; line-height: '+this.thumbnailWidth+'px; text-align: center',
           nameStyleString =  'position: absolute;bottom: 0px;width: 100%;text-align: center;height: 20px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size: 12px;line-height: 1.2;padding: 0 15px;';
+          linkStyleString = 'cursor: pointer;color:white;',
           $previewElement = $(file.previewElement);
+
+      if(file.url) {
+        $previewElement.find('.dz-filename').html('<a href="'+file.url+'" target="_BLANK" style="'+linkStyleString+'" class="dz-btn dz-custom-download">'+file.name+'</a>');
+      }
 
       if(file.type.includes('image')) {
         //nothing, default thumb
@@ -143,7 +135,7 @@ module.exports = {
         $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-pdf-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
       }
       else if(file.type.includes('word')) {
-         $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-word-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-word-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
       }
       else if(file.type.includes('spreadsheet') || file.type.includes('csv')) {
         $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-excel-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
@@ -168,12 +160,12 @@ module.exports = {
     template: function() {
       return `
               <div class="dz-preview dz-file-preview">
-                  <div class="dz-image" style="width: 200px;height: 200px" v-if="isImage">
+                  <div class="dz-image" style="width: 200px;height: 200px">
                       <img data-dz-thumbnail />
                   </div>
                   <div class="dz-details">
                     <div class="dz-size"><span data-dz-size></span></div>
-                    <div class="dz-filename"><span data-dz-name></span></div>
+                    <div class="dz-filename"></div>
                   </div>
                   <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
                   <div class="dz-error-message"><span data-dz-errormessage></span></div>

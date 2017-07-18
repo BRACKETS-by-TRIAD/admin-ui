@@ -94,6 +94,12 @@ trait HasMediaCollectionsTrait {
         return $foundCollections->count() > 0 ? $foundCollections->first() : false;
     }
 
+    public function getImageMediaCollections() {
+        return $this->getMediaCollections()->filter(function($collection){
+            return $collection->is_image;
+        });
+    }
+
     // FIXME should it be here?
     public function getMediaForUploadComponent(string $collectionName) {
         $collection = $this->getMediaCollection($collectionName);
@@ -101,13 +107,24 @@ trait HasMediaCollectionsTrait {
         return $this->getMedia($collectionName)->map(function($medium) use ($collection) { 
             return [ 
                 'id'         => $medium->id,
-                'path'       => config('app.url').$medium->getUrl(), 
-                'isImage'    => $collection->is_image,
+                'url'        => $medium->getUrl(),
+                'thumb_url'  => $collection->is_image ? $medium->getUrl('square200') : $medium->getUrl(), 
                 'type'       => $medium->mime_type,
                 'collection' => $collection->name,
                 'name'       => $medium->hasCustomProperty('name') ? $medium->getCustomProperty('name') : $medium->file_name, 
                 'size'       => $medium->size
             ];
+        });
+    }
+
+    public function registerComponentThumbs() {
+        $this->getImageMediaCollections()->each(function($collection) {
+            $this->addMediaConversion('square200')
+                 ->width(200)
+                 ->height(200)
+                 ->fit('crop', 200, 200)
+                 ->optimize()
+                 ->performOnCollections($collection->name);
         });
     }
 }
