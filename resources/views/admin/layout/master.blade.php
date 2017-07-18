@@ -85,7 +85,7 @@
 
         <div class="container-fluid" id="app">
             <div>
-                <notifications position="bottom right" duration="1" />
+                <notifications position="bottom right" :duration="1000" />
             </div>
             @yield('content')
         </div>
