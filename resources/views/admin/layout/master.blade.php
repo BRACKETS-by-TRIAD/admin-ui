@@ -84,6 +84,9 @@
         </ol>
 
         <div class="container-fluid" id="app">
+            <div>
+                <notifications position="bottom right" duration="1" />
+            </div>
             @yield('content')
         </div>
 
