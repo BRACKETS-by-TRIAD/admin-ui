@@ -22,7 +22,7 @@ module.exports = {
     data: function() {
         return {
             datePickerConfig: {
-                format: 'YYYY-MM-DD',
+                dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
                 altFormat: 'd.m.Y',
                 locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
@@ -32,7 +32,7 @@ module.exports = {
                 noCalendar: true,
                 time_24hr: true,
                 enableSeconds: true,
-                format: 'kk:mm:ss',
+                dateFormat: 'H:i:S',
                 altInput: true,
                 altFormat: 'H:i:S',
                 locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
@@ -41,7 +41,7 @@ module.exports = {
                 enableTime: true,
                 time_24hr: true,
                 enableSeconds: true,
-                format: 'YYYY-MM-DD kk:mm:ss',
+                dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
                 altFormat: 'd.m.Y H:i:S',
                 locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
