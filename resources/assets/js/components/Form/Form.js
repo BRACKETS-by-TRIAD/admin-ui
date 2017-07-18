@@ -42,6 +42,19 @@ module.exports = {
                 altInput: true,
                 altFormat: 'd.m.Y H:i:S',
                 locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
+            },
+            wysiwygConfig: {
+                placeholder: 'Type a text here',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['clean']
+                    ]
+                }
             }
         }
     },

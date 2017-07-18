@@ -18,6 +18,10 @@ import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 Vue.component('datetime', flatPickr);
 
+// wysiwyg
+import VueQuillEditor from 'vue-quill-editor';
+Vue.use(VueQuillEditor);
+
 new Vue({
     mixins: [require('admin')],
 });

@@ -18,12 +18,39 @@
   background-size: 1.04688rem 1.04688rem;
 }
 
+.has-danger .ql-toolbar.ql-snow {
+  border: 1px solid red;
+  border-bottom: 1px solid #ccc;
+}
+
+.has-success .ql-toolbar.ql-snow {
+  border: 1px solid green;
+  border-bottom: 1px solid #ccc;
+}
+
+.has-danger .ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border: 1px solid red;
+  border-top: 0;
+}
+
+.has-success .ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border: 1px solid green;
+  border-top: 0;
+}
+
 .header-fixed .app-header {
   padding-right: 20px;
 }
 
 table th a:not([href]) {
   cursor: pointer;
+}
+
+.ql-container .ql-editor.ql-blank::before {
+  font-style: normal;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  color: #B2BDC5;
 }
 
 @media (min-width: 576px) {
