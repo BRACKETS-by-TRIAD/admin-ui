@@ -97,12 +97,11 @@ trait HasMediaCollectionsTrait {
     // FIXME should it be here?
     public function getMediaForUploadComponent(string $collectionName) {
         $collection = $this->getMediaCollection($collectionName);
-
+   
         return $this->getMedia($collectionName)->map(function($medium) use ($collection) { 
             return [ 
                 'id'         => $medium->id,
-                //FIXME: ked to je file, tak nema square200, treba zobrazit len ikonku a nazov na frontende
-                'path'       => $medium->getUrl(), 
+                'path'       => config('app.url').$medium->getUrl(), 
                 'isImage'    => $collection->is_image,
                 'type'       => $medium->mime_type,
                 'collection' => $collection->name,
