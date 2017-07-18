@@ -107,6 +107,9 @@ module.exports = {
         if(response.success) {
           files.push({
               collection: this.collection,
+              name: file.name,
+              width: file.width,
+              height: file.height,
               model: this.model,
               path: response.path
           });

@@ -29,10 +29,28 @@ trait HasMediaCollectionsTrait {
                             $medium->delete();
                         }
                     }
+                    else {
+                        //TODO: update meta data?
+                    }
                 }
                 else {
-                    //path from config/disk
-                    $this->addMedia(storage_path('app/'.$file['path']))->toMediaCollection($collection->name, $collection->disk);
+                    $metaData = [];
+                    if(isset($file['name'])) {
+                        $metaData['name'] = $file['name'];
+                    }
+
+                    if(isset($file['width'])) {
+                        $metaData['width'] = $file['width'];
+                    }
+
+                    if(isset($file['height'])) {
+                        $metaData['height'] = $file['height'];
+                    }
+
+                    //FIXME: upload path from config?
+                    $this->addMedia(storage_path('app/'.$file['path']))
+                         ->withCustomProperties($metaData)
+                         ->toMediaCollection($collection->name, $collection->disk);
                 }
             }
         });
@@ -84,7 +102,7 @@ trait HasMediaCollectionsTrait {
                 //FIXME: ked to je file, tak nema square200, treba zobrazit len ikonku a nazov na frontende
                 'path'       => $medium->getUrl(), 
                 'collection' => $collection,
-                'name'       => $medium->file_name, 
+                'name'       => $medium->hasCustomProperty('name') ? $medium->getCustomProperty('name') : $medium->file_name, 
                 'size'       => $medium->size
             ];
         });
