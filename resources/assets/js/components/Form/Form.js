@@ -7,7 +7,7 @@ module.exports = {
             type: String,
             required: true
         },
-        'data': {
+        'default': {
             type: Object,
             default: function() {
                 return {};
@@ -15,12 +15,9 @@ module.exports = {
         },
     },
 
-    created: function() {
-        this.initForm(this.data);
-    },
-
     data: function() {
         return {
+            form: this.default,
             datePickerConfig: {
                 dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
@@ -66,15 +63,6 @@ module.exports = {
         },
         onFail(errors) {
             Object.keys(errors).map(key => this.$validator.errorBag.add(key, errors[key][0]));
-        },
-        initForm: function(data) {
-            if(typeof this.form == typeof undefined) {
-                console.error('You do not specified form');
-            }
-            this.form = data;
-            // this.form.activated = data.activated;
-            // this.form.first_name = data.first_name;
-            // ...
         }
     }
 };
