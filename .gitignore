@@ -1,5 +1,5 @@
 build
 docs
 vendor
-tests/temp
+test/temp
 composer.lock

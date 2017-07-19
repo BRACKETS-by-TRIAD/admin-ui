@@ -3,9 +3,11 @@
 namespace Brackets\Admin\MediaLibrary\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Response;
 use Storage;
 use Spatie\MediaLibrary\Media as MediaModel;
@@ -13,7 +15,8 @@ use Exception;
 
 use Illuminate\Support\Facades\Gate;
 
-class FileViewController extends Controller {
+class FileViewController extends BaseController {
+     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 	public function __construct() {
         // First, check user's permissions - ability to perform this request
