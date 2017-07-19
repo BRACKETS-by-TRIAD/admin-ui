@@ -22,7 +22,8 @@
         "illuminate/support": "5.4.*",
         "dimsav/laravel-translatable": "7.*",
         "spatie/laravel-medialibrary": "^5.0.0",
-        "spatie/laravel-permission": "^2.2"
+        "phpunit/phpunit": "^6.2",
+        "orchestra/testbench": "^3.4"
     },
     "autoload": {
         "classmap": [],

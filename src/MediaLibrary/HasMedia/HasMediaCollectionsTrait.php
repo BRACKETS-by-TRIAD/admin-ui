@@ -117,6 +117,7 @@ trait HasMediaCollectionsTrait {
         });
     }
 
+    //FIXME: this definitely shouldn't be here
     public function registerComponentThumbs() {
         $this->getImageMediaCollections()->each(function($collection) {
             $this->addMediaConversion('square200')
