@@ -83,7 +83,7 @@
             <li class="breadcrumb-item active">New post</li>
         </ol>
 
-        <div class="container-fluid" id="app">
+        <div class="container-fluid" id="app" :class="{'loading': loading}">
             <div>
                 <notifications position="bottom right" :duration="1000" />
             </div>
