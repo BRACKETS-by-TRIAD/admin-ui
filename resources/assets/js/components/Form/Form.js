@@ -7,7 +7,7 @@ module.exports = {
             type: String,
             required: true
         },
-        'default': {
+        'data': {
             type: Object,
             default: function() {
                 return {};
@@ -17,7 +17,7 @@ module.exports = {
 
     data: function() {
         return {
-            form: this.default,
+            form: this.data,
             datePickerConfig: {
                 dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
