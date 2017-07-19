@@ -108,6 +108,10 @@ $(document).ready(function($){
 
 });
 
+$('.dropdown-menu.dropdown-menu-right').on('mouseleave', function(){
+    $(this).parent('.dropdown').removeClass('open');
+});
+
 /****
 * CARDS ACTIONS
 */

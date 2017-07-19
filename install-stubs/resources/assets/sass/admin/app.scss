@@ -97,6 +97,11 @@ table th a:not([href]) {
   color: #B2BDC5;
 }
 
+.nav .dropdown-menu {
+  border-radius: 0;
+  margin-top: 13px;
+}
+
 @media (min-width: 576px) {
   .control-label {
     margin-top: 7px;
