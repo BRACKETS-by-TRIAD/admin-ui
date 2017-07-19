@@ -16,7 +16,7 @@ abstract class TestCase extends Orchestra
     protected $testUnsavedModel;
 
     /** @var \Brackets\Admin\MediaLibrary\Test\TestModelWithCollections */
-    protected $TestModelWithCollections;
+    protected $testModelWithCollections;
 
     /** @var \Brackets\Admin\MediaLibrary\Test\TestModelWithoutMediaConversions */
     protected $testModelWithoutMediaConversions;
@@ -28,13 +28,14 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
+
         $this->setUpDatabase($this->app);
 
         $this->setUpTempTestFiles();
 
         $this->testModel = TestModel::first();
         $this->testUnsavedModel = new TestModel;
-        $this->TestModelWithCollections = TestModelWithCollections::first();
+        $this->testModelWithCollections = TestModelWithCollections::first();
         $this->testModelWithoutMediaConversions = TestModelWithoutMediaConversions::first();
         $this->testModelWithMorphMap = TestModelWithMorphMap::first();
     }
@@ -48,6 +49,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             \Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+            \Brackets\Admin\AdminProvider::class
         ];
     }
 
@@ -65,15 +67,35 @@ abstract class TestCase extends Orchestra
             'prefix' => '',
         ]);
 
+        // $app['config']->set('filesystems.disks.media', [
+        //     'driver' => 'local',
+        //     'root' => $this->getMediaDirectory(),
+        // ]);
+
+        // $app['config']->set('filesystems.disks.secondMediaDisk', [
+        //     'driver' => 'local',
+        //     'root' => $this->getTempDirectory('media2'),
+        // ]);
+
+
         $app['config']->set('filesystems.disks.media', [
             'driver' => 'local',
+            // 'root' => public_path().'/media',
             'root' => $this->getMediaDirectory(),
         ]);
 
-        $app['config']->set('filesystems.disks.secondMediaDisk', [
+        $app['config']->set('filesystems.disks.media-protected', [
             'driver' => 'local',
-            'root' => $this->getTempDirectory('media2'),
+            // 'root' => storage_path().'/app/media',
+             'root' => $this->getMediaDirectory('storage'),
         ]);
+
+        $app['config']->set('simpleweb-medialibrary', [
+            'default_public_disk' => 'media',
+            'default_protected_disk' => 'media-protected'
+        ]);
+
+        $app['config']->set('medialibrary.custom_url_generator_class', \Brackets\Admin\MediaLibrary\LocalUrlGenerator::class);
 
         $app->bind('path.public', function () {
             return $this->getTempDirectory();

@@ -11,28 +11,20 @@ class TestModelWithCollections extends TestModel
     public function registerMediaCollections() {
 
         $this->addMediaCollection('gallery')
-             ->title('Title')
+             ->title('Gallery')
              ->image() // only image can have conversions
              ->maxNumberOfFiles(20)
              ->maxFilesize(2*1024*1024)
              ->accepts('image/*');
 
-        $this->addMediaCollection('vop')
-             ->title('Vop signature')
+        $this->addMediaCollection('documents')
+             ->title('Documents')
+             ->protected()
+             ->canView('vop.view')
+             ->canUpload('vop.upload')
              ->maxNumberOfFiles(20)
              ->maxFilesize(2*1024*1024)
-             // ->accepts('application/pdf, application/msword')
-             // ->accepts('*')
-             ->protected();
-             // ->canView('vop.view')
-             // ->canUpload('vop.upload');
-
-        $this->addMediaCollection('measurement_files')
-             ->title('Measurement files');
-             // ->accepts('application/pdf, application/msword');
-             
-            // ->protected()
-            // ->disk($disk)
+             ->accepts('application/pdf, application/msword');
     }
 
     /**
