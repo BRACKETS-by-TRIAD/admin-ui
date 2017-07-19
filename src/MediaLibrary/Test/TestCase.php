@@ -12,32 +12,18 @@ abstract class TestCase extends Orchestra
     /** @var \Brackets\Admin\MediaLibrary\Test\TestModel */
     protected $testModel;
 
-    /** @var \Brackets\Admin\MediaLibrary\Test\TestModel */
-    protected $testUnsavedModel;
-
     /** @var \Brackets\Admin\MediaLibrary\Test\TestModelWithCollections */
     protected $testModelWithCollections;
-
-    /** @var \Brackets\Admin\MediaLibrary\Test\TestModelWithoutMediaConversions */
-    protected $testModelWithoutMediaConversions;
-
-    /** @var \Brackets\Admin\MediaLibrary\Test\TestModelWithMorphMap */
-    protected $testModelWithMorphMap;
 
     public function setUp()
     {
         parent::setUp();
 
-
         $this->setUpDatabase($this->app);
-
         $this->setUpTempTestFiles();
 
         $this->testModel = TestModel::first();
-        $this->testUnsavedModel = new TestModel;
         $this->testModelWithCollections = TestModelWithCollections::first();
-        $this->testModelWithoutMediaConversions = TestModelWithoutMediaConversions::first();
-        $this->testModelWithMorphMap = TestModelWithMorphMap::first();
     }
 
     /**
@@ -101,10 +87,11 @@ abstract class TestCase extends Orchestra
             return $this->getTempDirectory();
         });
 
-        $app['config']->set('app.key', '6rE9Nz59bGRbeMATftriyQjrpF7DcOQm');
+        $app->bind('path.storage', function () {
+            return $this->getTempDirectory();
+        });
 
-        $this->setupS3($app);
-        $this->setUpMorphMap();
+        $app['config']->set('app.key', '6rE9Nz59bGRbeMATftriyQjrpF7DcOQm');
     }
 
     /**
@@ -151,55 +138,11 @@ abstract class TestCase extends Orchestra
 
     public function getTestFilesDirectory($suffix = '')
     {
-        return $this->getTempDirectory().'/testfiles'.($suffix == '' ? '' : '/'.$suffix);
+        return $this->getTempDirectory().'/app'.($suffix == '' ? '' : '/'.$suffix);
     }
 
     public function getTestJpg()
     {
         return $this->getTestFilesDirectory('test.jpg');
-    }
-
-    public function getTestPng()
-    {
-        return $this->getTestFilesDirectory('test.png');
-    }
-
-    public function getTestWebm()
-    {
-        return $this->getTestFilesDirectory('test.webm');
-    }
-
-    public function getTestPdf()
-    {
-        return $this->getTestFilesDirectory('test.pdf');
-    }
-
-    public function getTestSvg()
-    {
-        return $this->getTestFilesDirectory('test.svg');
-    }
-
-    private function setUpMorphMap()
-    {
-        Relation::morphMap([
-            'test-model-with-morph-map' => TestModelWithMorphMap::class,
-        ]);
-    }
-
-    private function setupS3($app)
-    {
-        $s3Configuration = [
-            'driver' => 's3',
-            'key' => getenv('S3_ACCESS_KEY_ID'),
-            'secret' => getenv('S3_SECRET_ACCESS_KEY'),
-            'region' => getenv('S3_BUCKET_REGION'),
-            'bucket' => getenv('S3_BUCKET_NAME'),
-        ];
-
-        $app['config']->set('filesystems.disks.s3', $s3Configuration);
-        $app['config']->set(
-            'medialibrary.s3.domain',
-            'https://'.$s3Configuration['bucket'].'.s3.amazonaws.com'
-        );
     }
 }

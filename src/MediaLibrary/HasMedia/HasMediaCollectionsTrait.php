@@ -29,7 +29,7 @@ trait HasMediaCollectionsTrait {
                             $medium->delete();
                         }
                     }
-                    else {
+                    else { 
                         //TODO: update meta data?
                     }
                 }
@@ -37,6 +37,10 @@ trait HasMediaCollectionsTrait {
                     $metaData = [];
                     if(isset($file['name'])) {
                         $metaData['name'] = $file['name'];
+                    }
+
+                    if(isset($file['file_name'])) {
+                        $metaData['file_name'] = $file['file_name'];
                     }
 
                     if(isset($file['width'])) {
