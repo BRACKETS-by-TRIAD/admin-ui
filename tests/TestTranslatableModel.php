@@ -11,7 +11,7 @@ class TestTranslatableModel extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    // these attributes are translated
+    // these attributes are translatable
     public $translatable = [
         'name',
         'color',
