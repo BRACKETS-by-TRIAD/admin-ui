@@ -31,11 +31,11 @@ module.exports = {
     created: function() {
         if (!!this.locales && this.locales.length > 0) {
             let form = this.form
-            this.locales.map(function(l) {
-                if (!_.has(form, l)) {
-                    _.set(form, l, {})
-                }
-            })
+            // this.locales.map(function(l) {
+            //     if (!_.has(form, l)) {
+            //         _.set(form, l, {})
+            //     }
+            // })
         }
     },
 
@@ -72,7 +72,9 @@ module.exports = {
                 });
         },
         onSuccess(data) {
-            window.location.replace(data.redirect)
+            if (data.redirect) {
+                window.location.replace(data.redirect)
+            }
         },
         onFail(errors) {
             var bag = this.$validator.errorBag;
