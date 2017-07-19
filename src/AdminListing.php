@@ -7,18 +7,14 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Spatie\Translatable\HasTranslations;
 
 class AdminListing {
 
     /**
-     * @var Model|Translatable
+     * @var Model|HasTranslations
      */
     protected $model;
-
-    /**
-     * @var Model
-     */
-    protected $translationModel;
 
     /**
      * @var Builder
@@ -84,10 +80,9 @@ class AdminListing {
 
         $this->model = $model;
 
-        if (in_array(Translatable::class, class_uses($this->model))) {
+        if (in_array(HasTranslations::class, class_uses($this->model))) {
             $this->modelHasTranslations = true;
-            $this->translationModel = app($this->model->getTranslationModelName());
-            $this->locale = $this->model->getDefaultLocale() ?: app()->getLocale();
+            $this->locale = $this->model->locale ?: app()->getLocale();
         }
 
         $this->query = $model->newQuery();
@@ -252,26 +247,15 @@ class AdminListing {
      * @return LengthAwarePaginator|Collection The result is either LengthAwarePaginator (when pagination was attached) or simple Collection otherwise
      */
     public function get(array $columns = ['*']) {
-
-        // if '*' was passed, we are going to transliterate it to [table.*, translation_table.*] so columns from both will get loaded
-        if (count($columns) == 1 && head($columns) == '*' && $this->modelHasTranslations()) {
-            $columns = [
-                $this->model->getTable().'.*',
-                $this->translationModel->getTable().'.*',
-            ];
-        }
-
         $columns = collect($columns)->map(function($column) {
             return $this->parseFullColumnName($column);
         });
 
-        $this->attachTranslations($columns);
-
         if ($this->hasPagination) {
-            $result = $this->query->paginate($this->perPage, $this->filterModelColumns($columns), $this->pageColumnName, $this->currentPage);
+            $result = $this->query->paginate($this->perPage, $this->materializeColumns($columns), $this->pageColumnName, $this->currentPage);
             $this->processResultCollection($result->getCollection());
         } else {
-            $result = $this->query->get($this->filterModelColumns($columns));
+            $result = $this->query->get($this->materializeColumns($columns));
             $this->processResultCollection($result);
         }
 
@@ -279,53 +263,20 @@ class AdminListing {
     }
 
     protected function processResultCollection(Collection $collection) {
-        if ($this->modelHasTranslations()) {
-            // we need to set this default locale ad hoc
-            $collection->each(function ($model) {
-                $model->setDefaultLocale($this->locale);
-            });
-        }
-    }
-
-    protected function attachTranslations(Collection $columns) {
-        if ($this->modelHasTranslations()) {
-
-            // We could have used $this->query->translatedIn($locale), but that would have load all columns and
-            // not only selected + it would load all locales, not only selected, I think the dimsav/laravel-translatable
-            // package is a bit buggy
-            // $this->query->translatedIn($locale);
-
-            // so first, let's filter columns we want to query
-            $translationColumns = $this->filterTranslationModelColumns($columns);
-            array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getRelationKey());
-            array_push($translationColumns, $this->translationModel->getTable().'.'.$this->model->getLocaleKey());
-
-            // we will always eager load translations, because it is needed when converting result Collection toArray
-            $this->query->with([
-                'translations' => function (Relation $query) use ($translationColumns) {
-                    // we will query only specific columns
-                    $query->addSelect($translationColumns)
-                        ->where($this->translationModel->getTable() . '.' . $this->model->getLocaleKey(), $this->locale);
-                },
-            ]);
-
-            // but in order to get searching, filtering and ordering working, we have to also join the translation using locale we want to search/filter/order in
-            $this->query->join($this->translationModel->getTable(), function ($join) {
-                $join->on($this->model->getTable().'.'.$this->model->getKeyName(), '=', $this->translationModel->getTable().'.'.$this->model->getRelationKey())
-                    ->where($this->translationModel->getTable().'.'.$this->model->getLocaleKey(), $this->locale);
-            });
-        }
+        // TODO what do we do with this? we need Spatie to update their package
+//        if ($this->modelHasTranslations()) {
+//            // we need to set this default locale ad hoc
+//            $collection->each(function ($model) {
+//                $model->locale = $this->locale;
+//            });
+//        }
     }
 
     protected function parseFullColumnName($column) {
         if (str_contains($column, '.')) {
             list($table, $column) = explode('.', $column, 2);
         } else {
-            if ($this->modelHasTranslations() && $this->model->isTranslationAttribute($column)) {
-                $table = $this->translationModel->getTable();
-            } else {
-                $table = $this->model->getTable();
-            }
+            $table = $this->model->getTable();
         }
 
         return compact('table', 'column');
@@ -335,18 +286,9 @@ class AdminListing {
         return $this->modelHasTranslations;
     }
 
-    private function filterModelColumns(Collection $columns) {
-        return $this->filterColumns($this->model, $columns);
-    }
 
-    private function filterTranslationModelColumns(Collection $columns) {
-        return $this->filterColumns($this->translationModel, $columns);
-    }
-
-    private function filterColumns(Model $object, Collection $columns) {
-        return $columns->filter(function($column) use ($object) {
-            return $column['table'] == $object->getTable();
-        })->map(function($column) {
+    private function materializeColumns(Collection $columns) {
+        return $columns->map(function($column) {
             return $column['table'].'.'.$column['column'];
         })->toArray();
     }

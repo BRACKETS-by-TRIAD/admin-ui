@@ -42,7 +42,7 @@ class OrderingTest extends TestCase
     /** @test */
     function translated_listing_can_be_sorted_by_translated_column() {
         $result = $this->translatedListing
-            ->attachOrdering('name')
+            ->attachOrdering('name->en')
             ->get();
 
         $model = $result->first();
@@ -50,40 +50,42 @@ class OrderingTest extends TestCase
         $this->assertEquals('2000-06-01 00:00:00', $model->published_at);
         $this->assertEquals('Alpha', $model->name);
         $this->assertEquals('red', $model->color);
-        $this->assertArrayHasKey('translations', $model->toArray());
-        $this->assertEquals('red', $model->translate('en')->color);
+        $this->assertEquals('red', $model->getTranslation('color', 'en'));
     }
 
     /** @test */
     function translated_listing_supports_querying_only_some_columns() {
         $result = $this->translatedListing
-            ->attachOrdering('name')
-            ->get(['test_translatable_models.*', 'name']);
+            ->attachOrdering('name->en')
+            ->get(['published_at', 'name']);
 
         $model = $result->first();
 
         $this->assertEquals('2000-06-01 00:00:00', $model->published_at);
         $this->assertEquals('Alpha', $model->name);
         $this->assertEquals(null, $model->color);
-        $this->assertEquals('Alpha', $model->translate('en')->name);
-        $this->assertEquals(null, $model->translate('en')->color);
+        $this->assertEquals('Alpha', $model->getTranslation('name', 'en'));
+        $this->assertEquals(null, $model->getTranslation('color', 'en'));
     }
 
     /** @test */
     function translated_listing_can_work_with_locales() {
-        $result = $this->translatedListing
-            ->attachOrdering('name')
-            ->setLocale('sk')
-            ->get(['*']);
+        // FIXME this is temp fix, until Spatie add ability to set locale on model dynamically
+        app()->setLocale('sk');
 
-        $this->assertCount(1, $result);
+        $result = $this->translatedListing
+            ->attachOrdering('name->sk')
+//            ->setLocale('sk')
+            ->get();
+
+        $this->assertCount(10, $result);
 
         $model = $result->first();
 
         $this->assertEquals('2000-06-01 00:00:00', $model->published_at);
         $this->assertEquals('Alfa', $model->name);
         $this->assertEquals('cervena', $model->color);
-        $this->assertEquals('cervena', $model->translate('sk')->color);
+        $this->assertEquals('cervena', $model->getTranslation('color', 'sk'));
     }
 
 }

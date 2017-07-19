@@ -18,7 +18,7 @@ class AdminProvider extends ServiceProvider
             __DIR__.'/../install-stubs/resources/assets' => resource_path('assets')
         ], 'assets');
 
-        $this->app->register(\Dimsav\Translatable\TranslatableServiceProvider::class);
+//        $this->app->register(\Spatie\Translatable\TranslatableServiceProvider::class::class);
     }
 
     /**

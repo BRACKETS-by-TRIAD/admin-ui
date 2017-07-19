@@ -1,18 +1,18 @@
 <?php namespace Brackets\Admin\Tests;
 
 use Illuminate\Database\Eloquent\Model;
-use Dimsav\Translatable\Translatable;
+use Spatie\Translatable\HasTranslations;
 
 class TestTranslatableModel extends Model
 {
-    use Translatable;
+    use HasTranslations;
 
     protected $table = 'test_translatable_models';
     protected $guarded = [];
     public $timestamps = false;
 
-    // these attributes are loaded from translation model/table
-    public $translatedAttributes = [
+    // these attributes are translated
+    public $translatable = [
         'name',
         'color',
     ];
