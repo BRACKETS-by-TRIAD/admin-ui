@@ -15,6 +15,8 @@ trait HasMediaCollectionsTrait {
     protected $mediaCollections;
 
     public function processMedia(Collection $files) {
+        $this->validateUploadedFiles($files);
+
         $mediaCollections = $this->getMediaCollections();
 
         $files->each(function($file) use ($mediaCollections) {
@@ -58,6 +60,13 @@ trait HasMediaCollectionsTrait {
                 }
             }
         });
+    }
+
+    public function validateUploadedFiles(Collection $files) {
+        //FIXME
+        //validate no. of files
+        //validate file types
+        //validate max size of files
     }
 
     public static function bootHasMediaCollectionsTrait() {
@@ -109,15 +118,16 @@ trait HasMediaCollectionsTrait {
         });
     }
 
-    // FIXME should it be here?
-    public function getMediaForUploadComponent(string $collectionName) {
+    public function getThumbsForCollection(string $collectionName) {
         $collection = $this->getMediaCollection($collectionName);
-   
+        
+        //FIXME: if image and thumb_200 doesnt exist throw exception to add thumb_200
+
         return $this->getMedia($collectionName)->map(function($medium) use ($collection) { 
             return [ 
                 'id'         => $medium->id,
                 'url'        => $medium->getUrl(),
-                'thumb_url'  => $collection->isImage() ? $medium->getUrl('square200') : $medium->getUrl(), 
+                'thumb_url'  => $collection->isImage() ? $medium->getUrl('thumb_200') : $medium->getUrl(), 
                 'type'       => $medium->mime_type,
                 'collection' => $collection->name,
                 'name'       => $medium->hasCustomProperty('name') ? $medium->getCustomProperty('name') : $medium->file_name, 
@@ -129,7 +139,7 @@ trait HasMediaCollectionsTrait {
     //FIXME: this definitely shouldn't be here
     public function registerComponentThumbs() {
         $this->getImageMediaCollections()->each(function($collection) {
-            $this->addMediaConversion('square200')
+            $this->addMediaConversion('thumb_200')
                  ->width(200)
                  ->height(200)
                  ->fit('crop', 200, 200)
