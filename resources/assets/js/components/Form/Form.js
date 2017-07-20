@@ -35,7 +35,7 @@ module.exports = {
                 });
         },
         onSuccess(data) {
-           if(data.success) {
+           if(data.redirect) {
                 window.location.replace(data.redirect)
            } 
         },
