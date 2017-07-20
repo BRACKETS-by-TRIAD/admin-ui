@@ -63,6 +63,9 @@ module.exports = {
                 <input type="hidden" name="collection" :value="collection">
             </dropzone>`,
   mounted: function () { 
+    //FIXME: temporary ugly fix until is fixed in package https://github.com/rowanwins/vue-dropzone/issues/127
+    $('head').append('<style>.dz-error-message { top: calc(100% + 10px) !important; left: calc(50% - 70px) !important; } .vue-dropzone .dz-preview .dz-error-mark { text-align: center; top: 25%!important;}</style>');
+    
     this.attachAlreadyUploadedMedia();
   },
   methods: {
