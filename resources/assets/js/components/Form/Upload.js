@@ -49,6 +49,7 @@ module.exports = {
                        :url="url" 
                        v-bind:preview-template="template"
                        v-on:vdropzone-success="onSuccess"
+                       v-on:vdropzone-error="onUploadError"
                        v-on:vdropzone-removed-file="onFileDelete"
                        v-on:vdropzone-file-added="onFileAdded"
                        :useFontAwesome="true" 
@@ -68,9 +69,16 @@ module.exports = {
     onSuccess: function (file, response) {
       if(!file.type.includes('image')) {
         setTimeout(function() {
+            //FIXME jquery
             $(file.previewElement).removeClass('dz-file-preview');
         }, 3000);
       }
+    },
+
+    onUploadError: function (file) {
+      // if(file.xhr) {
+      //   alert(JSON.parse(file.xhr.response));
+      // }
     },
 
     onFileAdded: function(file) {
@@ -93,7 +101,13 @@ module.exports = {
                                                           size: file['size'], 
                                                           type: file['type'], 
                                                           url: file['url'],
-                                                        }, file['thumb_url']);
+                                                        }, file['thumb_url'], 
+                                                        false,
+                                                        false,
+                                                        {
+                                                          dontSubstractMaxFiles: false,
+                                                          addToFiles: true
+                                                        });
           });
         } 
       })
@@ -105,7 +119,7 @@ module.exports = {
       _.each(this.$refs[this.collection].getAcceptedFiles(), (file, key) => {
         var response = JSON.parse(file.xhr.response);
 
-        if(response.success) {
+        if(response.path) {
           files.push({
               collection: this.collection,
               name: file.name,  //TODO: editable in the future

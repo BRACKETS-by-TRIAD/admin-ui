@@ -23,14 +23,12 @@ class FileUploadController extends Controller {
                     $this->authorize($collection->uploadPermission, $model);
                 }
 
-                //FIXME: nezachovava sa filename, vadi/nevadi? 
-                //mozme si radsej ukladat filename alebo nazov suboru ktory zada user do medialibrary meta dat
                 $path = $request->file('file')->store('medialibray_temp_uploads');
-                return ['success' => true, 'path' => $path];
+                return response()->json(['path' => $path], 200);
             }
         }
 
-        return ['success' => false, 'error' => 'File, model or collection is not provided'];
+        return response()->json('File, model or collection is not provided', 422);
     }
 
     // public function wysiwygDragDropUpload(Request $request) {
