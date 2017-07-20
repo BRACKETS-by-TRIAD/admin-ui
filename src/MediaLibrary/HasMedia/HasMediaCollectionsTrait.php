@@ -60,13 +60,18 @@ trait HasMediaCollectionsTrait {
         });
     }
 
-    // public static function bootHasMediaCollectionsTrait() {
-    //     // FIXME let's try if this works
-    //     static::saving(function($model, Request $request)
-    //     {
-    //         $model->processMedia($request->files());
-    //     });
-    // }
+    public static function bootHasMediaCollectionsTrait() {
+
+        static::saving(function($model) {
+            if($model->autoProcessMedia) {
+                $request = app(Request::class); 
+
+                if($request->has('files')) {
+                    $model->processMedia(collect($request->get('files')));
+                }
+            }
+        });
+    }
 
     protected function initMediaCollections() {
         $this->mediaCollections = collect();
