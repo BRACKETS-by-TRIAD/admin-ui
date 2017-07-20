@@ -29,6 +29,12 @@ class HasMediaCollectionsTest extends TestCase
     }
 
     /** @test */
+    public function check_image_media_collections_count () {
+        $this->assertCount(0, $this->testModel->getImageMediaCollections()); 
+        $this->assertCount(1, $this->testModelWithCollections->getImageMediaCollections()); 
+    }
+
+    /** @test */
     public function user_can_register_new_file_collection_and_upload_files()
     {   
         //FIXME: calling getMediaCollections() is required to init MediaCollections
