@@ -1,5 +1,5 @@
 build
 docs
 vendor
-test/temp
+src/Medialibrary/Test/temp
 composer.lock
