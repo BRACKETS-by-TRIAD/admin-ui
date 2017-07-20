@@ -62,18 +62,7 @@ module.exports = {
                 <input type="hidden" name="collection" :value="collection">
             </dropzone>`,
   mounted: function () { 
-      this.$nextTick( () => {
-        if(this.mutableUploadedImages) {
-          _.each(this.mutableUploadedImages, (file, key) => {
-
-            this.$refs[this.collection].manuallyAddFile({ name: file['name'], 
-                                                          size: file['size'], 
-                                                          type: file['type'], 
-                                                          url: file['url'],
-                                                        }, file['thumb_url']);
-          });
-        } 
-      })
+    this.attachAlreadyUploadedMedia();
   },
   methods: {
     onSuccess: function (file, response) {
@@ -95,6 +84,21 @@ module.exports = {
       }
     },
 
+    attachAlreadyUploadedMedia: function() {
+      this.$nextTick( () => {
+        if(this.mutableUploadedImages) {
+          _.each(this.mutableUploadedImages, (file, key) => {
+
+            this.$refs[this.collection].manuallyAddFile({ name: file['name'], 
+                                                          size: file['size'], 
+                                                          type: file['type'], 
+                                                          url: file['url'],
+                                                        }, file['thumb_url']);
+          });
+        } 
+      })
+    },
+
     getFiles: function() {
       var files = this.mutableUploadedImages;
 
@@ -104,7 +108,8 @@ module.exports = {
         if(response.success) {
           files.push({
               collection: this.collection,
-              name: file.name,
+              name: file.name,  //TODO: editable in the future
+              file_name: file.name,
               width: file.width,
               height: file.height,
               model: this.model,
