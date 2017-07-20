@@ -100,7 +100,7 @@ trait HasMediaCollectionsTrait {
 
     public function getImageMediaCollections() {
         return $this->getMediaCollections()->filter(function($collection){
-            return $collection->is_image;
+            return $collection->isImage();
         });
     }
 
@@ -112,7 +112,7 @@ trait HasMediaCollectionsTrait {
             return [ 
                 'id'         => $medium->id,
                 'url'        => $medium->getUrl(),
-                'thumb_url'  => $collection->is_image ? $medium->getUrl('square200') : $medium->getUrl(), 
+                'thumb_url'  => $collection->isImage() ? $medium->getUrl('square200') : $medium->getUrl(), 
                 'type'       => $medium->mime_type,
                 'collection' => $collection->name,
                 'name'       => $medium->hasCustomProperty('name') ? $medium->getCustomProperty('name') : $medium->file_name, 

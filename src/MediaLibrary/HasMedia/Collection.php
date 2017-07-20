@@ -10,9 +10,9 @@ use Exception;
  * @property-read string $name
  * @property-read string $title
  * @property-read string $disk
- * @property-read string $is_image
  * @property-read int $maxNumberOfFiles
  * @property-read int $maxFilesize
+ * @property-read int $maxFilesizeInMB
  * @property-read string $acceptedFileTypes 
  * @property-read string $viewPermission
  * @property-read string $uploadPermission
@@ -26,6 +26,7 @@ class Collection  {
     protected $is_image = false;
     protected $maxNumberOfFiles;
     protected $maxFilesize;
+    protected $maxFilesizeInMB;
     protected $acceptedFileTypes;
     protected $viewPermission;
     protected $uploadPermission;
@@ -47,15 +48,15 @@ class Collection  {
             case 'disk':
                 return $this->disk;
 
-            case 'is_image':
-                return $this->is_image;
-
             case 'maxNumberOfFiles':
                 return $this->maxNumberOfFiles;
 
             case 'maxFilesize':
                 return $this->maxFilesize;
 
+            case 'maxFilesizeInMB':
+                return $this->maxFilesize ? $this->maxFilesize/(1024*1024) : null;
+                
             case 'acceptedFileTypes':
                 return $this->acceptedFileTypes;
 
@@ -133,5 +134,14 @@ class Collection  {
     public function canUpload($uploadPermission) {
         $this->uploadPermission = $uploadPermission;
         return $this;
+    }
+
+
+    public function isImage() {
+        return $this->is_image;
+    }
+
+    public function isProtected() {
+        return $this->disk == config('simpleweb-medialibrary.default_protected_disk');
     }
 }
