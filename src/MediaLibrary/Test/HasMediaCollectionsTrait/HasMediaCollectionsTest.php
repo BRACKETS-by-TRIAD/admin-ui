@@ -6,6 +6,11 @@ use Brackets\Admin\MediaLibrary\Test\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Http\Request;
 
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\MimeTypeNotAllowed;
+use Brackets\Admin\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig;
+use Brackets\Admin\MediaLibrary\Exceptions\FileCannotBeAdded\TooManyFiles;
+
 class HasMediaCollectionsTest extends TestCase
 {
 
@@ -70,10 +75,10 @@ class HasMediaCollectionsTest extends TestCase
         $this->assertCount(2, $this->testModel->getMedia('documents'));
     }
 
-
-    //FIXME: implement this test logic
     /** @test */
     public function user_cant_upload_not_allowed_file_types() {
+        $this->expectException(MimeTypeNotAllowed::class);
+
         //FIXME: calling getMediaCollections() is required to init MediaCollections
         $this->assertCount(0, $this->testModel->getMediaCollections());
         
@@ -124,6 +129,8 @@ class HasMediaCollectionsTest extends TestCase
     //FIXME: implement this test logic
     /** @test */
     public function user_cant_upload_more_files_than_is_allowed() {
+        $this->expectException(TooManyFiles::class);
+
         //FIXME: calling getMediaCollections() is required to init MediaCollections
         $this->assertCount(0, $this->testModel->getMediaCollections());
 
@@ -193,9 +200,10 @@ class HasMediaCollectionsTest extends TestCase
         $this->assertCount(2, $this->testModel->getMedia('documents'));
     }
 
-    //FIXME: implement this test logic
     /** @test */
     public function user_cant_upload_files_exceeding_max_file_size() {
+        $this->expectException(FileIsTooBig::class);
+
         //FIXME: calling getMediaCollections() is required to init MediaCollections
         $this->assertCount(0, $this->testModel->getMediaCollections());
 
@@ -227,7 +235,7 @@ class HasMediaCollectionsTest extends TestCase
 
         $this->testModel->addMediaCollection('documents')
                         ->title('Documents')
-                        ->maxFilesize(100*1024); //100kb
+                        ->maxFilesize(1*1024); //1kb
 
 
         $request = $this->getRequest([
@@ -290,7 +298,7 @@ class HasMediaCollectionsTest extends TestCase
                     'width'      => 200,
                     'height'     => 200,
                     'model'      => 'Brackets\Admin\MediaLibrary\Test\TestModelWithCollections',
-                    'path'       => 'test.jpg'
+                    'path'       => 'test.pdf'
                 ]
             ]
         ]);

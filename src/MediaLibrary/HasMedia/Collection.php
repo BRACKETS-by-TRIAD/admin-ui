@@ -12,6 +12,7 @@ use Exception;
  * @property-read string $disk
  * @property-read int $maxNumberOfFiles
  * @property-read int $maxFilesize
+ * @property-read int $maxFilesizeInKB
  * @property-read int $maxFilesizeInMB
  * @property-read string $acceptedFileTypes 
  * @property-read string $viewPermission
@@ -53,6 +54,9 @@ class Collection  {
 
             case 'maxFilesize':
                 return $this->maxFilesize;
+
+            case 'maxFilesizeInKB':
+                return $this->maxFilesize ? $this->maxFilesize/(1024) : null;
 
             case 'maxFilesizeInMB':
                 return $this->maxFilesize ? $this->maxFilesize/(1024*1024) : null;
@@ -141,6 +145,7 @@ class Collection  {
         return $this->is_image;
     }
 
+    //FIXME: metoda disk by mohla mat druhy nepovinny paramater protected, ktory len nastavi interny flag na true. Aby sme vedeli presnejsie ci ide o protected alebo nie
     public function isProtected() {
         return $this->disk == config('simpleweb-medialibrary.default_protected_disk');
     }

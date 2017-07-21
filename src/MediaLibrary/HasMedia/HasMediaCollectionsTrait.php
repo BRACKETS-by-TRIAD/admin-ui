@@ -3,9 +3,16 @@
 namespace Brackets\Admin\MediaLibrary\HasMedia;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\File;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait as ParentHasMediaTrait;
 use Spatie\MediaLibrary\Media as MediaModel;
-use Illuminate\Support\Collection;
+
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\MimeTypeNotAllowed;
+use Brackets\Admin\MediaLibrary\Exceptions\FileCannotBeAdded\FileIsTooBig;
+use Brackets\Admin\MediaLibrary\Exceptions\FileCannotBeAdded\TooManyFiles;
 
 trait HasMediaCollectionsTrait {
 
@@ -15,8 +22,7 @@ trait HasMediaCollectionsTrait {
     protected $mediaCollections;
 
     public function processMedia(Collection $files) {
-        $this->validateUploadedFiles($files);
-
+        //FIXME: check no. of db queries on average request
         $mediaCollections = $this->getMediaCollections();
 
         $files->each(function($file) use ($mediaCollections) {
@@ -25,6 +31,14 @@ trait HasMediaCollectionsTrait {
             })->first();
 
             if($collection) {
+
+                // try {
+                    $this->validateSizeAndTypeOfFile(storage_path('app/'.$file['path']), $collection);
+                // } catch (FileCannotBeAdded $e) {
+                   //FIXME: teraz co? nechame prebublat exceptions vyssie, nech si err hlasku poriesi developer? to nam trochu naburava ten autoProcessMedia
+                //     return false;
+                // }
+
                 if(isset($file['id']) && $file['id']) {
                     if(isset($file['deleted']) && $file['deleted']) {
                         if($medium = app(MediaModel::class)->find($file['id'])) {
@@ -62,11 +76,25 @@ trait HasMediaCollectionsTrait {
         });
     }
 
-    public function validateUploadedFiles(Collection $files) {
-        //FIXME
-        //validate no. of files
-        //validate file types
-        //validate max size of files
+    public function validateSizeAndTypeOfFile($filePath, $mediaCollection) {
+        if($mediaCollection->acceptedFileTypes) {
+            //throws FileCannotBeAdded/MimeTypeNotAllowed
+            $this->guardAgainstInvalidMimeType($filePath, $mediaCollection->acceptedFileTypes);
+        }
+
+        if($mediaCollection->maxFilesizeInKB) {
+            //FIXME: PR do spatie? guardAgainstInvalidMimeType bol takto pridany https://github.com/spatie/laravel-medialibrary/pull/648
+           $validation = Validator::make(
+                ['file' => new File($filePath)],
+                ['file' => 'max:'.$mediaCollection->maxFilesizeInKB]
+            );
+
+            if ($validation->fails()) {
+                throw FileIsTooBig::create($filePath, $mediaCollection->maxFilesize);
+            }
+        }
+
+        return true;
     }
 
     public static function bootHasMediaCollectionsTrait() {
