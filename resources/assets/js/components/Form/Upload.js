@@ -42,7 +42,10 @@ module.exports = {
   },
   data: function () { 
     return {
-      mutableUploadedImages: this.uploadedImages
+      mutableUploadedImages: this.uploadedImages,
+      headers: {
+        'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      }
     }
   },
   template: `<dropzone :id="collection" 
@@ -57,7 +60,8 @@ module.exports = {
                        :maxNumberOfFiles="maxNumberOfFiles"
                        :maxFileSizeInMB="maxFileSizeInMb"
                        :acceptedFileTypes="acceptedFileTypes"
-                       :thumbnailWidth="thumbnailWidth">
+                       :thumbnailWidth="thumbnailWidth"
+                       :headers="headers">
                 
                 <input type="hidden" name="model" :value="model">
                 <input type="hidden" name="collection" :value="collection">
