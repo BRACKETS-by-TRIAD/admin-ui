@@ -32,6 +32,6 @@ class AdminProvider extends ServiceProvider
      */
     public function register()
     {
-
+        //
     }
 }
