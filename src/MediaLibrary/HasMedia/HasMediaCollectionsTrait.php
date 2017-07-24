@@ -83,7 +83,7 @@ trait HasMediaCollectionsTrait {
       */ 
 
      //FIXME: ble, upratat cele
-    public function validateCollectionMediaCount($files) {
+    public function validateCollectionMediaCount(Collection $files) {
         $files->groupBy('collection')->each(function($collectionMedia, $collectionName) {
             $collection = $this->getMediaCollection($collectionName);
 
@@ -121,12 +121,9 @@ trait HasMediaCollectionsTrait {
                 throw FileIsTooBig::create($filePath, $mediaCollection->maxFilesize, $mediaCollection->name);
             }
         }
-
-        return true;
     }
 
     public static function bootHasMediaCollectionsTrait() {
-
         static::saving(function($model) {
             if($model->autoProcessMedia) {
                 $request = app(Request::class); 

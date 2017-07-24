@@ -126,7 +126,6 @@ class HasMediaCollectionsTest extends TestCase
         $this->assertCount(1, $this->testModel->getMedia('documents'));
     }
 
-    //FIXME: implement this test logic
     /** @test */
     public function user_cant_upload_more_files_than_is_allowed() {
         $this->expectException(TooManyFiles::class);
@@ -164,9 +163,59 @@ class HasMediaCollectionsTest extends TestCase
         $this->testModel->processMedia(collect($request->get('files')));
         $this->testModel = $this->testModel->fresh();
         $this->assertCount(0, $this->testModel->getMedia('documents'));
+    }
 
+    /** @test */
+    public function user_cant_upload_more_files_than_is_allowed_2() {
+        $this->expectException(TooManyFiles::class);
 
-        //TODO: add test where max number of files is already uploaded and user try to upload another
+        //FIXME: calling getMediaCollections() is required to init MediaCollections
+        $this->assertCount(0, $this->testModel->getMediaCollections());
+
+        $this->testModel->addMediaCollection('documents')
+                        ->title('Documents')             
+                        ->maxNumberOfFiles(2);
+
+        $request = $this->getRequest([
+            'files' => [
+                [
+                    'collection' => 'documents',
+                    'name'       => 'test',
+                    'model'      => 'Brackets\Admin\MediaLibrary\Test\TestModel',
+                    'path'       => 'test.psd'
+                ],
+                [
+                    'collection' => 'documents',
+                    'name'       => 'test',
+                    'model'      => 'Brackets\Admin\MediaLibrary\Test\TestModel',
+                    'path'       => 'test.txt'
+                ]
+            ]
+        ]);
+
+        $this->testModel->processMedia(collect($request->get('files')));
+
+        //this test will fail without fresh model
+        $this->testModel = $this->testModel->fresh();
+        $this->assertCount(0, $this->testModel->getMediaCollections());
+        $this->testModel->addMediaCollection('documents')
+                        ->title('Documents')             
+                        ->maxNumberOfFiles(2);
+
+        $request2 = $this->getRequest([
+            'files' => [
+                [
+                    'collection' => 'documents',
+                    'name'       => 'test',
+                    'model'      => 'Brackets\Admin\MediaLibrary\Test\TestModel',
+                    'path'       => 'test.docx'
+                ],
+            ]
+        ]);
+
+        $this->testModel->processMedia(collect($request2->get('files')));
+        $this->testModel = $this->testModel->fresh();
+        $this->assertCount(2, $this->testModel->getMedia('documents'));
     }
 
     /** @test */
