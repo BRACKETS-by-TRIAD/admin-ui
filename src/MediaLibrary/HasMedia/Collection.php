@@ -125,6 +125,8 @@ class Collection  {
         return $this;
     }
 
+
+    //FIXME: format? string, array or ...$x ? 
     public function accepts($acceptedFileTypes) {
         $this->acceptedFileTypes = $acceptedFileTypes;
         return $this;

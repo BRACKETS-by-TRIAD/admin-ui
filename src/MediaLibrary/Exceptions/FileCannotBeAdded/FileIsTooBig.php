@@ -7,10 +7,10 @@ use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded;
 
 class FileIsTooBig extends FileCannotBeAdded
 {
-    public static function create($file, $maxSize)
+    public static function create($file, $maxSize, $collectionName)
     {
         $actualFileSize = filesize($file);
 
-        return new static("File size is {$actualFileSize}, while max size of file is {$maxSize}");
+        return new static("File size is {$actualFileSize}, while max size of file in {$collectionName }is {$maxSize}");
     }
 }

@@ -24,6 +24,8 @@ trait HasMediaCollectionsTrait {
     public function processMedia(Collection $files) {
         //FIXME: check no. of db queries on average request
         $mediaCollections = $this->getMediaCollections();
+        
+        $this->validateCollectionMediaCount($files);
 
         $files->each(function($file) use ($mediaCollections) {
             $collection = $mediaCollections->filter(function($collection) use ($file){
@@ -32,13 +34,8 @@ trait HasMediaCollectionsTrait {
 
             if($collection) {
 
-                // try {
-                    $this->validateSizeAndTypeOfFile(storage_path('app/'.$file['path']), $collection);
-                // } catch (FileCannotBeAdded $e) {
-                   //FIXME: teraz co? nechame prebublat exceptions vyssie, nech si err hlasku poriesi developer? to nam trochu naburava ten autoProcessMedia
-                //     return false;
-                // }
-
+                $this->validateSizeAndTypeOfFile(storage_path('app/'.$file['path']), $collection);
+                
                 if(isset($file['id']) && $file['id']) {
                     if(isset($file['deleted']) && $file['deleted']) {
                         if($medium = app(MediaModel::class)->find($file['id'])) {
@@ -76,6 +73,37 @@ trait HasMediaCollectionsTrait {
         });
     }
 
+   
+
+    /**
+      * Validate uploaded files count in collection
+      *
+      * @throws FileCannotBeAdded/TooManyFiles 
+      * 
+      */ 
+
+     //FIXME: ble, upratat cele
+    public function validateCollectionMediaCount($files) {
+        $files->groupBy('collection')->each(function($collectionMedia, $collectionName) {
+            $collection = $this->getMediaCollection($collectionName);
+
+            if($collection->maxNumberOfFiles) {
+                $alreadyUploadedCollectionMedia = $this->getMedia($collectionName)->count();
+
+                if(($collectionMedia->count() + $alreadyUploadedCollectionMedia) > $collection->maxNumberOfFiles) {
+                    throw TooManyFiles::create(($collectionMedia->count() + $alreadyUploadedCollectionMedia), $collection->maxNumberOfFiles, $collection->name); 
+                }
+            }
+        });
+    }
+
+     /**
+      * Validate uploaded files mime type and size
+      *
+      * @throws FileCannotBeAdded/MimeTypeNotAllowed 
+      * @throws FileCannotBeAdded/FileIsTooBig 
+      * 
+      */ 
     public function validateSizeAndTypeOfFile($filePath, $mediaCollection) {
         if($mediaCollection->acceptedFileTypes) {
             //throws FileCannotBeAdded/MimeTypeNotAllowed
@@ -90,7 +118,7 @@ trait HasMediaCollectionsTrait {
             );
 
             if ($validation->fails()) {
-                throw FileIsTooBig::create($filePath, $mediaCollection->maxFilesize);
+                throw FileIsTooBig::create($filePath, $mediaCollection->maxFilesize, $mediaCollection->name);
             }
         }
 
