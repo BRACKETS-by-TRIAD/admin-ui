@@ -1,3 +1,5 @@
+const userLanguage = document.documentElement.lang;
+
 module.exports = {
 
     props: {
@@ -5,7 +7,7 @@ module.exports = {
             type: String,
             required: true
         },
-        'default': {
+        'data': {
             type: Object,
             default: function() {
                 return {};
@@ -15,28 +17,44 @@ module.exports = {
 
     data: function() {
         return {
-            form: this.default,
+            form: this.data,
             datePickerConfig: {
-                format: 'YYYY-MM-DD',
+                dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
-                altFormat: 'd.m.Y'
+                altFormat: 'd.m.Y',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
             },
             timePickerConfig: {
                 enableTime: true,
                 noCalendar: true,
                 time_24hr: true,
                 enableSeconds: true,
-                format: 'kk:mm:ss',
+                dateFormat: 'H:i:S',
                 altInput: true,
-                altFormat: 'H:i:S'
+                altFormat: 'H:i:S',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
             },
             datetimePickerConfig: {
                 enableTime: true,
                 time_24hr: true,
                 enableSeconds: true,
-                format: 'YYYY-MM-DD kk:mm:ss',
+                dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
-                altFormat: 'd.m.Y H:i:S'
+                altFormat: 'd.m.Y H:i:S',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
+            },
+            wysiwygConfig: {
+                placeholder: 'Type a text here',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['clean']
+                    ]
+                }
             }
         }
     },
