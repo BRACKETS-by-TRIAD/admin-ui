@@ -18,6 +18,10 @@ class AdminProvider extends ServiceProvider
             __DIR__.'/../install-stubs/resources/assets' => resource_path('assets')
         ], 'assets');
 
+        $this->publishes([
+            __DIR__.'/../install-stubs/resources/views' => resource_path('views')
+        ], 'views');
+
 //        $this->app->register(\Spatie\Translatable\TranslatableServiceProvider::class::class);
     }
 

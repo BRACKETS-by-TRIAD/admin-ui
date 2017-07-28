@@ -1,3 +1,5 @@
+const userLanguage = document.documentElement.lang;
+
 module.exports = {
 
     props: {
@@ -5,22 +7,7 @@ module.exports = {
             type: String,
             required: true
         },
-        'locales': {
-            type: Array
-        },
-        'defaultLocale': {
-            type: String,
-            default: function() {
-                return this.locales[0];
-            }
-        },
-        'sendEmptyLocales': {
-            type: Boolean,
-            default: function() {
-                return true;
-            }
-        },
-        'default': {
+        'data': {
             type: Object,
             default: function() {
                 return {};
@@ -41,32 +28,59 @@ module.exports = {
 
     data: function() {
         return {
-            form: this.default,
-            isFormLocalized: false,
-            currentLocale: 'sk',
+            form: this.data,
+            datePickerConfig: {
+                dateFormat: 'Y-m-d H:i:S',
+                altInput: true,
+                altFormat: 'd.m.Y',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
+            },
+            timePickerConfig: {
+                enableTime: true,
+                noCalendar: true,
+                time_24hr: true,
+                enableSeconds: true,
+                dateFormat: 'H:i:S',
+                altInput: true,
+                altFormat: 'H:i:S',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
+            },
+            datetimePickerConfig: {
+                enableTime: true,
+                time_24hr: true,
+                enableSeconds: true,
+                dateFormat: 'Y-m-d H:i:S',
+                altInput: true,
+                altFormat: 'd.m.Y H:i:S',
+                locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
+            },
+            wysiwygConfig: {
+                placeholder: 'Type a text here',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['clean']
+                    ]
+                }
+            }
         }
     },
 
-    computed: {
-        otherLocales: function() {
-            return this.locales.filter(x => x != this.defaultLocale);
-        },
-    },
-
     methods: {
+        getPostData() {
+            return this.form
+        },
         onSubmit() {
             return this.$validator.validateAll()
                 .then(result => {
                     if (!result) {
                         return false;
                     }
-
-                    var data = this.form;
-                    if (!this.sendEmptyLocales) {
-                        data = _.omit(this.form, this.locales.filter(locale => _.isEmpty(this.form[locale])));
-                    }
-
-                    axios.post(this.action, data)
+                    axios.post(this.action, this.getPostData())
                         .then(response => this.onSuccess(response.data))
                         .catch(errors => this.onFail(errors.response.data))
                 });
@@ -77,22 +91,7 @@ module.exports = {
             }
         },
         onFail(errors) {
-            var bag = this.$validator.errorBag;
-            Object.keys(errors).map(function(key) {
-                var splitted = key.split('.', 2);
-                if (splitted.length > 1) {
-                    bag.add(splitted[0]+'_'+splitted[1], errors[key][0], null);
-                } else {
-                    bag.add(key, errors[key][0]);
-                }
-            });
-        },
-
-        showLocalization() {
-            this.isFormLocalized = true;
-        },
-        hideLocalization() {
-            this.isFormLocalized = false;
+            Object.keys(errors).map(key => this.$validator.errorBag.add(key, errors[key][0]));
         }
     }
 };
