@@ -19,6 +19,7 @@ module.exports = {
             this.setLoading(false);
             return response;
         }, (error) => {
+            this.setLoading(false);
             return Promise.reject(error);
         });
     },
