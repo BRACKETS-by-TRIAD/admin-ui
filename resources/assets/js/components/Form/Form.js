@@ -60,19 +60,24 @@ module.exports = {
     },
 
     methods: {
+        getPostData() {
+            return this.form
+        },
         onSubmit() {
             return this.$validator.validateAll()
                 .then(result => {
                     if (!result) {
                         return false;
                     }
-                    axios.post(this.action, this.form)
+                    axios.post(this.action, this.getPostData())
                         .then(response => this.onSuccess(response.data))
                         .catch(errors => this.onFail(errors.response.data))
                 });
         },
         onSuccess(data) {
-            window.location.replace(data.redirect)
+           if(data.redirect) {
+                window.location.replace(data.redirect)
+           } 
         },
         onFail(errors) {
             Object.keys(errors).map(key => this.$validator.errorBag.add(key, errors[key][0]));
