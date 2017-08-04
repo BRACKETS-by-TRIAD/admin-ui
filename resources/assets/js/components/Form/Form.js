@@ -42,24 +42,42 @@ module.exports = {
                 altInput: true,
                 altFormat: 'd.m.Y H:i:S',
                 locale: userLanguage === 'en' ? null : require("flatpickr/dist/l10n/"+userLanguage+".js")[userLanguage]
+            },
+            wysiwygConfig: {
+                placeholder: 'Type a text here',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['clean']
+                    ]
+                }
             }
         }
     },
 
     methods: {
+        getPostData() {
+            return this.form
+        },
         onSubmit() {
             return this.$validator.validateAll()
                 .then(result => {
                     if (!result) {
                         return false;
                     }
-                    axios.post(this.action, this.form)
+                    axios.post(this.action, this.getPostData())
                         .then(response => this.onSuccess(response.data))
                         .catch(errors => this.onFail(errors.response.data))
                 });
         },
         onSuccess(data) {
-            window.location.replace(data.redirect)
+           if(data.redirect) {
+                window.location.replace(data.redirect)
+           } 
         },
         onFail(errors) {
             Object.keys(errors).map(key => this.$validator.errorBag.add(key, errors[key][0]));

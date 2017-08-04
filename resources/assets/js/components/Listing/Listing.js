@@ -114,14 +114,20 @@ module.exports = {
 
         deleteItem(url){
             // TODO confirmation
-            axios.delete(url).then(response => this.loadData(), error => {
-                // TODO handle error
+            axios.delete(url).then(response => {
+                this.loadData();
+                this.$notify({ type: 'success', title: 'Success!', text: 'Item successfully deleted.'});
+            }, error => {
+                this.$notify({ type: 'error', title: 'Error!', text: 'An error has occured.'});
             });
         },
 
         toggleSwitch(url, col, row){
-            axios.post(url, row).then(response => {}, error => {
+            axios.post(url, row).then(response => {
+                this.$notify({ type: 'success', title: 'Success!', text: 'Item successfully changed.'});
+            }, error => {
                 row[col] = !row[col];
+                this.$notify({ type: 'error', title: 'Error!', text: 'An error has occured.'});
             });
         }
     }
