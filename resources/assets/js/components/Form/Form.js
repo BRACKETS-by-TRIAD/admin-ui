@@ -52,6 +52,7 @@ module.exports = {
                         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                         [{ 'color': [] }, { 'background': [] }],
                         [{ 'align': [] }],
+                        ['link', 'image'],
                         ['clean']
                     ]
                 }

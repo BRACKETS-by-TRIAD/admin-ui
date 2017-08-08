@@ -191,7 +191,11 @@ main.main {
 
 table .row.no-gutters .btn-info {
   margin-right: 10px;
+  @media (max-width: 1319px) {
+    margin-bottom: 10px;
+  }
 }
+
 
 .page-item.active .page-link, .pagination-datatables li.active .page-link, .pagination li.active .page-link, .page-item.active .pagination-datatables li a, .pagination-datatables li .page-item.active a, .pagination-datatables li.active a, .page-item.active .pagination li a, .pagination li .page-item.active a, .pagination li.active a {
   background-color: $primary;
