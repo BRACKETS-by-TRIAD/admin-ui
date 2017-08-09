@@ -26,7 +26,7 @@ class AdminProvider extends ServiceProvider
             __DIR__.'/../install-stubs/config/translatable.php' => config_path('translatable.php'),
         ], 'config');
 
-//        $this->app->register(\Spatie\Translatable\TranslatableServiceProvider::class::class);
+        $this->app->register(ViewComposerProvider::class);
     }
 
     /**
