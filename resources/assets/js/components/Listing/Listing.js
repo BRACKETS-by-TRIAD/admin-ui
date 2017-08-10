@@ -18,6 +18,7 @@ module.exports = {
                 direction: 'asc',
             },
             filters: {},
+            search: '',
             collection: null,
         }
     },
@@ -113,12 +114,24 @@ module.exports = {
         },
 
         deleteItem(url){
-            // TODO confirmation
-            axios.delete(url).then(response => {
-                this.loadData();
-                this.$notify({ type: 'success', title: 'Success!', text: 'Item successfully deleted.'});
-            }, error => {
-                this.$notify({ type: 'error', title: 'Error!', text: 'An error has occured.'});
+            this.$modal.show('dialog', {
+                title: 'Warning!',
+                text: 'Do you really want to delete this item?',
+                buttons: [
+                    { title: 'No, cancel.' },
+                    {
+                        title: '<span class="btn-dialog btn-danger">Yes, delete.<span>',
+                        handler: () => {
+                            this.$modal.hide('dialog');
+                            axios.delete(url).then(response => {
+                                this.loadData();
+                                this.$notify({ type: 'success', title: 'Success!', text: 'Item successfully deleted.'});
+                            }, error => {
+                                this.$notify({ type: 'error', title: 'Error!', text: 'An error has occured.'});
+                            });
+                        }
+                    }
+                ]
             });
         },
 

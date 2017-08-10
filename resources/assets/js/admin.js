@@ -11,6 +11,7 @@ module.exports = {
             this.setLoading(true);
             return config;
         }, (error) => {
+            this.setLoading(false);
             return Promise.reject(error);
         });
 
@@ -19,6 +20,7 @@ module.exports = {
             this.setLoading(false);
             return response;
         }, (error) => {
+            this.setLoading(false);
             return Promise.reject(error);
         });
     },

@@ -14,9 +14,13 @@
             @include('brackets/admin::admin.partials.breadcrumb')
 
             <div class="container-fluid" id="app" :class="{'loading': loading}">
+                <div class="modals">
+                    <v-dialog/>
+                </div>
                 <div>
                     <notifications position="bottom right" :duration="1000" />
                 </div>
+
                 @yield('title')
 
                 @yield('body')
