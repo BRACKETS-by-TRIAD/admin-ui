@@ -224,19 +224,19 @@ img {
 }
 
 .button-green {
-    background-color: #6ABC79;
-    border-top: 10px solid #6ABC79;
-    border-right: 18px solid #6ABC79;
-    border-bottom: 10px solid #6ABC79;
-    border-left: 18px solid #6ABC79;
+    background-color: #60CF7D;
+    border-top: 10px solid #60CF7D;
+    border-right: 18px solid #60CF7D;
+    border-bottom: 10px solid #60CF7D;
+    border-left: 18px solid #60CF7D;
 }
 
 .button-red {
-    background-color: #D04343;
-    border-top: 10px solid #D04343;
-    border-right: 18px solid #D04343;
-    border-bottom: 10px solid #D04343;
-    border-left: 18px solid #D04343;
+    background-color: #E03441;
+    border-top: 10px solid #E03441;
+    border-right: 18px solid #E03441;
+    border-bottom: 10px solid #E03441;
+    border-left: 18px solid #E03441;
 }
 
 /* Panels */

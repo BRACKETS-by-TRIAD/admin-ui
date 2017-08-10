@@ -26,6 +26,10 @@ Vue.use(VueQuillEditor);
 import Notifications from 'vue-notification';
 Vue.use(Notifications);
 
+// modal
+import VModal from 'vue-js-modal'
+Vue.use(VModal, { dialog: true });
+
 new Vue({
     mixins: [require('admin')],
 });
