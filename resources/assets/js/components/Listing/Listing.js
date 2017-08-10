@@ -18,6 +18,7 @@ module.exports = {
                 direction: 'asc',
             },
             filters: {},
+            search: '',
             collection: null,
         }
     },
