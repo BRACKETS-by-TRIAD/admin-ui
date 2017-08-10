@@ -13,7 +13,7 @@ module.exports = {
         'defaultLocale': {
             type: String,
             default: function() {
-                return this.locales[0];
+                return (this.locales instanceof Array && this.locales.length > 0) ? this.locales[0] : '';
             }
         },
         'sendEmptyLocales': {
