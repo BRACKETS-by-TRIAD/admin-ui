@@ -125,8 +125,9 @@ module.exports = {
                             this.$modal.hide('dialog');
                             axios.delete(url).then(response => {
                                 this.loadData();
-                                this.$notify({ type: 'success', title: 'Success!', text: 'Item successfully deleted.'});
+                                this.$notify({ type: 'success', title: 'Success!', text: response.data.success});
                             }, error => {
+                                // TODO display real error from server
                                 this.$notify({ type: 'error', title: 'Error!', text: 'An error has occured.'});
                             });
                         }
