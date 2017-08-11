@@ -4,11 +4,13 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Spatie\Translatable\HasTranslations;
 
 class AdminListing {
 
     /**
-     * @var Model
+     * @var Model|HasTranslations
      */
     protected $model;
 
@@ -34,6 +36,12 @@ class AdminListing {
 
     public function __construct(Model $model) {
         $this->model = $model;
+
+        if (in_array(HasTranslations::class, class_uses($this->model))) {
+            $this->modelHasTranslations = true;
+            $this->locale = $this->model->locale ?: app()->getLocale();
+        }
+
         $this->query = $model->newQuery();
     }
 
@@ -192,6 +200,54 @@ class AdminListing {
      * @param array $columns
      * @return LengthAwarePaginator
      */
+    public function get(array $columns = ['*']) {
+        $columns = collect($columns)->map(function($column) {
+            return $this->parseFullColumnName($column);
+        });
+
+        if ($this->hasPagination) {
+            $result = $this->query->paginate($this->perPage, $this->materializeColumns($columns), $this->pageColumnName, $this->currentPage);
+            $this->processResultCollection($result->getCollection());
+        } else {
+            $result = $this->query->get($this->materializeColumns($columns));
+            $this->processResultCollection($result);
+        }
+
+        return $result;
+    }
+
+    protected function processResultCollection(Collection $collection) {
+        // TODO what do we do with this? we need Spatie to update their package
+//        if ($this->modelHasTranslations()) {
+//            // we need to set this default locale ad hoc
+//            $collection->each(function ($model) {
+//                $model->locale = $this->locale;
+//            });
+//        }
+    }
+
+    protected function parseFullColumnName($column) {
+        if (str_contains($column, '.')) {
+            list($table, $column) = explode('.', $column, 2);
+        } else {
+            $table = $this->model->getTable();
+        }
+
+        return compact('table', 'column');
+    }
+
+    protected function modelHasTranslations() {
+        return $this->modelHasTranslations;
+    }
+
+
+    private function materializeColumns(Collection $columns)
+    {
+        return $columns->map(function ($column) {
+            return $column['table'] . '.' . $column['column'];
+        })->toArray();
+    }
+
     public function execute(array $columns = ['*']) : LengthAwarePaginator {
         return $this->query->paginate($this->perPage, $columns, $this->pageColumnName, $this->currentPage);
     }

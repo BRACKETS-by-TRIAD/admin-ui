@@ -22,7 +22,11 @@ class AdminProvider extends ServiceProvider
             __DIR__.'/../install-stubs/resources/views' => resource_path('views')
         ], 'views');
 
-//        $this->app->register(\Dimsav\Translatable\TranslatableServiceProvider::class);
+        $this->publishes([
+            __DIR__.'/../install-stubs/config/translatable.php' => config_path('translatable.php'),
+        ], 'config');
+
+        $this->app->register(ViewComposerProvider::class);
     }
 
     /**
@@ -32,6 +36,8 @@ class AdminProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(
+            __DIR__.'/../install-stubs/config/translatable.php', 'translatable'
+        );
     }
 }
