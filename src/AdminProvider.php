@@ -15,7 +15,7 @@ class AdminProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'brackets/admin');
 
         $this->publishes([
-            __DIR__.'/../install-stubs/resources/assets' => resource_path('assets')
+            __DIR__.'/../install-stubs/resources/assets' => resource_path('assets/admin')
         ], 'assets');
 
         $this->publishes([

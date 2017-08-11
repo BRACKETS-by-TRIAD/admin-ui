@@ -1,1 +1,1 @@
-<script src="{{ mix('/js/admin/admin.js') }}"></script>
+<script src="{{ mix('/admin/js/admin.js') }}"></script>

@@ -1,17 +1,19 @@
+import moment from 'moment';
+import VeeValidate from 'vee-validate';
+
 // core stuff like axios, ...
-require('../bootstrap')
-
+import bootstrap from './bootstrap';
 // brackets/admin overloaded files
-require('./components/bootstrap');
-
+import bootstrapComponents from './components/bootstrap';
 // custom files
-require('./bootstrap');
+import index from './index';
 
-window.moment = require('moment');
 
-Vue.use(require('vee-validate')
-    , { strict: true }
-);
+window.moment = moment;
+Vue.use(VeeValidate, {
+	strict: true
+});
+
 
 // datepicker
 import flatPickr from 'vue-flatpickr-component';
