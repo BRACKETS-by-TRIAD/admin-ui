@@ -144,7 +144,7 @@ class AdminListing {
                             $query->orWhere($this->model->getKeyName(), intval($token));
                         }
                     } else {
-                        $query->orWhere($column, 'ilike', '%'.$token.'%');
+                        $query->orWhere($column, 'like', '%'.$token.'%');
                     }
                 });
             });
