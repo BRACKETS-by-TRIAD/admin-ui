@@ -1,9 +1,11 @@
 <?php namespace Brackets\Admin;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Spatie\Translatable\HasTranslations;
 
@@ -34,7 +36,48 @@ class AdminListing {
      */
     protected $pageColumnName = 'page';
 
-    public function __construct(Model $model) {
+    /**
+     * @var bool
+     */
+    protected $hasPagination = false;
+
+    /**
+     * @var bool
+     */
+    protected $modelHasTranslations = false;
+
+    /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * @param $modelName
+     * @return static
+     */
+    public static function create($modelName) {
+        return (new static)->setModel($modelName);
+    }
+
+    /**
+     * Set model admin listing works with
+     *
+     * Setting the model is required
+     *
+     * @param Model|string $model
+     * @return $this
+     * @throws NotAModelClassException
+     */
+    public function setModel($model) {
+
+        if (is_string($model)) {
+            $model = app($model);
+        }
+
+        if (!is_a($model, Model::class)) {
+            throw new NotAModelClassException("AdminListing works only with Eloquent Models");
+        }
+
         $this->model = $model;
 
         if (in_array(HasTranslations::class, class_uses($this->model))) {
@@ -43,10 +86,8 @@ class AdminListing {
         }
 
         $this->query = $model->newQuery();
-    }
 
-    public static function instance($modelName) {
-        return new static(app($modelName));
+        return $this;
     }
 
     /**
@@ -54,101 +95,121 @@ class AdminListing {
      *
      * You should always specify an array of columns that are about to be queried
      *
-     * You should specify columns which should be searched
+     * You can specify columns which should be searched
+     *
      *
      * If you need to include additional filters, you can manage it by
      * modifying a query using $modifyQuery function, which receives
      * a query as a parameter.
      *
-     * Note that request should be authorized and validated already,
-     * as long as this method does not perform any authorization nor
-     * validation.
+     * If your model is Dimsav\Translatable\Translatable, translation will be automatically loaded. You can specify
+     * locale which should be loaded. When filtering, searching and ordering you can use columns from Translatable
+     * model as well.
+     *
+     * This method does not perform any authorization nor validation.
      *
      * @param Request $request
      * @param array $columns
      * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
      * @param callable $modifyQuery
-     * @return LengthAwarePaginator
+     * @param string $locale
+     * @return LengthAwarePaginator|Collection The result is either LengthAwarePaginator (when pagination was attached) or simple Collection otherwise
      */
-    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = null, callable $modifyQuery = null) : LengthAwarePaginator {
+    public function processRequestAndGet(Request $request, array $columns = ['*'], $searchIn = null, callable $modifyQuery = null, $locale = null) {
         // process all the basic stuff
-        $this->attachAllFromRequest($request, $searchIn);
+        $this->attachOrdering($request->input('orderBy', $this->model->getKeyName()), $request->input('orderDirection', 'asc'))
+            ->attachSearch($request->input('search', null), $searchIn)
+            ->attachPagination($request->input('page', 1), $request->input('per_page', 10));
 
         // add custom modifications
         if (!is_null($modifyQuery)) {
             $this->modifyQuery($modifyQuery);
         }
 
+        if (!is_null($locale)) {
+            $this->setLocale($locale);
+        }
+
         // execute query and get the results
-        return $this->execute($columns);
+        return $this->get($columns);
     }
 
     /**
-     * Attach ordering, search and pagination
+     * Set the locale you want to query
      *
-     * After calling this method, everything is prepared for a typical scenario
-     * and you are ready to attach custom filters or execute a query for your own.
+     * This method is only valid for Translatable models
      *
-     * @param Request $request
-     * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
+     * @param $locale
+     * @return $this
      */
-    public function attachAllFromRequest(Request $request, $searchIn = ['id']) {
-
-        $this->attachOrdering($request->input('orderBy', $this->model->getKeyName()), $request->input('orderDirection', 'asc'));
-        $this->attachSearch($request->input('search', null), $searchIn);
-        $this->attachPagination($request->input('page', 1), $request->input('per_page', 10));
-
+    public function setLocale($locale) {
+        $this->locale = $locale;
+        return $this;
     }
 
     /**
      * Attach the ordering functionality
      *
+     * Any repeated call to this method is going to have no effect and original ordering is going to be used.
+     * This is due to the limitation of the Illuminate\Database\Eloquent\Builder.
+     *
      * @param $orderBy
      * @param string $orderDirection
+     * @return $this
      */
     public function attachOrdering($orderBy, $orderDirection = 'asc') {
-        $this->query->orderBy($orderBy, $orderDirection);
+        $orderBy = $this->parseFullColumnName($orderBy);
+        $this->query->orderBy($orderBy['table'].'.'.$orderBy['column'], $orderDirection);
+
+        return $this;
     }
 
 
     /**
      * Attach the searching functionality
      *
-     * @param $search
+     * @param string $search searched string
      * @param array $searchIn array of columns which should be searched in (only text, character varying or primary key are allowed)
+     * @return $this
      */
     public function attachSearch($search, array $searchIn) {
 
         // when passed null, search is disabled
         if (is_null($searchIn)) {
-            return ;
+            return $this;
         }
 
         // if empty string, then we don't search at all
         $search = trim((string) $search);
         if ($search == '') {
-            return ;
+            return $this;
         }
 
         $tokens = collect(explode(' ', $search));
 
-        $searchIn = collect($searchIn);
+        $searchIn = collect($searchIn)->map(function($column){
+            return $this->parseFullColumnName($column);
+        });
 
         // FIXME there is an issue, if you pass primary key as the only column to search in, it may not work properly
 
-        $tokens->map(function($token) use ($searchIn) {
+        $tokens->each(function($token) use ($searchIn) {
             $this->query->where(function(Builder $query) use ($token, $searchIn) {
-                $searchIn->map(function($column) use ($token, $query) {
-                    if ($this->model->getKeyName() == $column) {
+                $searchIn->each(function($column) use ($token, $query) {
+                    // FIXME try to find out how to customize this default behaviour
+                    if ($this->model->getKeyName() == $column['column'] && $this->model->getTable() == $column['table']) {
                         if (is_numeric($token) && $token === strval(intval($token))) {
-                            $query->orWhere($this->model->getKeyName(), intval($token));
+                            $query->orWhere($column['table'].'.'.$column['column'], intval($token));
                         }
                     } else {
-                        $query->orWhere($column, 'like', '%'.$token.'%');
+                        // FIXME how to make this case insensitive when using different databases? in SQLite "like" is case-insensitive but in PostgreSQL we use there is a "ilike" operator.. so maybe we need to extract this operator and initialize it depending on a database driver
+                        $query->orWhere($column['table'].".".$column['column'], 'like', '%'.$token.'%');
                     }
                 });
             });
         });
+
+        return $this;
     }
 
     /**
@@ -156,19 +217,14 @@ class AdminListing {
      *
      * @param $currentPage
      * @param int $perPage
+     * @return $this
      */
     public function attachPagination($currentPage, $perPage = 10) {
+        $this->hasPagination = true;
         $this->currentPage = $currentPage;
         $this->perPage = $perPage;
-    }
 
-    /**
-     * This is alias for modifyQuery()
-     *
-     * @param callable $modifyQuery
-     */
-    public function attachFilters(callable $modifyQuery) {
-        $this->modifyQuery($modifyQuery);
+        return $this;
     }
 
 
@@ -176,29 +232,19 @@ class AdminListing {
      * Modify built query in any way
      *
      * @param callable $modifyQuery
+     * @return $this
      */
     public function modifyQuery(callable $modifyQuery) {
         $modifyQuery($this->query);
+
+        return $this;
     }
 
     /**
-     * Process array of params and get data
-     *
-     * Params may include:
-     * - pagination
-     * - ordering
-     * - search query
-     *
-     * If you need to include additional filters, you can manage it by
-     * modifying a query using $modifyQuery function, which receives
-     * a query as a parameter.
-     *
-     * Note that request should be authorized and validated already,
-     * as long as this method does not perform any authorization nor
-     * validation.
+     * Execute query and get data
      *
      * @param array $columns
-     * @return LengthAwarePaginator
+     * @return LengthAwarePaginator|Collection The result is either LengthAwarePaginator (when pagination was attached) or simple Collection otherwise
      */
     public function get(array $columns = ['*']) {
         $columns = collect($columns)->map(function($column) {
@@ -241,15 +287,10 @@ class AdminListing {
     }
 
 
-    private function materializeColumns(Collection $columns)
-    {
-        return $columns->map(function ($column) {
-            return $column['table'] . '.' . $column['column'];
+    private function materializeColumns(Collection $columns) {
+        return $columns->map(function($column) {
+            return $column['table'].'.'.$column['column'];
         })->toArray();
-    }
-
-    public function execute(array $columns = ['*']) : LengthAwarePaginator {
-        return $this->query->paginate($this->perPage, $columns, $this->pageColumnName, $this->currentPage);
     }
 
 }
