@@ -57,7 +57,7 @@ class OrderingTest extends TestCase
     /** @test */
     function translated_listing_supports_querying_only_some_columns() {
         $result = $this->translatedListing
-            ->attachOrdering('name->en')
+            ->attachOrdering('name')
             ->get(['published_at', 'name']);
 
         $model = $result->first();
@@ -72,7 +72,7 @@ class OrderingTest extends TestCase
     /** @test */
     function translated_listing_can_work_with_locales() {
         $result = $this->translatedListing
-            ->attachOrdering('name->sk')
+            ->attachOrdering('name')
             ->setLocale('sk')
             ->get();
 
