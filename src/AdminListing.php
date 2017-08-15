@@ -60,6 +60,16 @@ class AdminListing {
     protected $orderDirection = 'asc';
 
     /**
+     * @var string
+     */
+    protected $search;
+
+    /**
+     * @var array
+     */
+    protected $searchIn = [];
+
+    /**
      * @param $modelName
      * @return static
      */
@@ -177,6 +187,21 @@ class AdminListing {
         return $this;
     }
 
+    private function buildOrdering() {
+        if ($this->modelHasTranslations()){
+            $orderBy = $this->parseFullColumnName($this->orderBy);
+            if ($orderBy['table'] == $this->model->getTable() && in_array($orderBy['column'], $this->model->translatable)) {
+                $orderBy['column'] = "{$orderBy['column']}->{$this->locale}";
+            }
+
+            $orderBy = $this->materializeColumnName($orderBy);
+        } else {
+            $orderBy = $this->orderBy;
+        }
+
+        $this->query->orderBy($orderBy, $this->orderDirection);
+    }
+
 
     /**
      * Attach the searching functionality
@@ -186,21 +211,26 @@ class AdminListing {
      * @return $this
      */
     public function attachSearch($search, array $searchIn) {
+        $this->search = $search;
+        $this->searchIn = $searchIn;
+        return $this;
+    }
 
+    private function buildSearch() {
         // when passed null, search is disabled
-        if (is_null($searchIn)) {
-            return $this;
+        if (is_null($this->searchIn) || !is_array($this->searchIn) || count($this->searchIn) == 0) {
+            return ;
         }
 
         // if empty string, then we don't search at all
-        $search = trim((string) $search);
+        $search = trim((string) $this->search);
         if ($search == '') {
-            return $this;
+            return ;
         }
 
         $tokens = collect(explode(' ', $search));
 
-        $searchIn = collect($searchIn)->map(function($column){
+        $searchIn = collect($this->searchIn)->map(function($column){
             return $this->parseFullColumnName($column);
         });
 
@@ -221,8 +251,6 @@ class AdminListing {
                 });
             });
         });
-
-        return $this;
     }
 
     /**
@@ -265,6 +293,7 @@ class AdminListing {
         });
 
         $this->buildOrdering();
+        $this->buildSearch();
 
         if ($this->hasPagination) {
             $result = $this->query->paginate($this->perPage, $this->materializeColumnNames($columns), $this->pageColumnName, $this->currentPage);
@@ -275,21 +304,6 @@ class AdminListing {
         }
 
         return $result;
-    }
-
-    private function buildOrdering() {
-        if ($this->modelHasTranslations()){
-            $orderBy = $this->parseFullColumnName($this->orderBy);
-            if ($orderBy['table'] == $this->model->getTable() && in_array($orderBy['column'], $this->model->translatable)) {
-                $orderBy['column'] = "{$orderBy['column']}->{$this->locale}";
-            }
-
-            $orderBy = $this->materializeColumnName($orderBy);
-        } else {
-            $orderBy = $this->orderBy;
-        }
-
-        $this->query->orderBy($orderBy, $this->orderDirection);
     }
 
     protected function processResultCollection(Collection $collection) {
