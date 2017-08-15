@@ -58,18 +58,17 @@ class SearchTest extends TestCase
     /** @test */
     function translations_you_can_search_among_text_fields_and_id() {
         $result = $this->translatedListing
-            ->attachOrdering('name->en')
-            ->attachSearch('Alpha', ['id', 'name->en', 'color->en'])
+            ->attachOrdering('name')
+            ->attachSearch('Alpha', ['id', 'name', 'color'])
             ->get();
 
         $this->assertCount(1, $result);
     }
 
-    // FIXME this is temporarily commented out, until Spatie add ability to set locale on model dynamically
-//    /** @test */
+    /** @test */
     function you_cannot_search_depending_on_a_different_locale() {
         $result = $this->translatedListing
-            ->attachOrdering('name->en')
+            ->attachOrdering('name')
             ->setLocale('sk')
             ->attachSearch('Alpha', ['id', 'name', 'color'])
             ->get();
@@ -80,20 +79,19 @@ class SearchTest extends TestCase
     /** @test */
     function searching_a_number_in_translated_model() {
         $result = $this->translatedListing
-            ->attachOrdering('name->en')
-            ->attachSearch(1, ['id', 'name->en'])
+            ->attachOrdering('name')
+            ->attachSearch(1, ['id', 'name'])
             ->get();
 
         $this->assertCount(2, $result);
     }
 
-    // FIXME this is temporarily commented out, until Spatie add ability to set locale on model dynamically
     /** @test */
     function searching_a_number_in_translated_model_for_sk() {
         $result = $this->translatedListing
             ->attachOrdering('name')
             ->setLocale('sk')
-            ->attachSearch(1, ['id', 'name->sk'])
+            ->attachSearch(1, ['id', 'name'])
             ->get();
 
         $this->assertCount(1, $result);
@@ -102,8 +100,8 @@ class SearchTest extends TestCase
     /** @test */
     function searching_for_a_multiple_terms_zero() {
         $result = $this->translatedListing
-            ->attachOrdering('name->en')
-            ->attachSearch('Alpha Zeta', ['id', 'name->en', 'color->en'])
+            ->attachOrdering('name')
+            ->attachSearch('Alpha Zeta', ['id', 'name', 'color'])
             ->get();
 
         $this->assertCount(0, $result);
@@ -112,8 +110,8 @@ class SearchTest extends TestCase
     /** @test */
     function searching_for_a_multiple_terms_one() {
         $result = $this->translatedListing
-            ->attachOrdering('name->en')
-            ->attachSearch('Zeta 1', ['id', 'name->en', 'color->en'])
+            ->attachOrdering('name')
+            ->attachSearch('Zeta 1', ['id', 'name', 'color'])
             ->get();
 
         $this->assertCount(1, $result);
@@ -122,8 +120,8 @@ class SearchTest extends TestCase
     /** @test */
     function searching_for_a_multiple_terms_many() {
         $result = $this->translatedListing
-            ->attachOrdering('name->en')
-            ->attachSearch('Zeta yellow', ['id', 'name->en', 'color->en'])
+            ->attachOrdering('name')
+            ->attachSearch('Zeta yellow', ['id', 'name', 'color'])
             ->get();
 
         $this->assertCount(9, $result);
