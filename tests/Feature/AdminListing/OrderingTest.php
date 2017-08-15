@@ -71,12 +71,9 @@ class OrderingTest extends TestCase
 
     /** @test */
     function translated_listing_can_work_with_locales() {
-        // FIXME this is temp fix, until Spatie add ability to set locale on model dynamically
-        app()->setLocale('sk');
-
         $result = $this->translatedListing
             ->attachOrdering('name->sk')
-//            ->setLocale('sk')
+            ->setLocale('sk')
             ->get();
 
         $this->assertCount(10, $result);

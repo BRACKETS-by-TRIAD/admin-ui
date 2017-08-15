@@ -1,11 +1,11 @@
 <?php namespace Brackets\Admin;
 
+use Brackets\Admin\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Spatie\Translatable\HasTranslations;
 
 class AdminListing {
 
@@ -268,6 +268,18 @@ class AdminListing {
         return $this;
     }
 
+    private function buildPaginationAndGetResult($columns) {
+        if ($this->hasPagination) {
+            $result = $this->query->paginate($this->perPage, $this->materializeColumnNames($columns), $this->pageColumnName, $this->currentPage);
+            $this->processResultCollection($result->getCollection());
+        } else {
+            $result = $this->query->get($this->materializeColumnNames($columns));
+            $this->processResultCollection($result);
+        }
+
+        return $result;
+    }
+
 
     /**
      * Modify built query in any way
@@ -294,26 +306,17 @@ class AdminListing {
 
         $this->buildOrdering();
         $this->buildSearch();
-
-        if ($this->hasPagination) {
-            $result = $this->query->paginate($this->perPage, $this->materializeColumnNames($columns), $this->pageColumnName, $this->currentPage);
-            $this->processResultCollection($result->getCollection());
-        } else {
-            $result = $this->query->get($this->materializeColumnNames($columns));
-            $this->processResultCollection($result);
-        }
-
-        return $result;
+        return $this->buildPaginationAndGetResult($columns);
     }
 
     protected function processResultCollection(Collection $collection) {
-        // TODO what do we do with this? we need Spatie to update their package
-//        if ($this->modelHasTranslations()) {
-//            // we need to set this default locale ad hoc
-//            $collection->each(function ($model) {
-//                $model->locale = $this->locale;
-//            });
-//        }
+        if ($this->modelHasTranslations()) {
+            // we need to set this default locale ad hoc
+            $collection->each(function ($model) {
+                /** @var $model HasTranslations */
+                $model->setLocale($this->locale);
+            });
+        }
     }
 
     protected function parseFullColumnName($column) {
