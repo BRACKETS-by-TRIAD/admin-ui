@@ -182,15 +182,14 @@ class ProcessRequestTest extends TestCase
             ->andReturn(10);
 
         $result = $this->translatedListing
-            ->processRequestAndGet($request, ['id', 'color'], ['id', 'name->en', 'color->en']);
+            ->processRequestAndGet($request, ['id', 'color'], ['id', 'name', 'color']);
 
         $this->assertEquals(2, $result->total());
         $this->assertEquals(null, $result->getCollection()->first()->name);
         $this->assertEquals('red', $result->getCollection()->first()->color);
     }
 
-    // FIXME this is temporarily commented out, until Spatie add ability to set locale on model dynamically
-//    /** @test */
+    /** @test */
     function request_processing_on_translatable_model_with_sk_locale() {
         $request = Mockery::mock(Request::class);
 

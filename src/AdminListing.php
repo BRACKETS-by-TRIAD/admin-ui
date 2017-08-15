@@ -189,12 +189,7 @@ class AdminListing {
 
     private function buildOrdering() {
         if ($this->modelHasTranslations()){
-            $orderBy = $this->parseFullColumnName($this->orderBy);
-            if ($orderBy['table'] == $this->model->getTable() && in_array($orderBy['column'], $this->model->translatable)) {
-                $orderBy['column'] = "{$orderBy['column']}->{$this->locale}";
-            }
-
-            $orderBy = $this->materializeColumnName($orderBy);
+            $orderBy = $this->materializeColumnName($this->parseFullColumnName($this->orderBy), true);
         } else {
             $orderBy = $this->orderBy;
         }
@@ -242,11 +237,11 @@ class AdminListing {
                     // FIXME try to find out how to customize this default behaviour
                     if ($this->model->getKeyName() == $column['column'] && $this->model->getTable() == $column['table']) {
                         if (is_numeric($token) && $token === strval(intval($token))) {
-                            $query->orWhere($column['table'].'.'.$column['column'], intval($token));
+                            $query->orWhere($this->materializeColumnName($column, true), intval($token));
                         }
                     } else {
                         // FIXME how to make this case insensitive when using different databases? in SQLite "like" is case-insensitive but in PostgreSQL we use there is a "ilike" operator.. so maybe we need to extract this operator and initialize it depending on a database driver
-                        $query->orWhere($column['table'].".".$column['column'], 'like', '%'.$token.'%');
+                        $query->orWhere($this->materializeColumnName($column, true), 'like', '%'.$token.'%');
                     }
                 });
             });
@@ -267,19 +262,6 @@ class AdminListing {
 
         return $this;
     }
-
-    private function buildPaginationAndGetResult($columns) {
-        if ($this->hasPagination) {
-            $result = $this->query->paginate($this->perPage, $this->materializeColumnNames($columns), $this->pageColumnName, $this->currentPage);
-            $this->processResultCollection($result->getCollection());
-        } else {
-            $result = $this->query->get($this->materializeColumnNames($columns));
-            $this->processResultCollection($result);
-        }
-
-        return $result;
-    }
-
 
     /**
      * Modify built query in any way
@@ -306,7 +288,20 @@ class AdminListing {
 
         $this->buildOrdering();
         $this->buildSearch();
+
         return $this->buildPaginationAndGetResult($columns);
+    }
+
+    private function buildPaginationAndGetResult($columns) {
+        if ($this->hasPagination) {
+            $result = $this->query->paginate($this->perPage, $this->materializeColumnNames($columns), $this->pageColumnName, $this->currentPage);
+            $this->processResultCollection($result->getCollection());
+        } else {
+            $result = $this->query->get($this->materializeColumnNames($columns));
+            $this->processResultCollection($result);
+        }
+
+        return $result;
     }
 
     protected function processResultCollection(Collection $collection) {
@@ -326,20 +321,25 @@ class AdminListing {
             $table = $this->model->getTable();
         }
 
-        return compact('table', 'column');
+        $translatable = false;
+        if (is_array($this->model->translatable) && in_array($column, $this->model->translatable)) {
+            $translatable = true;
+        }
+
+        return compact('table', 'column', 'translatable');
     }
 
-    protected function materializeColumnName($column) {
-        return $column['table'].'.'.$column['column'];
+    protected function materializeColumnName($column, $translated = false) {
+        return $column['table'].'.'.$column['column'].($translated ? ($column['translatable'] ? '->'.$this->locale : '') : '');
     }
 
     protected function modelHasTranslations() {
         return $this->modelHasTranslations;
     }
 
-    protected function materializeColumnNames(Collection $columns) {
-        return $columns->map(function($column) {
-            return $this->materializeColumnName($column);
+    protected function materializeColumnNames(Collection $columns, $translated = false) {
+        return $columns->map(function($column) use ($translated) {
+            return $this->materializeColumnName($column, $translated);
         })->toArray();
     }
 
