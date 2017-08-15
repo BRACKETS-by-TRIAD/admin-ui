@@ -1,7 +1,7 @@
 <?php namespace Brackets\Admin\Tests;
 
+use Brackets\Admin\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations;
 
 class TestTranslatableModel extends Model
 {
