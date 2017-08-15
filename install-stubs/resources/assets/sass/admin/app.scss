@@ -300,3 +300,7 @@ table .row.no-gutters .btn-info {
 .loading .v--modal-overlay {
   display: none;
 }
+
+.btn:hover, .btn:active, .btn:focus, .btn:visited {
+  color: white;
+}
