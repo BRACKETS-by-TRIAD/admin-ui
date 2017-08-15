@@ -23,19 +23,11 @@
                 <span class="caret"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-header text-xs-center"><strong>Account</strong></div>
-                <a href="#" class="dropdown-item"><i class="fa fa-bell-o"></i> Updates<span class="badge badge-info">42</span></a>
-                <a href="#" class="dropdown-item"><i class="fa fa-envelope-o"></i> Messages<span class="badge badge-success">42</span></a>
-                <a href="#" class="dropdown-item"><i class="fa fa-tasks"></i> Tasks<span class="badge badge-danger">42</span></a>
-                <a href="#" class="dropdown-item"><i class="fa fa-comments"></i> Comments<span class="badge badge-warning">42</span></a>
-                <div class="dropdown-header text-center"><strong>Settings</strong></div>
-                <a href="#" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
+                <div class="dropdown-header text-center"><strong>Account</strong></div>
+                <a href="{{ route('admin/profile/edit') }}" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
+                <a href="{{ route('admin/password/edit') }}" class="dropdown-item"><i class="fa fa-key"></i> Password</a>
                 <a href="#" class="dropdown-item"><i class="fa fa-wrench"></i> Settings</a>
-                <a href="#" class="dropdown-item"><i class="fa fa-usd"></i> Payments<span class="badge badge-default">42</span></a>
-                <a href="#" class="dropdown-item"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
-                <div class="divider"></div>
-                <a href="#" class="dropdown-item"><i class="fa fa-shield"></i> Lock Account</a>
-                <a href="#" class="dropdown-item"><i class="fa fa-lock"></i> Logout</a>
+                <a href="{{ route('brackets/admin-auth:admin/logout') }}" class="dropdown-item"><i class="fa fa-lock"></i> Logout</a>
             </div>
         </li>
     </ul>

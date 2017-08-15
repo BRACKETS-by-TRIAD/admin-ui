@@ -243,3 +243,40 @@ table .row.no-gutters .btn-info {
   background: $success !important;
   border-color: $success;
 }
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .23);
+}
+
+.dropdown-header {
+  background: $primary;
+  color: white;
+  border-bottom: none;
+}
+
+.dropdown-item {
+  border-bottom: 1px solid #F0F2F4;
+}
+
+.badge-info {
+  background-color: $primary;
+}
+
+.badge-success {
+  background-color: $success;
+}
+
+.badge-danger {
+  background-color: $danger;
+}
+
+.badge-warning {
+  background-color: $warning;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  color: #263238;
+  text-decoration: none;
+  background-color: white;
+}
