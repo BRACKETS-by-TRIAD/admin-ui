@@ -32,6 +32,7 @@ class OrderingTest extends TestCase
                 ->attachOrdering('not_existing_column_name')
                 ->get();
         } catch (QueryException $e) {
+            $this->assertTrue(true);
             return ;
         }
 

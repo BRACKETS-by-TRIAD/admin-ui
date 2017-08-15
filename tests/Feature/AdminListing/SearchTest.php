@@ -124,7 +124,7 @@ class SearchTest extends TestCase
         $result = $this->translatedListing
             ->attachOrdering('name->en')
             ->attachSearch('Zeta yellow', ['id', 'name->en', 'color->en'])
-            ->get();
+            ->get(['*']);
 
         $this->assertCount(9, $result);
     }

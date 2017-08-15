@@ -282,14 +282,17 @@ class AdminListing {
         return compact('table', 'column');
     }
 
+    protected function materializeColumn($column) {
+        return $column['table'].'.'.$column['column'];
+    }
+
     protected function modelHasTranslations() {
         return $this->modelHasTranslations;
     }
 
-
-    private function materializeColumns(Collection $columns) {
+    protected function materializeColumns(Collection $columns) {
         return $columns->map(function($column) {
-            return $column['table'].'.'.$column['column'];
+            return $this->materializeColumn($column);
         })->toArray();
     }
 
