@@ -52,6 +52,16 @@ class AdminListing {
     protected $locale;
 
     /**
+     * @var string
+     */
+    protected $orderBy;
+
+    /**
+     * @var string
+     */
+    protected $orderDirection = 'asc';
+
+    /**
      * @param $modelName
      * @return static
      */
@@ -80,14 +90,22 @@ class AdminListing {
 
         $this->model = $model;
 
+        $this->init();
+
+        return $this;
+    }
+
+    private function init() {
+
         if (in_array(HasTranslations::class, class_uses($this->model))) {
             $this->modelHasTranslations = true;
             $this->locale = $this->model->locale ?: app()->getLocale();
         }
 
-        $this->query = $model->newQuery();
+        $this->query = $this->model->newQuery();
 
-        return $this;
+        $this->orderBy = $this->model->getKeyName();
+
     }
 
     /**
@@ -158,9 +176,8 @@ class AdminListing {
      * @return $this
      */
     public function attachOrdering($orderBy, $orderDirection = 'asc') {
-        $orderBy = $this->parseFullColumnName($orderBy);
-        $this->query->orderBy($orderBy['table'].'.'.$orderBy['column'], $orderDirection);
-
+        $this->orderBy = $orderBy;
+        $this->orderDirection = $orderDirection;
         return $this;
     }
 
@@ -250,6 +267,8 @@ class AdminListing {
         $columns = collect($columns)->map(function($column) {
             return $this->parseFullColumnName($column);
         });
+
+        $this->query->orderBy($this->orderBy, $this->orderDirection);
 
         if ($this->hasPagination) {
             $result = $this->query->paginate($this->perPage, $this->materializeColumns($columns), $this->pageColumnName, $this->currentPage);

@@ -88,12 +88,12 @@ class SearchTest extends TestCase
     }
 
     // FIXME this is temporarily commented out, until Spatie add ability to set locale on model dynamically
-//    /** @test */
+    /** @test */
     function searching_a_number_in_translated_model_for_sk() {
         $result = $this->translatedListing
             ->attachOrdering('name')
             ->setLocale('sk')
-            ->attachSearch(1, ['id', 'name'])
+            ->attachSearch(1, ['id', 'name->sk'])
             ->get();
 
         $this->assertCount(1, $result);
@@ -124,7 +124,7 @@ class SearchTest extends TestCase
         $result = $this->translatedListing
             ->attachOrdering('name->en')
             ->attachSearch('Zeta yellow', ['id', 'name->en', 'color->en'])
-            ->get(['*']);
+            ->get();
 
         $this->assertCount(9, $result);
     }
