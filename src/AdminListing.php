@@ -1,13 +1,11 @@
 <?php namespace Brackets\Admin;
 
-use Dimsav\Translatable\Translatable;
+use Brackets\Admin\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Spatie\Translatable\HasTranslations;
 
 class AdminListing {
 
@@ -60,6 +58,16 @@ class AdminListing {
      * @var string
      */
     protected $orderDirection = 'asc';
+
+    /**
+     * @var string
+     */
+    protected $search;
+
+    /**
+     * @var array
+     */
+    protected $searchIn = [];
 
     /**
      * @param $modelName
@@ -115,14 +123,12 @@ class AdminListing {
      *
      * You can specify columns which should be searched
      *
-     *
      * If you need to include additional filters, you can manage it by
      * modifying a query using $modifyQuery function, which receives
      * a query as a parameter.
      *
-     * If your model is Dimsav\Translatable\Translatable, translation will be automatically loaded. You can specify
-     * locale which should be loaded. When filtering, searching and ordering you can use columns from Translatable
-     * model as well.
+     * If your model has translations, you can specify locale which should be loaded.
+     * When searching and ordering, this locale will be appended to the query in appropriate places as well.
      *
      * This method does not perform any authorization nor validation.
      *
@@ -181,6 +187,16 @@ class AdminListing {
         return $this;
     }
 
+    private function buildOrdering() {
+        if ($this->modelHasTranslations()){
+            $orderBy = $this->materializeColumnName($this->parseFullColumnName($this->orderBy), true);
+        } else {
+            $orderBy = $this->orderBy;
+        }
+
+        $this->query->orderBy($orderBy, $this->orderDirection);
+    }
+
 
     /**
      * Attach the searching functionality
@@ -190,21 +206,26 @@ class AdminListing {
      * @return $this
      */
     public function attachSearch($search, array $searchIn) {
+        $this->search = $search;
+        $this->searchIn = $searchIn;
+        return $this;
+    }
 
+    private function buildSearch() {
         // when passed null, search is disabled
-        if (is_null($searchIn)) {
-            return $this;
+        if (is_null($this->searchIn) || !is_array($this->searchIn) || count($this->searchIn) == 0) {
+            return ;
         }
 
         // if empty string, then we don't search at all
-        $search = trim((string) $search);
+        $search = trim((string) $this->search);
         if ($search == '') {
-            return $this;
+            return ;
         }
 
         $tokens = collect(explode(' ', $search));
 
-        $searchIn = collect($searchIn)->map(function($column){
+        $searchIn = collect($this->searchIn)->map(function($column){
             return $this->parseFullColumnName($column);
         });
 
@@ -216,17 +237,15 @@ class AdminListing {
                     // FIXME try to find out how to customize this default behaviour
                     if ($this->model->getKeyName() == $column['column'] && $this->model->getTable() == $column['table']) {
                         if (is_numeric($token) && $token === strval(intval($token))) {
-                            $query->orWhere($column['table'].'.'.$column['column'], intval($token));
+                            $query->orWhere($this->materializeColumnName($column, true), intval($token));
                         }
                     } else {
                         // FIXME how to make this case insensitive when using different databases? in SQLite "like" is case-insensitive but in PostgreSQL we use there is a "ilike" operator.. so maybe we need to extract this operator and initialize it depending on a database driver
-                        $query->orWhere($column['table'].".".$column['column'], 'like', '%'.$token.'%');
+                        $query->orWhere($this->materializeColumnName($column, true), 'like', '%'.$token.'%');
                     }
                 });
             });
         });
-
-        return $this;
     }
 
     /**
@@ -243,7 +262,6 @@ class AdminListing {
 
         return $this;
     }
-
 
     /**
      * Modify built query in any way
@@ -268,13 +286,18 @@ class AdminListing {
             return $this->parseFullColumnName($column);
         });
 
-        $this->query->orderBy($this->orderBy, $this->orderDirection);
+        $this->buildOrdering();
+        $this->buildSearch();
 
+        return $this->buildPaginationAndGetResult($columns);
+    }
+
+    private function buildPaginationAndGetResult($columns) {
         if ($this->hasPagination) {
-            $result = $this->query->paginate($this->perPage, $this->materializeColumns($columns), $this->pageColumnName, $this->currentPage);
+            $result = $this->query->paginate($this->perPage, $this->materializeColumnNames($columns), $this->pageColumnName, $this->currentPage);
             $this->processResultCollection($result->getCollection());
         } else {
-            $result = $this->query->get($this->materializeColumns($columns));
+            $result = $this->query->get($this->materializeColumnNames($columns));
             $this->processResultCollection($result);
         }
 
@@ -282,13 +305,13 @@ class AdminListing {
     }
 
     protected function processResultCollection(Collection $collection) {
-        // TODO what do we do with this? we need Spatie to update their package
-//        if ($this->modelHasTranslations()) {
-//            // we need to set this default locale ad hoc
-//            $collection->each(function ($model) {
-//                $model->locale = $this->locale;
-//            });
-//        }
+        if ($this->modelHasTranslations()) {
+            // we need to set this default locale ad hoc
+            $collection->each(function ($model) {
+                /** @var $model HasTranslations */
+                $model->setLocale($this->locale);
+            });
+        }
     }
 
     protected function parseFullColumnName($column) {
@@ -298,20 +321,25 @@ class AdminListing {
             $table = $this->model->getTable();
         }
 
-        return compact('table', 'column');
+        $translatable = false;
+        if (is_array($this->model->translatable) && in_array($column, $this->model->translatable)) {
+            $translatable = true;
+        }
+
+        return compact('table', 'column', 'translatable');
     }
 
-    protected function materializeColumn($column) {
-        return $column['table'].'.'.$column['column'];
+    protected function materializeColumnName($column, $translated = false) {
+        return $column['table'].'.'.$column['column'].($translated ? ($column['translatable'] ? '->'.$this->locale : '') : '');
     }
 
     protected function modelHasTranslations() {
         return $this->modelHasTranslations;
     }
 
-    protected function materializeColumns(Collection $columns) {
-        return $columns->map(function($column) {
-            return $this->materializeColumn($column);
+    protected function materializeColumnNames(Collection $columns, $translated = false) {
+        return $columns->map(function($column) use ($translated) {
+            return $this->materializeColumnName($column, $translated);
         })->toArray();
     }
 

@@ -23,7 +23,7 @@ class PaginationTest extends TestCase
     /** @test */
     function listing_pagination_works_on_translatable_model_too() {
         $result = $this->translatedListing
-            ->attachOrdering('name->en')
+            ->attachOrdering('name')
             ->attachPagination(2, 3)
             ->get();
 
@@ -37,12 +37,9 @@ class PaginationTest extends TestCase
 
     /** @test */
     function listing_pagination_works_on_translatable_model_with_locale_sk() {
-        // FIXME this is temp fix, until Spatie add ability to set locale on model dynamically
-        app()->setLocale('sk');
-
         $result = $this->translatedListing
-            ->attachOrdering('name->sk')
-//            ->setLocale('sk')
+            ->attachOrdering('name')
+            ->setLocale('sk')
             ->attachPagination(1, 3)
             ->get();
 
