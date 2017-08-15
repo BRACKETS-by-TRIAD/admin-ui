@@ -1,9 +1,7 @@
 <?php namespace Brackets\Admin;
 
-use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -115,14 +113,12 @@ class AdminListing {
      *
      * You can specify columns which should be searched
      *
-     *
      * If you need to include additional filters, you can manage it by
      * modifying a query using $modifyQuery function, which receives
      * a query as a parameter.
      *
-     * If your model is Dimsav\Translatable\Translatable, translation will be automatically loaded. You can specify
-     * locale which should be loaded. When filtering, searching and ordering you can use columns from Translatable
-     * model as well.
+     * If your model has translations, you can specify locale which should be loaded.
+     * When searching and ordering, this locale will be appended to the query in appropriate places as well.
      *
      * This method does not perform any authorization nor validation.
      *
@@ -268,17 +264,32 @@ class AdminListing {
             return $this->parseFullColumnName($column);
         });
 
-        $this->query->orderBy($this->orderBy, $this->orderDirection);
+        $this->buildOrdering();
 
         if ($this->hasPagination) {
-            $result = $this->query->paginate($this->perPage, $this->materializeColumns($columns), $this->pageColumnName, $this->currentPage);
+            $result = $this->query->paginate($this->perPage, $this->materializeColumnNames($columns), $this->pageColumnName, $this->currentPage);
             $this->processResultCollection($result->getCollection());
         } else {
-            $result = $this->query->get($this->materializeColumns($columns));
+            $result = $this->query->get($this->materializeColumnNames($columns));
             $this->processResultCollection($result);
         }
 
         return $result;
+    }
+
+    private function buildOrdering() {
+        if ($this->modelHasTranslations()){
+            $orderBy = $this->parseFullColumnName($this->orderBy);
+            if ($orderBy['table'] == $this->model->getTable() && in_array($orderBy['column'], $this->model->translatable)) {
+                $orderBy['column'] = "{$orderBy['column']}->{$this->locale}";
+            }
+
+            $orderBy = $this->materializeColumnName($orderBy);
+        } else {
+            $orderBy = $this->orderBy;
+        }
+
+        $this->query->orderBy($orderBy, $this->orderDirection);
     }
 
     protected function processResultCollection(Collection $collection) {
@@ -301,7 +312,7 @@ class AdminListing {
         return compact('table', 'column');
     }
 
-    protected function materializeColumn($column) {
+    protected function materializeColumnName($column) {
         return $column['table'].'.'.$column['column'];
     }
 
@@ -309,9 +320,9 @@ class AdminListing {
         return $this->modelHasTranslations;
     }
 
-    protected function materializeColumns(Collection $columns) {
+    protected function materializeColumnNames(Collection $columns) {
         return $columns->map(function($column) {
-            return $this->materializeColumn($column);
+            return $this->materializeColumnName($column);
         })->toArray();
     }
 
