@@ -304,3 +304,15 @@ table .row.no-gutters .btn-info {
 .btn:hover, .btn:active, .btn:focus, .btn:visited {
   color: white;
 }
+
+.avatar-initials {
+  background-color: $primary;
+  color: white;
+  display: inline-block;
+  margin: 0 10px;
+  letter-spacing: 0;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  border-radius: 100%;
+}
