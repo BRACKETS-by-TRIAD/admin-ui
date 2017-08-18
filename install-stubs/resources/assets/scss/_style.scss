@@ -1,0 +1,195 @@
+.btn {
+  cursor: pointer;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+.form-control.flatpickr {
+  background-color: white;
+}
+
+.has-success .form-control {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%234dbd74' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
+  padding-right: 3rem;
+  background-repeat: no-repeat;
+  background-position: center right 0.52344rem;
+  background-size: 1.04688rem 1.04688rem;
+}
+
+.has-danger .ql-toolbar.ql-snow {
+  border: 1px solid red;
+  border-bottom: 1px solid #ccc;
+}
+
+.has-success .ql-toolbar.ql-snow {
+  border: 1px solid green;
+  border-bottom: 1px solid #ccc;
+}
+
+.has-danger .ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border: 1px solid red;
+  border-top: 0;
+}
+
+.has-success .ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border: 1px solid green;
+  border-top: 0;
+}
+
+.notifications {
+  margin: 10px;
+}
+
+.vue-notification {
+  box-shadow: 0 0 12px #999;
+}
+
+.loading .card-block {
+  position: relative;
+  pointer-events: none;
+}
+
+.loading .card-block:before {
+  content: $loader;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255,255,255,0.75);
+  z-index: 3;
+}
+
+.header-fixed .app-header {
+  padding-right: 20px;
+}
+
+table th a:not([href]) {
+  cursor: pointer;
+}
+
+.ql-editor {
+  min-height: 200px;
+}
+
+.ql-container .ql-editor.ql-blank::before {
+  font-style: normal;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  color: #B2BDC5;
+}
+
+.nav .dropdown-menu {
+  border-radius: 0;
+  margin-top: 13px;
+}
+
+@media (min-width: 576px) {
+  .control-label {
+    margin-top: 7px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container-xl {
+    margin-right: auto;
+    margin-left: auto;
+    width: 1140px;
+    max-width: 100%;
+  }
+}
+
+
+// fli
+body {
+  background-color: #F5F8FF;
+}
+
+.sidebar {
+  background: #485779;
+}
+
+.sidebar .nav .nav-item .nav-link.active, .sidebar .nav .nav-item .navbar .active.dropdown-toggle, .navbar .sidebar .nav .nav-item .active.dropdown-toggle {
+  background: $primary;
+}
+
+.sidebar .nav .nav-item .nav-link:hover, .sidebar .nav .nav-item .navbar .dropdown-toggle:hover, .navbar .sidebar .nav .nav-item .dropdown-toggle:hover {
+  background: $primary !important;
+}
+
+.sidebar .nav .nav-item .nav-link.active i, .sidebar .nav .nav-item .navbar .active.dropdown-toggle i, .navbar .sidebar .nav .nav-item .active.dropdown-toggle i {
+  color: white;
+}
+
+.breadcrumb {
+  display: none;
+}
+
+main.main {
+  margin-top: 1.5rem;
+}
+
+.card-header {
+  background-color: white;
+  border-bottom: 1px solid rgba(207, 216, 220, 0.35);
+  color: $primary;
+  font-weight: 600;
+}
+
+.btn-primary, .btn-info {
+  background-color: $primary;
+  border-color: $primary;
+  &:hover {
+    background-color: darken($primary, 10);
+    border-color: darken($primary, 10);
+  }
+}
+
+.btn-danger {
+  background-color: $danger;
+  border-color: $danger;
+  &:hover {
+    background-color: darken($danger, 10);
+    border-color: darken($danger, 10);
+  }
+}
+
+.table-hover tbody tr:hover {
+  background-color: #EDF3FE;
+}
+
+.table thead th {
+  border-bottom: 1px solid #F0F2F5;
+  border-top: 1px solid #DEE3E7;
+}
+
+.table td {
+  border-top: 1px solid #F0F2F5;
+  vertical-align: middle;
+}
+
+table .row.no-gutters .btn-info {
+  margin-right: 10px;
+}
+
+.page-item.active .page-link, .pagination-datatables li.active .page-link, .pagination li.active .page-link, .page-item.active .pagination-datatables li a, .pagination-datatables li .page-item.active a, .pagination-datatables li.active a, .page-item.active .pagination li a, .pagination li .page-item.active a, .pagination li.active a {
+  background-color: $primary;
+  border-color: $primary;
+  &:hover {
+    color: white;
+  }
+}
+
+.app-footer {
+  background: none;
+  border: none;
+  color: #C6C9CE;
+  a {
+    color: #C6C9CE;
+  }
+}
