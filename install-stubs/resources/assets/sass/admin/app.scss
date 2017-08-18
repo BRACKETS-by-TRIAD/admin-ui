@@ -157,6 +157,7 @@ main.main {
   border-bottom: 1px solid rgba(207, 216, 220, 0.35);
   color: $primary;
   font-weight: 600;
+  padding: 1.25rem;
 }
 
 .btn-primary, .btn-info {
@@ -191,6 +192,10 @@ main.main {
 }
 
 .table thead th {
+  border: none;
+}
+
+.table thead tr {
   border-bottom: 1px solid #F0F2F5;
   border-top: 1px solid #DEE3E7;
 }
@@ -327,11 +332,11 @@ table .row.no-gutters .btn-info {
 .sidebar-collapse {
   display: flex;
   padding: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.34);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   text-align: center;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.6);
   i.fa-angle-double-right {
     display: none;
   }
@@ -352,7 +357,7 @@ table .row.no-gutters .btn-info {
   transition: all 0.3s;
   .nav-item {
     transition: none;
-    width: 200px;
+    width: 220px;
   }
 }
 
@@ -375,6 +380,27 @@ table .row.no-gutters .btn-info {
     max-height: 35px;
   }
 }
+
+.table td:last-of-type {
+  min-width: 95px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination {
+  margin-bottom: 28px;
+}
+
+.pagination-caption {
+  position: relative;
+  top: 6px;
+}
+
+.card-block {
+  padding-bottom: 0;
+}
+
+
 
 @media (min-width: 992px) {
   .sidebar-mini {
@@ -416,4 +442,44 @@ table .row.no-gutters .btn-info {
   .app-header .navbar-brand {
     text-align: center;
   }
+  .table {
+    th, td { display: none;}
+    tr {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    th:last-of-type,
+    td:last-of-type,
+    th:nth-of-type(2),
+    td:nth-of-type(2) {
+      display: flex;
+    }
+  }
+
+  td:nth-of-type(2) {
+    overflow: hidden;
+  }
 }
+
+@media (max-width: 575px) {
+  .pagination-caption {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    top: 0;
+  }
+  .pagination {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 450px) {
+  .card-header > .btn.pull-right {
+    display: block;
+    float: none;
+    margin-top: 15px;
+  }
+}
+
+

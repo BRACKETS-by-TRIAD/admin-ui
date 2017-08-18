@@ -153,3 +153,16 @@ function init(url) {
     $('[rel="popover"],[data-rel="popover"],[data-toggle="popover"]').popover();
 
 }
+
+function recalculateTables() {
+    var tableMaxWidth = $('.card-block').width();
+    $('td:nth-of-type(2)').css({'max-width':tableMaxWidth-95+'px'});
+}
+
+recalculateTables();
+$(window).on('resize', function(){
+    if ($(this).width() <= 991) {
+        recalculateTables();
+
+    }
+});
