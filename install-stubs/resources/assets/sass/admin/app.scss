@@ -360,6 +360,22 @@ table .row.no-gutters .btn-info {
   outline: none;
 }
 
+.app-header.navbar .navbar-brand {
+  padding: 0.5rem 1rem;
+  color: #4273fa;
+  font-weight: 600;
+  display: inline;
+  width: auto;
+  height: auto;
+  margin-right: 1rem;
+  background: none !important;
+  border: none;
+  img {
+    max-width: 200px;
+    max-height: 35px;
+  }
+}
+
 @media (min-width: 992px) {
   .sidebar-mini {
     .sidebar {
@@ -396,5 +412,8 @@ table .row.no-gutters .btn-info {
 @media (max-width: 991px) {
   .sidebar-collapse {
     display: none;
+  }
+  .app-header .navbar-brand {
+    text-align: center;
   }
 }
