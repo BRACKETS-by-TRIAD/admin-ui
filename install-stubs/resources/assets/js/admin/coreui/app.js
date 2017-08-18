@@ -97,6 +97,11 @@ $(document).ready(function($){
 
     });
 
+    $('.sidebar-collapse').on('click', function(){
+        $('body').toggleClass('sidebar-mini');
+        resizeBroadcast();
+    });
+
     $('.dropdown-menu.dropdown-menu-right').on('mouseleave', function(){
         $(this).parent('.dropdown').removeClass('open');
     });
