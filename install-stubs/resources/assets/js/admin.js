@@ -19,6 +19,14 @@ Vue.use(VueQuillEditor);
 Vue.use(Notifications);
 Vue.component('datetime', flatPickr);
 
+// modal
+import VModal from 'vue-js-modal'
+Vue.use(VModal, { dialog: true });
+
+// multiselect
+import Multiselect from 'vue-multiselect'
+Vue.component(Multiselect);
+
 new Vue({
     mixins: [require('admin')],
 });

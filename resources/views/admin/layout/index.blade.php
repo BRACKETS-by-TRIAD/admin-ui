@@ -7,16 +7,22 @@
 @section('content')
     <div class="app-body">
 
-        @include('admin.layout.sidebar')
+        @if(View::exists('admin.layout.sidebar'))
+            @include('admin.layout.sidebar')
+        @endif
 
         <main class="main">
 
             @include('brackets/admin::admin.partials.breadcrumb')
 
             <div class="container-fluid" id="app" :class="{'loading': loading}">
+                <div class="modals">
+                    <v-dialog/>
+                </div>
                 <div>
                     <notifications position="bottom right" :duration="1000" />
                 </div>
+
                 @yield('title')
 
                 @yield('body')
