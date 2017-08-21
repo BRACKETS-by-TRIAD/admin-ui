@@ -20,19 +20,7 @@ class TranslatableServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerTranslatable();
-    }
-
-    /**
-     * Register the password broker instance.
-     *
-     * @return void
-     */
-    protected function registerTranslatable()
-    {
-        $this->app->singleton('translatable', function ($app) {
-            return new Translatable($app);
-        });
+        $this->app->singleton('translatable', Translatable::class);
     }
 
     /**

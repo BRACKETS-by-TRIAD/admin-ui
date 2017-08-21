@@ -7,17 +7,6 @@ use Illuminate\Support\Facades\Config;
 class Translatable
 {
     /**
-     * Create a new Translatable instance.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    public function __construct($app)
-    {
-        $this->app = $app;
-    }
-
-    /**
      * Attempt to get all locales.
      *
      * @return array

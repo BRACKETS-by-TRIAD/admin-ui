@@ -5,7 +5,7 @@ namespace Brackets\Admin\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Brackets\AdminTraslations\Auth\Activations\ActivationBroker
+ * @see \Brackets\Admin\Translatable
  */
 class Translatable extends Facade
 {
