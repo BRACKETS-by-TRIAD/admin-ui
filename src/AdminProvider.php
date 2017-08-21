@@ -27,6 +27,7 @@ class AdminProvider extends ServiceProvider
         ], 'config');
 
         $this->app->register(ViewComposerProvider::class);
+        $this->app->register(TranslatableServiceProvider::class);
     }
 
     /**
