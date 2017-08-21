@@ -1,6 +1,6 @@
 <?php namespace Brackets\Admin;
 
-use Brackets\AdminGenerator\Generate\ModelFactory;
+use Brackets\Admin\Facades\Translatable;
 use Illuminate\Support\ServiceProvider;
 
 class AdminProvider extends ServiceProvider
@@ -39,5 +39,8 @@ class AdminProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../install-stubs/config/translatable.php', 'translatable'
         );
+
+        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        $loader->alias('Translatable', Translatable::class);
     }
 }
