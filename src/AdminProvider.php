@@ -1,6 +1,5 @@
 <?php namespace Brackets\Admin;
 
-use Brackets\Admin\Facades\Translatable;
 use Illuminate\Support\ServiceProvider;
 
 class AdminProvider extends ServiceProvider
@@ -22,12 +21,6 @@ class AdminProvider extends ServiceProvider
             __DIR__.'/../install-stubs/resources/views' => resource_path('views')
         ], 'views');
 
-        $this->publishes([
-            __DIR__.'/../install-stubs/config/translatable.php' => config_path('translatable.php'),
-        ], 'config');
-
-        $this->app->register(ViewComposerProvider::class);
-        $this->app->register(TranslatableServiceProvider::class);
     }
 
     /**
@@ -37,11 +30,6 @@ class AdminProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__.'/../install-stubs/config/translatable.php', 'translatable'
-        );
 
-        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-        $loader->alias('Translatable', Translatable::class);
     }
 }
