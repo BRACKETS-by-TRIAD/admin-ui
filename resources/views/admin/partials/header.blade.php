@@ -8,11 +8,11 @@
 {{--</ul>--}}
 {{--</header>--}}
 <header class="app-header navbar">
-    <button type="button" class="navbar-toggler mobile-sidebar-toggler hidden-md-up">☰</button>
-    <a href="#" class="navbar-brand"></a>
-    <ul class="nav navbar-nav hidden-md-down">
-        <li class="nav-item"><a href="#" class="nav-link navbar-toggler sidebar-toggler">☰</a></li>
-    </ul>
+    <button type="button" class="navbar-toggler mobile-sidebar-toggler hidden-lg-up">☰</button>
+    <a href="#" class="navbar-brand">
+        {{--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/640px-Ikea_logo.svg.png" alt="">--}}
+        Simpleweb
+    </a>
     <ul class="nav navbar-nav ml-auto">
         <li class="nav-item dropdown">
             <a role="button" class="dropdown-toggle nav-link">
