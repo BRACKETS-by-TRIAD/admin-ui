@@ -12,10 +12,6 @@
 
     <title>Admin Interface</title>
 
-    <!-- Icons -->
-    <link href="/coreui/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/coreui/css/simple-line-icons.css" rel="stylesheet">
-
     @include('brackets/admin::admin.partials.main-styles')
     @yield('styles')
 </head>
