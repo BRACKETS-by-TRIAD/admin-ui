@@ -20,7 +20,7 @@
                     {{-- TODO ked bude hotova moznost pridania avataru, tak checknut, ci nema avatar a ak nie, tak potom az fallbacknut na tieto iniciale --}}
                     @if(false)
                         <img src="https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/13244724_10208295874827525_7511406720245766894_n.jpg?oh=e2e824a75303d406e2c6f0817b55dc6b&oe=59F9FFA7" alt="admin@bootstrapmaster.com" class="img-avatar">
-                    @elseif(Auth::user()->first_name && Auth::user()->last_name)
+                    @elseif(Auth::check() && Auth::user()->first_name && Auth::user()->last_name)
                         <span class="avatar-initials">{{ mb_substr(Auth::user()->first_name, 0, 1) }}{{ mb_substr(Auth::user()->last_name, 0, 1) }}</span>
                     @else
                         <span class="avatar-initials"><i class="fa fa-user"></i></span>
