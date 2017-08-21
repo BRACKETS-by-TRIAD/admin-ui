@@ -1,4 +1,6 @@
-module.exports = {
+import moment from 'moment';
+
+export default {
     data: function() {
         return {
             pagination : {
