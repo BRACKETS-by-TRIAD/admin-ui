@@ -13,8 +13,6 @@
 
         <main class="main">
 
-            @include('brackets/admin::admin.partials.breadcrumb')
-
             <div class="container-fluid" id="app" :class="{'loading': loading}">
                 <div class="modals">
                     <v-dialog/>
