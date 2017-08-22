@@ -21,10 +21,21 @@
         "php": ">=7.0.0",
         "illuminate/support": "5.4.*"
     },
+    "require-dev": {
+        "orchestra/testbench": "~3.0",
+        "phpunit/phpunit": "~6.3",
+        "mockery/mockery": "0.9.*",
+        "laravel/dusk": "~1.1"
+    },
     "autoload": {
         "classmap": [],
         "psr-4": {
             "Brackets\\Admin\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Brackets\\Admin\\Tests\\": "tests/"
         }
     }
 }
