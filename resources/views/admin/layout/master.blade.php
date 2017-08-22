@@ -13,7 +13,9 @@
     <title>Admin Interface</title>
 
     @include('brackets/admin::admin.partials.main-styles')
+
     @yield('styles')
+
 </head>
 
 <body class="app header-fixed sidebar-fixed">

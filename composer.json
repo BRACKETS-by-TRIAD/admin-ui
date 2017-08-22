@@ -21,10 +21,20 @@
         "php": ">=7.0.0",
         "illuminate/support": "5.4.*"
     },
+    "require-dev": {
+        "orchestra/testbench-browser-kit": "~3.4",
+        "phpunit/phpunit": "~5.7",
+        "mockery/mockery": "0.9.*"
+    },
     "autoload": {
         "classmap": [],
         "psr-4": {
             "Brackets\\Admin\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Brackets\\Admin\\Tests\\": "tests/"
         }
     }
 }

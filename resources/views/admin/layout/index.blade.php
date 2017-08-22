@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+
     <div class="app-body">
 
         @if(View::exists('admin.layout.sidebar'))
@@ -12,8 +13,6 @@
         @endif
 
         <main class="main">
-
-            @include('brackets/admin::admin.partials.breadcrumb')
 
             <div class="container-fluid" id="app" :class="{'loading': loading}">
                 <div class="modals">

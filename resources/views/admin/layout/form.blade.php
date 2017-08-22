@@ -8,11 +8,11 @@
 
     <div class="app-body">
 
-        @include('admin.layout.sidebar')
+        @if(View::exists('admin.layout.sidebar'))
+            @include('admin.layout.sidebar')
+        @endif
 
         <main class="main">
-
-            @include('brackets/admin::admin.partials.breadcrumb')
 
             <div class="container-fluid" id="app" :class="{'loading': loading}">
                 <div>
