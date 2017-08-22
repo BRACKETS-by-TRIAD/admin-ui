@@ -3,12 +3,13 @@
 namespace Brackets\Admin\Tests;
 
 use Brackets\Admin\AdminProvider;
-use Orchestra\Testbench\TestCase as Orchestra;
+use File;
+use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowser;
 use Brackets\AdminTranslations\Test\Exceptions\Handler;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
-abstract class TestCase extends Orchestra
+abstract class TestCase extends OrchestraBrowser
 {
     /** @var \Brackets\AdminTranslations\Translation */
     protected $languageLine;
@@ -16,6 +17,8 @@ abstract class TestCase extends Orchestra
     public function setUp()
     {
         parent::setUp();
+
+        File::copyDirectory(__DIR__.'/fixtures/public', public_path());
     }
 
     /**
