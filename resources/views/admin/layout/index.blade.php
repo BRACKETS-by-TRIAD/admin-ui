@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+
     <div class="app-body">
 
         @if(View::exists('admin.layout.sidebar'))

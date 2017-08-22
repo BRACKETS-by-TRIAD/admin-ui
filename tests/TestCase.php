@@ -18,9 +18,12 @@ abstract class TestCase extends OrchestraBrowser
     {
         parent::setUp();
 
-        // let's define simple route
-        $this->app['router']->get('/admin/test', function(){
+        // let's define simple routes
+        $this->app['router']->get('/admin/test/index', function(){
             return view('admin.test.index');
+        });
+        $this->app['router']->get('/admin/test/form', function(){
+            return view('admin.test.form');
         });
 
         File::copyDirectory(__DIR__.'/fixtures/public', public_path());
