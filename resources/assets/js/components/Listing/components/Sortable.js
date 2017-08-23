@@ -1,4 +1,4 @@
-module.exports = {
+const Sortable = {
     props: {
         'column': {
             type: String,
@@ -42,3 +42,5 @@ module.exports = {
                 '<a @click.stop="sort(column)"><span class="fa" :class="{\'fa-sort-amount-asc\': orderBy.column == column && orderBy.direction == \'asc\', \'fa-sort-amount-desc\': orderBy.column == column && orderBy.direction == \'desc\' }"></span> <slot></slot></a>' +
             '</th>',
 }
+
+export default Sortable;

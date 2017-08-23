@@ -1,4 +1,6 @@
 import moment from 'moment';
+import Pagination from './components/Pagination';
+import Sortable from './components/Sortable';
 
 export default {
     data: function() {
@@ -37,8 +39,8 @@ export default {
        }
     },
     components: {
-       'pagination': require('./components/Pagination.js'),
-       'sortable': require('./components/Sortable.js'),
+       'pagination': Pagination,
+       'sortable': Sortable
     },
 
     created: function() {

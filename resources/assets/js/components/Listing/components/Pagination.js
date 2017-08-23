@@ -1,4 +1,4 @@
-module.exports = {
+const Pagination = {
     template: `<nav>
         <ul class="pagination" v-if="pagination.last_page > 1" :class="sizeClass">
             <li v-if="showPrevious()" :class="{ 'disabled' : pagination.current_page <= 1 }">
@@ -121,3 +121,5 @@ module.exports = {
         }
     }
 };
+
+export default Pagination;

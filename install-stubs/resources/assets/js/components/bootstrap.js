@@ -1,4 +1,2 @@
-window.Vue = require('vue')
+import './Listing/AppListing';
 
-// AdminListing
-require('./Listing/Listing')

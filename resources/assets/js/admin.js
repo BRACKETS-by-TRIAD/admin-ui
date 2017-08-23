@@ -1,4 +1,4 @@
-module.exports = {
+const Admin = {
     el: '#app',
     data() {
         return {
@@ -30,3 +30,5 @@ module.exports = {
         }
     }
 };
+
+export default Admin;

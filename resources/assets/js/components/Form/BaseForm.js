@@ -1,6 +1,6 @@
 const userLanguage = document.documentElement.lang;
 
-module.exports = {
+const BaseForm = {
 
     props: {
         'action': {
@@ -140,3 +140,5 @@ module.exports = {
         }
     }
 };
+
+export default BaseForm

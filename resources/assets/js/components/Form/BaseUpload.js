@@ -1,6 +1,8 @@
-module.exports = {
+import dropzone from 'vue2-dropzone';
+
+const BaseUpload = {
   components: {
-    Dropzone: require('vue2-dropzone')  //https://github.com/rowanwins/vue-dropzone
+    Dropzone: dropzone,
   },
   props: {
     url: {
@@ -202,3 +204,5 @@ module.exports = {
     }
   }
 }
+
+export default BaseUpload;
