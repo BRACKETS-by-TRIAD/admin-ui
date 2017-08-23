@@ -1,8 +1,8 @@
 {
-    "/admin/js/vendor.js": "/admin/js/vendor.js",
-    "/admin/js/admin.js": "/admin/js/admin.js",
+    "/build/admin/js/vendor.js": "/build/admin/js/vendor.js",
+    "/build/admin/js/admin.js": "/build/admin/js/admin.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/admin/css/app.css": "/admin/css/app.css",
-    "/admin/js/manifest.js": "/admin/js/manifest.js"
+    "/build/admin/css/app.css": "/build/admin/css/app.css",
+    "/build/admin/js/manifest.js": "/build/admin/js/manifest.js"
 }
