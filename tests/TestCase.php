@@ -3,7 +3,7 @@
 namespace Brackets\Admin\Tests;
 
 use Brackets\Admin\AdminProvider;
-use File;
+use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowser;
 use Brackets\AdminTranslations\Test\Exceptions\Handler;
 use Exception;
