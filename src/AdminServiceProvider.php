@@ -2,7 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 
-class AdminProvider extends ServiceProvider
+class AdminServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -13,14 +13,15 @@ class AdminProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'brackets/admin');
 
-        $this->publishes([
-            __DIR__.'/../install-stubs/resources/assets' => resource_path('assets/admin')
-        ], 'assets');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../install-stubs/resources/assets' => resource_path('assets/admin')
+            ], 'assets');
 
-        $this->publishes([
-            __DIR__.'/../install-stubs/resources/views' => resource_path('views')
-        ], 'views');
-
+            $this->publishes([
+                __DIR__.'/../install-stubs/resources/views' => resource_path('views')
+            ], 'views');
+        }
     }
 
     /**
