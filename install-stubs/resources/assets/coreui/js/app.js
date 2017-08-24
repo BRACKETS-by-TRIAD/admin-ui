@@ -37,12 +37,8 @@ $(document).ready(function($){
 			cUrl = cUrl.slice(0,-1);
 		}
 
-		if ($($(this))[0].href==cUrl) {
+		if (cUrl.includes($($(this))[0].href)) {
 			$(this).addClass('active');
-
-			$(this).parents('ul').add(this).each(function(){
-				$(this).parent().addClass('open');
-			});
 		}
 	});
 
@@ -99,7 +95,7 @@ $(document).ready(function($){
 	});
 
 	$('.dropdown-menu').on('mouseleave', function(){
-		$(this).closest('.open').removeClass('open');
+		$(this).parent('.dropdown').removeClass('open');
 	});
 
 	$('.sidebar-close').click(function(){

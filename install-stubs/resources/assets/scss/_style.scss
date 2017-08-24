@@ -410,6 +410,29 @@ table .row.no-gutters .btn-info {
   }
 }
 
+.no-items-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+  i {
+    color: #c2cfd6;
+    margin-bottom: 30px;
+    font-size: 70px;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+  }
+  p {
+    color: #7e8990;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
 @media (min-width: 992px) {
   .sidebar-mini {
     .sidebar {
@@ -498,5 +521,8 @@ table .row.no-gutters .btn-info {
     display: block;
     float: none;
     margin-top: 15px;
+  }
+  .no-items-found {
+    padding: 10px 0;
   }
 }
