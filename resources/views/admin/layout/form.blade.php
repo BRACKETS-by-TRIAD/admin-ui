@@ -18,7 +18,6 @@
                 <div>
                     <notifications position="bottom right" :duration="1000" />
                 </div>
-                @yield('title')
 
                 @if (isset($errors) && count($errors) > 0)
                     <div class="alert alert-danger">

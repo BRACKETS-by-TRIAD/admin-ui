@@ -22,8 +22,6 @@
                     <notifications position="bottom right" :duration="1000" />
                 </div>
 
-                @yield('title')
-
                 @yield('body')
             </div>
 

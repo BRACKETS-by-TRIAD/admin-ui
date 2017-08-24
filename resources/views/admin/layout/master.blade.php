@@ -10,7 +10,8 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Admin Interface</title>
+	{{-- TODO dat suffix do prekladaca --}}
+    <title>@yield('title', 'Simpleweb') - Simpleweb</title>
 
 	@include('brackets/admin::admin.partials.main-styles')
 
