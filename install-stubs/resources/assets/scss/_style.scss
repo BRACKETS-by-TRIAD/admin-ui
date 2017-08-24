@@ -181,6 +181,11 @@ main.main {
   color: #263238;
   background-color: #fff;
   border-color: #ccc;
+  &:hover, &:active, &:focus {
+    color: #263238 !important;
+    background-color: #fff !important;
+    border-color: #ccc !important;
+  }
 }
 
 .table-hover tbody tr:hover {
@@ -398,8 +403,11 @@ table .row.no-gutters .btn-info {
   padding-bottom: 0;
 }
 
-.nav-item.dropdown:hover .nav-link {
-  cursor: pointer;
+.dropdown-toggle {
+  box-shadow: none !important;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 @media (min-width: 992px) {
