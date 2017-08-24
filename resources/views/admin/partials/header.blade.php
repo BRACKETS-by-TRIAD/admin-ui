@@ -1,14 +1,5 @@
-{{--<header class="app-header navbar">--}}
-{{--<button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">☰</button>--}}
-{{--<a class="navbar-brand" href="#"></a>--}}
-{{--<ul class="nav navbar-nav d-md-down-none">--}}
-{{--<li class="nav-item">--}}
-{{--<a class="nav-link navbar-toggler sidebar-toggler" href="#">☰</a>--}}
-{{--</li>--}}
-{{--</ul>--}}
-{{--</header>--}}
 <header class="app-header navbar">
-    <button type="button" class="navbar-toggler mobile-sidebar-toggler hidden-lg-up">☰</button>
+	<button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">☰</button>
     <a href="#" class="navbar-brand">
         {{--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/640px-Ikea_logo.svg.png" alt="">--}}
         Simpleweb

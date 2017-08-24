@@ -12,7 +12,7 @@
 
     <title>Admin Interface</title>
 
-    @include('brackets/admin::admin.partials.main-styles')
+	@include('brackets/admin::admin.partials.main-styles')
 
     @yield('styles')
 
