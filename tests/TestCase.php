@@ -22,9 +22,6 @@ abstract class TestCase extends OrchestraBrowser
         $this->app['router']->get('/admin/test/index', function(){
             return view('admin.test.index');
         });
-        $this->app['router']->get('/admin/test/form', function(){
-            return view('admin.test.form');
-        });
 
         File::copyDirectory(__DIR__.'/fixtures/public', public_path());
         File::copyDirectory(__DIR__.'/fixtures/resources/views', resource_path('views'));

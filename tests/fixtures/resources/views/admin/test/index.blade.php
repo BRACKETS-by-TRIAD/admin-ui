@@ -1,7 +1,7 @@
-@extends('brackets/admin::admin.layout.index')
+@extends('brackets/admin::admin.layout.default')
 
 @section('body')
 
-    Here should be some custom index code :)
+    Here should be some custom code :)
 
 @endsection
