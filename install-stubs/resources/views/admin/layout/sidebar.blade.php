@@ -14,7 +14,7 @@
 
             <li class="nav-item"><a class="nav-link" href="{{ url('admin/user') }}"><i class="icon-user"></i> <span class="nav-link-text">{{ __('Manage access') }}</span></a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('admin/translation') }}"><i class="icon-location-pin"></i> <span class="nav-link-text">{{ __('Translations') }}</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('admin/configuration') }}"><i class="icon-settings"></i> <span class="nav-link-text">{{ __('Configuration') }}</span></a></li>
+            {{--<li class="nav-item"><a class="nav-link" href="{{ url('admin/configuration') }}"><i class="icon-settings"></i> <span class="nav-link-text">{{ __('Configuration') }}</span></a></li>--}}
         </ul>
 
         <div class="sidebar-collapse">
