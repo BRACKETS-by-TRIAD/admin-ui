@@ -39,11 +39,15 @@ const BaseForm = {
             //     }
             // })
         }
+
+        if (!_.isEmpty(this.data)) {
+            this.form = this.data;
+        }
     },
 
     data: function() {
         return {
-            form: this.data,
+            form: {},
             isFormLocalized: false,
             currentLocale: 'sk',
             datePickerConfig: {
