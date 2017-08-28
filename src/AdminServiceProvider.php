@@ -11,6 +11,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'brackets/admin');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'brackets/admin');
 
         if ($this->app->runningInConsole()) {
