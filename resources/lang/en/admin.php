@@ -25,9 +25,9 @@ return [
         'select_a_time' => 'Select a time',
         'select_date_and_time' => 'Select date and time',
         'choose_translation_to_edit' => 'Choose translation to edit:',
-        'manage_translations' => 'manage translations',
-        'more_can_be_managed' => '({{ otherLocales.length }} more can be managed)',
-        'currently_editing_translation' => 'Currently editing <strong>{{ this.defaultLocale.toUpperCase() }} (default)</strong> translation',
+        'manage_translations' => 'Manage translations',
+        'more_can_be_managed' => '{{ otherLocales.length }} more translations available.',
+        'currently_editing_translation' => 'Editing {{ this.defaultLocale.toUpperCase() }} (default) translation. ',
         'hide' => 'hide',
     ],
 
