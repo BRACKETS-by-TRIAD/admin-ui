@@ -13,7 +13,7 @@ class SimpleAdminTest extends TestCase
     {
         $this->visit('/admin/test/index');
 
-        $this->assertContains("<title>Admin Interface</title>", $this->response->getContent());
+        $this->assertContains("<title>Simpleweb - Simpleweb</title>", $this->response->getContent());
 
         $this->assertContains("Here should be some custom code :)", $this->response->getContent());
 
