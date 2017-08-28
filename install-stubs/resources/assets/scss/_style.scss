@@ -433,6 +433,44 @@ table .row.no-gutters .btn-info {
   }
 }
 
+.welcome-quote {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 200px);
+  min-height: 200px;
+  blockquote {
+    font-family: Georgia, serif;
+    font-size: 25px;
+    font-style: italic;
+    max-width: 100%;
+    margin: 0.25em 0;
+    padding: 0.25em 0 0.35em 40px;
+    line-height: 1.45;
+    position: relative;
+    color: #383838;
+  }
+  blockquote:before {
+    display: block;
+    content: "\201C";
+    font-size: 89px;
+    position: absolute;
+    left: -15px;
+    top: -20px;
+    color: #7a7a7a;
+  }
+  blockquote cite {
+    color: #999999;
+    font-size: 18px;
+    display: block;
+    margin-top: 10px;
+  }
+
+  blockquote cite:before {
+    content: "\2014 \2009";
+  }
+}
+
 @media (min-width: 992px) {
   .sidebar-mini {
     .sidebar {
