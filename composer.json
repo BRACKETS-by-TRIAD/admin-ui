@@ -19,11 +19,11 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "illuminate/support": "5.4.*"
+        "illuminate/support": "5.5.*"
     },
     "require-dev": {
-        "orchestra/testbench-browser-kit": "~3.4",
-        "phpunit/phpunit": "~5.7",
+        "orchestra/testbench-browser-kit": "~3.5",
+        "phpunit/phpunit": "~6.3",
         "mockery/mockery": "0.9.*"
     },
     "autoload": {
@@ -35,6 +35,13 @@
     "autoload-dev": {
         "psr-4": {
             "Brackets\\Admin\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Brackets\\Admin\\AdminServiceProvider"
+            ]
         }
     }
 }
