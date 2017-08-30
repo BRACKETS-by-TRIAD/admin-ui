@@ -119,7 +119,7 @@ const BaseForm = {
 
                     axios.post(this.action, this.getPostData())
                         .then(response => this.onSuccess(response.data))
-                        .catch(errors => this.onFail(errors.response.data))
+                        .catch(errors => this.onFail(errors.response.data.errors))
                 });
         },
         onSuccess(data) {
@@ -130,9 +130,10 @@ const BaseForm = {
         },
         onFail(errors) {
 	        this.submiting = false;
-            var bag = this.$validator.errorBag;
+            var bag = this.$validator.errors;
             Object.keys(errors).map(function(key) {
                 var splitted = key.split('.', 2);
+                // we assume that first dot divides column and locale (TODO maybe refactor this and make it more general)
                 if (splitted.length > 1) {
                     bag.add(splitted[0]+'_'+splitted[1], errors[key][0], null);
                 } else {
