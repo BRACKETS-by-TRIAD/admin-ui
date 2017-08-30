@@ -9,10 +9,6 @@ const BaseUpload = {
       type: String,
       required: true
     },
-    model: {
-      type: String,
-      required: true
-    },
     collection: {
     	type: String,
       required: true
@@ -65,7 +61,6 @@ const BaseUpload = {
                        :thumbnailWidth="thumbnailWidth"
                        :headers="headers">
                 
-                <input type="hidden" name="model" :value="model">
                 <input type="hidden" name="collection" :value="collection">
             </dropzone>`,
   mounted: function () { 
@@ -135,7 +130,6 @@ const BaseUpload = {
               file_name: file.name,
               width: file.width,
               height: file.height,
-              model: this.model,
               path: response.path
           });
         }
@@ -148,7 +142,7 @@ const BaseUpload = {
       //FIXME iconStyleString, nameStyleString, linkStyleString
       //FIXME cele to je jqueryoidne, asi si budeme musiet spravit vlastny vue wrapper, tento je zbugovany
       var iconStyleString = 'width:'+this.thumbnailWidth+'px; height:'+this.thumbnailWidth+'px; font-size: '+this.thumbnailWidth/2+'px; line-height: '+this.thumbnailWidth+'px; text-align: center',
-          nameStyleString =  'position: absolute;bottom: 0px;width: 100%;text-align: center;height: 20px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size: 12px;line-height: 1.2;padding: 0 15px;';
+          nameStyleString =  'position: absolute;bottom: 0px;width: 100%;text-align: center;height: 20px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size: 12px;line-height: 1.2;padding: 0 15px;',
           linkStyleString = 'cursor: pointer;color:white;',
           $previewElement = $(file.previewElement);
 

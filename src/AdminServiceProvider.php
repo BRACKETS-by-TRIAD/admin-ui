@@ -1,5 +1,6 @@
 <?php namespace Brackets\Admin;
 
+use Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AdminServiceProvider extends ServiceProvider
@@ -23,6 +24,10 @@ class AdminServiceProvider extends ServiceProvider
                 __DIR__.'/../install-stubs/resources/views' => resource_path('views')
             ], 'views');
         }
+
+	    Blade::directive('mediaUploaders', function ($modelName) {
+		    return "<?php echo view('brackets/admin::admin.includes.media-uploaders', ['modelName'=>$modelName])->render(); ?>";
+	    });
     }
 
     /**
