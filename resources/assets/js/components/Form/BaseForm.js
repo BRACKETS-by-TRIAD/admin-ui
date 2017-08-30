@@ -50,6 +50,7 @@ const BaseForm = {
             form: {},
             isFormLocalized: false,
             currentLocale: 'sk',
+	        submiting: false,
             datePickerConfig: {
                 dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
@@ -114,17 +115,21 @@ const BaseForm = {
                         data = _.omit(this.form, this.locales.filter(locale => _.isEmpty(this.form[locale])));
                     }
 
+			        this.submiting = true;
+
                     axios.post(this.action, this.getPostData())
                         .then(response => this.onSuccess(response.data))
                         .catch(errors => this.onFail(errors.response.data))
                 });
         },
         onSuccess(data) {
+	        this.submiting = false;
             if (data.redirect) {
                 window.location.replace(data.redirect)
             }
         },
         onFail(errors) {
+	        this.submiting = false;
             var bag = this.$validator.errorBag;
             Object.keys(errors).map(function(key) {
                 var splitted = key.split('.', 2);

@@ -158,3 +158,9 @@ $(window).on('resize', function(){
 
 	}
 });
+
+$(function(){
+	$('.btn-spinner').on('click', function(e){
+		$(this).find('i').removeClass().addClass('fa fa-spinner');
+	});
+});

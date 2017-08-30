@@ -471,6 +471,59 @@ table .row.no-gutters .btn-info {
   }
 }
 
+.dropdown .dropdown-menu {
+  display: block;
+  transition: all 300ms ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(5px);
+}
+.open .dropdown-menu {
+  display: block;
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(-5px);
+}
+
+.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+.btn:hover .fa-trash-o {
+  animation: swing 1s;
+  transform-origin: top center;
+}
+
+@keyframes spin { 100% { transform:rotate(360deg); } }
+
+@keyframes swing {
+  20% {
+    transform: rotate3d(0, 0, 1, 15deg);
+  }
+  40% {
+    transform: rotate3d(0, 0, 1, -10deg);
+  }
+  60% {
+    transform: rotate3d(0, 0, 1, 5deg);
+  }
+  80% {
+    transform: rotate3d(0, 0, 1, -5deg);
+  }
+  to {
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+
+.form-edit, .form-create {
+  .card-block:before {
+    display: none !important;
+  }
+}
+
+.btn:focus {
+  box-shadow: none;
+}
+
 @media (min-width: 992px) {
   .sidebar-mini {
     .sidebar {
