@@ -1,4 +1,3 @@
-import moment from 'moment';
 import VeeValidate from 'vee-validate';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';

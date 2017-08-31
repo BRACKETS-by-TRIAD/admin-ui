@@ -10,6 +10,18 @@
   background-color: white;
 }
 
+.form-control {
+  border: 1px solid #C7CFDE;
+  border-radius: 0;
+  &:focus {
+    border: 1px solid #C7CFDE;
+  }
+}
+
+label {
+  color: #C7CFDE;
+}
+
 .has-success .form-control {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%234dbd74' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
   padding-right: 3rem;
@@ -18,14 +30,23 @@
   background-size: 1.04688rem 1.04688rem;
 }
 
+.quill-editor .ql-container.ql-snow {
+  border: 1px solid #C7CFDE;
+}
+
+.quill-editor .ql-toolbar.ql-snow {
+  border: 1px solid #C7CFDE;
+  border-bottom: 1px solid #E9EDF2;
+}
+
 .has-danger .ql-toolbar.ql-snow {
   border: 1px solid red;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #C7CFDE;
 }
 
 .has-success .ql-toolbar.ql-snow {
   border: 1px solid green;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #C7CFDE;
 }
 
 .has-danger .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -36,6 +57,29 @@
 .has-success .ql-toolbar.ql-snow + .ql-container.ql-snow {
   border: 1px solid green;
   border-top: 0;
+}
+.ql-snow .ql-picker-label {
+  color: #C7C7C7;
+}
+.quill-editor .ql-snow .ql-stroke {
+  stroke: #C7C7C7;
+}
+.quill-editor .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
+  fill: #C7C7C7;
+}
+
+.card small {
+  color: #C7CFDE;
+  a {
+    color: $primary
+  }
+}
+
+.card-footer {
+  background: white;
+  border: none;
+  padding: 1.25rem;
+  padding-top: 3rem;
 }
 
 .notifications {
@@ -142,12 +186,23 @@ main.main {
   margin-top: 1.5rem;
 }
 
+.card {
+  border: 1px solid #d6dee3;
+}
+
 .card-header {
   background-color: white;
   border-bottom: 1px solid rgba(207, 216, 220, 0.35);
   color: $primary;
   font-weight: 600;
   padding: 1.25rem;
+}
+
+.form-edit, .form-create {
+  .card-header {
+    padding: 0.65rem 1.25rem;
+    font-size: 12px;
+  }
 }
 
 .btn-primary, .btn-info {
@@ -532,6 +587,19 @@ table .row.no-gutters .btn-info {
   display: none;
 }
 
+.app-header.navbar {
+  border-bottom: 1px solid #D6DEE3;
+}
+
+.input-group .form-control {
+  border: 1px solid #dee3e7;
+  border-radius: 0;
+}
+
+small select {
+  margin: 0 10px;
+}
+
 @media (min-width: 992px) {
   .sidebar-mini {
     .sidebar {
@@ -624,4 +692,91 @@ table .row.no-gutters .btn-info {
   .no-items-found {
     padding: 10px 0;
   }
+}
+
+
+
+
+
+
+
+
+
+
+.form-check-label {
+  color: #3e515b;
+}
+
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 1.95em;
+  cursor: pointer;
+}
+
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #C3CEDE;
+  background: #EAF2FF;
+  border-radius: 4px;
+  box-shadow: none;
+}
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #4273FA;
+  top: 5px;
+  left: 5px;
+  border-radius: 3px;
+  color: #4273FA;
+  transition: all .2s;
+}
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+/* disabled checkbox */
+[type="checkbox"]:disabled:not(:checked) + label:before,
+[type="checkbox"]:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+[type="checkbox"]:disabled:checked + label:after {
+  color: #999;
+}
+[type="checkbox"]:disabled + label {
+  color: #aaa;
+}
+/* accessibility */
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before {
+  //border: 1px solid $primary;
+}
+
+/* hover style just for information */
+label:hover:before {
+  border: 1px solid $primary!important;
 }

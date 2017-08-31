@@ -32,6 +32,8 @@
 			@if($collection->acceptedFileTypes)
 			:accepted-file-types="'{{ $collection->acceptedFileTypes }}'"
 			@endif
-			{{--:uploaded-images="{{ $model->getThumbsForCollection($collection->name)->toJson() }}"--}}
+			@if($model->getThumbsForCollection($collection->name)->count() > 0)
+				:uploaded-images="{{ $model->getThumbsForCollection($collection->name)->toJson() }}"
+			@endif
 	/>
 @endforeach
