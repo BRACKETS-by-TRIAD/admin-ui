@@ -524,6 +524,14 @@ table .row.no-gutters .btn-info {
   box-shadow: none;
 }
 
+.width-auto {
+  width: auto;
+}
+
+.hidden-xs-up {
+  display: none;
+}
+
 @media (min-width: 992px) {
   .sidebar-mini {
     .sidebar {
