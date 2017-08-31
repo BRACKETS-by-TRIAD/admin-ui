@@ -144,9 +144,11 @@ const BaseForm = {
 
         showLocalization() {
             this.isFormLocalized = true;
+            $('.container-xl').addClass('width-auto');
         },
         hideLocalization() {
             this.isFormLocalized = false;
+            $('.container-xl').removeClass('width-auto');
         }
     }
 };
