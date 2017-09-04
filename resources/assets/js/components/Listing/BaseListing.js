@@ -131,7 +131,6 @@ export default {
                                 this.loadData();
                                 this.$notify({ type: 'success', title: 'Success!', text: response.message ? response.message : 'Item successfully deleted.'});
                             }, error => {
-                                // TODO display real error from server
                                 this.$notify({ type: 'error', title: 'Error!', text: error.message ? error.message : 'An error has occured.'});
                             });
                         }
