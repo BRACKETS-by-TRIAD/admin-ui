@@ -97,12 +97,21 @@ const BaseForm = {
         otherLocales: function() {
             return this.locales.filter(x => x != this.defaultLocale);
         },
+        showLocalizedValidationError: function() {
+            return this.otherLocales.some(lang => {
+                return this.errors.items.some(item => {
+                    return item.field.endsWith('_'+lang);
+                });
+            });
+        }
     },
 
     methods: {
         getPostData() {
             return this.form
         },
+
+
         onSubmit() {
             return this.$validator.validateAll()
                 .then(result => {
@@ -141,7 +150,13 @@ const BaseForm = {
                 }
             });
         },
-
+        getLocalizedFormDefaults() {
+            var object = {};
+            this.locales.forEach((currentValue, index, arr)=>{
+                object[currentValue] = null;
+            });
+            return object;
+        },
         showLocalization() {
             this.isFormLocalized = true;
             $('.container-xl').addClass('width-auto');
