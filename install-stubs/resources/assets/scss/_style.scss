@@ -1,3 +1,4 @@
+// TODO partialize to multiple smaller files
 .btn {
   cursor: pointer;
 }
@@ -13,21 +14,23 @@
 .form-control {
   border: 1px solid #C7CFDE;
   border-radius: 0;
+  padding-right: 2.2rem !important;
+  background-repeat: no-repeat;
+  background-position: center right 0.52344rem;
+  background-size: 1.04688rem 1.04688rem;
   &:focus {
     border: 1px solid #C7CFDE;
   }
 }
+.has-success .form-control {
+  background-image: url('../coreui/img/correct.png');
+}
+.has-danger .form-control {
+  background-image: url('../coreui/img/error.png');
+}
 
 label {
   color: #C7CFDE;
-}
-
-.has-success .form-control {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%234dbd74' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
-  padding-right: 3rem;
-  background-repeat: no-repeat;
-  background-position: center right 0.52344rem;
-  background-size: 1.04688rem 1.04688rem;
 }
 
 .quill-editor .ql-container.ql-snow {
@@ -196,13 +199,6 @@ main.main {
   color: $primary;
   font-weight: 600;
   padding: 1.25rem;
-}
-
-.form-edit, .form-create {
-  .card-header {
-    padding: 0.65rem 1.25rem;
-    font-size: 12px;
-  }
 }
 
 .btn-primary, .btn-info {
@@ -695,14 +691,6 @@ small select {
 }
 
 
-
-
-
-
-
-
-
-
 .form-check-label {
   color: #3e515b;
 }
@@ -779,4 +767,105 @@ small select {
 /* hover style just for information */
 label:hover:before {
   border: 1px solid $primary!important;
+}
+
+
+.input-group--custom {
+  .input-group-addon {
+    background-color: white;
+  }
+  .form-control {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+.has-danger .input-group--custom {
+  .form-control {
+    border-left: 0;
+  }
+  .input-group-addon {
+    border-color: #FE3F61;
+  }
+}
+.input-icon {
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 15px;
+  height: 25px;
+}
+.input-icon--mail {
+  width: 20px;
+  background-image: url('../coreui/img/envelope.png');
+}
+.input-icon--lock {
+  margin: 0 3px;
+  background-image: url('../coreui/img/lock.png');
+}
+
+// login
+.auth {
+  min-height: 100vh;
+  .auth-header {
+    border-bottom: 1px solid #F2F5F9;
+    padding: 30px;
+  }
+  .auth-body {
+    padding: 30px;
+  }
+  .auth-title {
+    text-transform: uppercase;
+    color: #333D5D;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  .auth-subtitle {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #B9BBC6;
+    font-size: 12px;
+    letter-spacing: 0;
+    margin-bottom: 0;
+  }
+  .card-body, .card-block {
+    padding: 0;
+  }
+  .form-group {
+    margin-bottom: 1.7rem;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+  label {
+    color: #9FA6B9;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .form-control {
+    border-radius: 4px;
+    padding: 0.8rem 0.75rem;
+    border-color: #CEDDEB;
+  }
+  .input-group-addon {
+    border-color: #CEDDEB;
+  }
+  .form-control-danger {
+    border: 1px solid #FE3F61;
+  }
+  .form-control-feedback {
+    color: #FE3F61;
+    font-weight: 500;
+  }
+  .btn-block {
+    padding: 1rem;
+    font-size: 16px;
+  }
+  .auth-ghost-link {
+    color: #9FA6B9;
+  }
+  .alert {
+    margin-bottom: 1.4rem;
+  }
 }
