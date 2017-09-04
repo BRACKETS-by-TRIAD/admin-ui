@@ -129,10 +129,10 @@ export default {
                             this.$modal.hide('dialog');
                             axios.delete(url).then(response => {
                                 this.loadData();
-                                this.$notify({ type: 'success', title: 'Success!', text: response.data.success});
+                                this.$notify({ type: 'success', title: 'Success!', text: response.message ? response.message : 'Item successfully deleted.'});
                             }, error => {
                                 // TODO display real error from server
-                                this.$notify({ type: 'error', title: 'Error!', text: 'An error has occured.'});
+                                this.$notify({ type: 'error', title: 'Error!', text: error.message ? error.message : 'An error has occured.'});
                             });
                         }
                     }
@@ -142,10 +142,10 @@ export default {
 
         toggleSwitch(url, col, row){
             axios.post(url, row).then(response => {
-                this.$notify({ type: 'success', title: 'Success!', text: 'Item successfully changed.'});
+                this.$notify({ type: 'success', title: 'Success!', text: response.message ? response.message : 'Item successfully changed.'});
             }, error => {
                 row[col] = !row[col];
-                this.$notify({ type: 'error', title: 'Error!', text: 'An error has occured.'});
+                this.$notify({ type: 'error', title: 'Error!', text: error.message ? error.message : 'An error has occured.'});
             });
         }
     }
