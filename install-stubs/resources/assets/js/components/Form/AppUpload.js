@@ -1,5 +1,5 @@
 import BaseUpload from 'components/Form/BaseUpload';
 
-export default {
-	mixins: [BaseUpload]
-};
+Vue.component('media-upload', {
+    mixins: [BaseUpload]
+});
