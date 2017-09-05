@@ -116,6 +116,7 @@ const BaseForm = {
             return this.$validator.validateAll()
                 .then(result => {
                     if (!result) {
+                        this.$notify({ type: 'error', title: 'Error!', text: 'The form contains invalid fields.'});
                         return false;
                     }
 
