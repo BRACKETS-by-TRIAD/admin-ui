@@ -1,6 +1,6 @@
 <?php namespace Brackets\Admin;
 
-use Blade;
+use Brackets\Admin\Console\Commands\AdminUIInstall;
 use Illuminate\Support\ServiceProvider;
 
 class AdminServiceProvider extends ServiceProvider
@@ -12,6 +12,10 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->commands([
+            AdminUIInstall::class,
+        ]);
+
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'brackets/admin');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'brackets/admin');
 
