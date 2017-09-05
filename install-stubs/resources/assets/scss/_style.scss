@@ -979,3 +979,7 @@ label:hover:before {
   background: $primary !important;
   border-color: $primary !important;
 }
+
+.form-check-label {
+  margin-bottom: 0.5rem;
+}
