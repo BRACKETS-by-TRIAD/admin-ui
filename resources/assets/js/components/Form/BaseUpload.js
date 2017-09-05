@@ -82,7 +82,7 @@ const BaseUpload = {
     onUploadError: function (file, error) {
       let errorMessage = typeof error == 'string' ? error : error.message;
       this.$notify({ type: 'error', title: 'Error!', text: errorMessage});
-      // $('.dz-error-message span').text(errorMessage);
+      $(file.previewElement).find('.dz-error-message span').text(errorMessage);
     },
 
     onFileAdded: function(file) {
