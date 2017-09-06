@@ -1,7 +1,13 @@
 {
-    "name": "brackets/admin",
-    "description": "Admin (CRUD) interface built on Laravel 5",
-    "keywords": ["simpleweb", "crud", "admin", "administration"],
+    "name": "brackets/admin-ui",
+    "description": "Admin UI template",
+    "keywords": [
+        "admin",
+        "admin-ui",
+        "template",
+        "administration",
+        "cms"
+    ],
     "license": "MIT",
     "type": "project",
     "authors": [
@@ -12,8 +18,15 @@
             "role": "Developer"
         },
         {
-            "name": "David Běhal",
-            "email": "behal.david@gmail.com",
+            "name": "Matej Minár",
+            "email": "matej.minar@brackets.sk",
+            "homepage": "https://www.brackets.sk/en",
+            "role": "Developer"
+        },
+        {
+            "name": "Dušan Subally",
+            "email": "dusan.subally@triad.sk",
+            "homepage": "https://www.brackets.sk/en",
             "role": "Developer"
         }
     ],
