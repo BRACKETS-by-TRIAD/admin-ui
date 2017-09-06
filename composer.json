@@ -1,12 +1,13 @@
 {
     "name": "brackets/admin-ui",
-    "description": "Admin UI template",
+    "description": "Administration template",
     "keywords": [
-        "admin",
         "admin-ui",
         "template",
         "administration",
-        "cms"
+        "admin",
+        "cms",
+        "laravel"
     ],
     "license": "MIT",
     "type": "project",
