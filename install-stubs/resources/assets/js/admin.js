@@ -4,6 +4,7 @@ import 'flatpickr/dist/flatpickr.css';
 import VueQuillEditor from 'vue-quill-editor';
 import Notifications from 'vue-notification';
 import Multiselect from 'vue-multiselect';
+import 'vue-multiselect/dist/vue-multiselect.min.css';
 import VModal from 'vue-js-modal'
 import Vue from 'vue';
 

@@ -145,7 +145,7 @@ const BaseForm = {
                 var splitted = key.split('.', 2);
                 // we assume that first dot divides column and locale (TODO maybe refactor this and make it more general)
                 if (splitted.length > 1) {
-                    bag.add(splitted[0]+'_'+splitted[1], errors[key][0], null);
+                    bag.add(splitted[0]+'_'+splitted[1], errors[key][0]);
                 } else {
                     bag.add(key, errors[key][0]);
                 }
@@ -165,6 +165,9 @@ const BaseForm = {
         hideLocalization() {
             this.isFormLocalized = false;
             $('.container-xl').removeClass('width-auto');
+        },
+        validate(event) {
+            this.$validator.errors.remove(event.target.name);
         }
     }
 };
