@@ -2,7 +2,7 @@ mix.js(['resources/assets/admin/js/admin.js'], 'public/build/admin/js')
 	.webpackConfig({
 		resolve: {
 			modules: [
-				path.resolve(__dirname, 'vendor/brackets/admin/resources/assets/js'),
+				path.resolve(__dirname, 'vendor/brackets/admin-ui/resources/assets/js'),
 				// Do not delete this comment, it's used for auto-generation :)
 				'node_modules'
 			],
