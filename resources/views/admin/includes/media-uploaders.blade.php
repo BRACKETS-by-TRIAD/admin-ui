@@ -1,7 +1,7 @@
-@foreach($collections as $collection)
+@foreach($collections as $mediaCollection)
 	@if (isset($model))
-		@include('brackets/admin::admin.includes.media-uploader', ['collection' => $collection, 'media' => $model->getThumbsForCollection($collection->name)])
+		@include('brackets/admin::admin.includes.media-uploader', ['mediaCollection' => $mediaCollection, 'media' => $model->getThumbsForCollection($mediaCollection->getName())])
 	@else
-		@include('brackets/admin::admin.includes.media-uploader', ['collection' => $collection])
+		@include('brackets/admin::admin.includes.media-uploader', ['mediaCollection' => $mediaCollection])
 	@endif
 @endforeach

@@ -1,5 +1,5 @@
 <a href="{{ url('admin') }}" class="navbar-brand">
     {{-- You mae use img as logo instead of plain text --}}
     {{--<img src="" alt="">--}}
-    Simpleweb
+    {{ trans('brackets/admin-ui::admin.logo.title') }}
 </a>

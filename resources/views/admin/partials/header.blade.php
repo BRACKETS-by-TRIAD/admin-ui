@@ -12,6 +12,8 @@
 
                     @if(Auth::check() && Auth::user()->first_name && Auth::user()->last_name)
                         <span class="avatar-initials">{{ mb_substr(Auth::user()->first_name, 0, 1) }}{{ mb_substr(Auth::user()->last_name, 0, 1) }}</span>
+                    @elseif(Auth::check() && Auth::user()->name)
+                        <span class="avatar-initials">{{ mb_substr(Auth::user()->name, 0, 1) }}</span>
                     @else
                         <span class="avatar-initials"><i class="fa fa-user"></i></span>
                     @endif

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'page_title_suffix' => 'Simpleweb',
 
     'operation' => [
         'succeeded' => 'Operation was successful',
@@ -8,16 +9,16 @@ return [
     ],
 
     'btn' => [
-        'save' => "Save",
-        'cancel' => "Cancel",
-        'edit' => "Edit",
-        'delete' => "Delete",
-        'search' => "Search",
+        'save' => 'Save',
+        'cancel' => 'Cancel',
+        'edit' => 'Edit',
+        'delete' => 'Delete',
+        'search' => 'Search',
     ],
 
     'index' => [
-        'no_items' => "Could not find any items",
-        'try_changing_items' => "Try changing the filters or add a new one",
+        'no_items' => 'Could not find any items',
+        'try_changing_items' => 'Try changing the filters or add a new one',
     ],
 
     'forms' => [
@@ -32,11 +33,36 @@ return [
     ],
 
     'placeholder' => [
-        'search' => "Search"
+        'search' => 'Search'
     ],
 
     'pagination' => [
-        'overview' => "Displaying items from {{ pagination.state.from }} to {{ pagination.state.to }} of total {{ pagination.state.total }} items."
+        'overview' => 'Displaying items from {{ pagination.state.from }} to {{ pagination.state.to }} of total {{ pagination.state.total }} items.'
     ],
+
+    'logo' => [
+        'title' => 'Simpleweb',
+    ],
+
+    'profile_dropdown' => [
+        'account' => 'Account',
+    ],
+
+    'sidebar' => [
+        'content' => 'Content',
+        'settings' => 'Settings',
+    ],
+
+    'media_uploader' => [
+        'max_number_of_files' => '(max no. of files: :maxNumberOfFiles files)',
+        'max_size_pre_file' => '(max size per file: :maxFileSize MB)',
+
+        'private_title' => 'Files are not accessible for public',
+    ],
+
+    'footer' => [
+        'copyright' => 'SimpleWEB © :year BRACKETS by TRIAD s.r.o.',
+        'powered_by' => 'Powered by',
+    ]
 
 ];
