@@ -487,7 +487,7 @@ table .row.no-gutters .btn-info {
   align-items: center;
   justify-content: center;
   padding: 50px 0;
-  i {
+  & > i {
     color: rgba(0,0,0,0.2);
     margin-bottom: 30px;
     font-size: 70px;
