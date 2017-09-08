@@ -6,6 +6,7 @@ return [
     'operation' => [
         'succeeded' => 'Operation was successful',
         'failed' => 'Operation failed',
+        'not_allowed' => 'Operation not allowed',
     ],
 
     'btn' => [
@@ -14,6 +15,7 @@ return [
         'edit' => 'Edit',
         'delete' => 'Delete',
         'search' => 'Search',
+        'new' => 'New',
     ],
 
     'index' => [
@@ -30,6 +32,8 @@ return [
         'more_can_be_managed' => '({{ otherLocales.length }} more can be managed)',
         'currently_editing_translation' => 'Currently editing {{ this.defaultLocale.toUpperCase() }} (default) translation',
         'hide' => 'Hide Translations',
+        'select_an_option' => 'Select an option',
+        'select_options' => 'Select options',
     ],
 
     'placeholder' => [
