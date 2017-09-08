@@ -100,6 +100,7 @@ const Pagination = {
     watch: {
         'pagination.per_page' (newVal, oldVal) {
             if (+newVal !== +oldVal) {
+                this.$cookie.set('per_page', newVal);
                 this.callback();
             }
         }

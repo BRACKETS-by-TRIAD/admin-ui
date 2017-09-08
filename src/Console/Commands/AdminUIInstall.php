@@ -79,6 +79,7 @@ class AdminUIInstall extends Command
         $packageJsonContent['devDependencies']['vue-quill-editor'] = '^2.3.0';
         $packageJsonContent['devDependencies']['moment'] = '^2.18.1';
         $packageJsonContent['devDependencies']['vue2-dropzone'] = '^2.3.5';
+        $packageJsonContent['devDependencies']['vue-cookie'] = '^1.1.4';
         $files->put($packageJsonFile, json_encode($packageJsonContent, JSON_PRETTY_PRINT));
         $this->info('package.json changed');
     }

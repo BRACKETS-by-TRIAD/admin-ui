@@ -6,6 +6,7 @@ import Notifications from 'vue-notification';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 import VModal from 'vue-js-modal'
+import VueCookie from 'vue-cookie';
 import Vue from 'vue';
 
 import Admin from 'admin';
@@ -21,6 +22,7 @@ Vue.use(VueQuillEditor);
 Vue.use(Notifications);
 Vue.component('datetime', flatPickr);
 Vue.use(VModal, { dialog: true });
+Vue.use(VueCookie);
 Vue.component('multiselect', Multiselect);
 
 new Vue({
