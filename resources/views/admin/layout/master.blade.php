@@ -12,7 +12,7 @@
 	{{-- TODO translatable suffix --}}
     <title>@yield('title', 'Simpleweb') - {{ trans('brackets/admin-ui::admin.page_title_suffix') }}</title>
 
-	@include('brackets/admin::admin.partials.main-styles')
+	@include('brackets/admin-ui::admin.partials.main-styles')
 
     @yield('styles')
 
@@ -25,7 +25,7 @@
 
     @yield('footer')
 
-    @include('brackets/admin::admin.partials.main-bottom-scripts')
+    @include('brackets/admin-ui::admin.partials.main-bottom-scripts')
     @yield('bottom-scripts')
 </body>
 

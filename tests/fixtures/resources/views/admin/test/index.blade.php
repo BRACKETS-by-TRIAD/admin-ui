@@ -1,4 +1,4 @@
-@extends('brackets/admin::admin.layout.default')
+@extends('brackets/admin-ui::admin.layout.default')
 
 @section('body')
 
