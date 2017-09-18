@@ -24,10 +24,18 @@
 
                 @yield('body')
             </div>
-
         </main>
-
     </div>
+
+    <footer class="app-footer">
+        <div class="container-fluid">
+            <div class="container-xl">
+            <span class="pull-right">
+                Powered by <a href="https://docs.brackets.sk/" target="_blank">Simpleweb.</a>
+            </span>
+            </div>
+        </div>
+    </footer>
 @endsection
 
 @section('bottom-scripts')

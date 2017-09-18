@@ -277,7 +277,7 @@ main.main {
   vertical-align: middle;
 }
 
-table .row.no-gutters .btn-info {
+table .row.no-gutters .btn {
   margin-right: 10px;
   @media (max-width: 1319px) {
     margin-bottom: 10px;
@@ -295,9 +295,11 @@ table .row.no-gutters .btn-info {
 .app-footer {
   background: none;
   border: none;
-  color: #C6C9CE;
+  color: #7e878c;
+  font-size: 13px;
+  margin-top: -1.5rem;
   a {
-    color: #C6C9CE;
+    color: $primary;
   }
 }
 
@@ -320,6 +322,21 @@ table .row.no-gutters .btn-info {
 .switch-success > .switch-input:checked ~ .switch-label {
   background: $success !important;
   border-color: $success;
+}
+
+.switch-danger > .switch-input:checked ~ .switch-label {
+  background: $danger !important;
+  border-color: $danger;
+}
+
+.switch-info > .switch-input:checked ~ .switch-label {
+  background: $primary !important;
+  border-color: $primary;
+}
+
+.switch-warning > .switch-input:checked ~ .switch-label {
+  background: $warning !important;
+  border-color: $warning;
 }
 
 .dropdown-menu {
@@ -983,3 +1000,17 @@ label:hover:before {
 .form-check-label {
   margin-bottom: 0.5rem;
 }
+
+td > .switch {
+  top: 4px;
+}
+
+.text-success { color: $success !important; }
+.text-danger { color: $danger !important; }
+.text-warning { color: $warning !important; }
+.text-info { color: $primary !important; }
+
+.has-access i {
+  font-size: 20px;
+}
+
