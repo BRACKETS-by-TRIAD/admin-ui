@@ -86,9 +86,42 @@ const BaseForm = {
                             [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                             [{ 'color': [] }, { 'background': [] }],
                             [{ 'align': [] }],
-                            ['link', 'image'],
-                            ['clean']
-                        ]
+                            ['link', 'image', 'clean'],
+                        ],
+                        handlers: {
+                            image: function() {
+                                const input = document.createElement('input');
+                                input.setAttribute('type', 'file');
+                                input.click();
+                                input.onchange = () => {
+                                    const file = input.files[0];
+                                    if (/^image\//.test(file.type)) {
+                                        var range = this.quill.getSelection();
+                                        // TODO axios file to server
+                                        var value = 'https://www.w3schools.com/css/paris.jpg';
+                                        this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+                                    } else {
+                                        console.warn('You could only upload images.');
+                                    }
+                                };
+                            },
+                            'clean': function(value) {
+                                // if (this.quill.getSelection().length)
+                                const input = document.createElement('input');
+                                input.setAttribute('type', 'file');
+                                input.click();
+                                input.onchange = () => {
+                                    const file = input.files[0];
+                                    if (/^image\//.test(file.type)) {
+                                        var range = this.quill.getSelection();
+                                        var href = 'https://www.w3schools.com/css/paris.jpg';
+                                        this.quill.format('link', href);
+                                    } else {
+                                        console.warn('You could only upload images.');
+                                    }
+                                };
+                            }
+                        }
                     }
                 }
             }

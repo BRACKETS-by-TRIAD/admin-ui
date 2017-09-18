@@ -1014,3 +1014,12 @@ td > .switch {
   font-size: 20px;
 }
 
+button.ql-clean:before {
+  content: '\f093';
+  font-family: FontAwesome;
+  color: #C7C7C7;
+}
+
+button.ql-clean svg {
+  display: none;
+}
