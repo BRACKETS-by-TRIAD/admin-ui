@@ -161,8 +161,10 @@ $(window).on('resize', function(){
 
 $(function(){
 	$('.btn-spinner').on('click', function(e){
-        $(this).css({'pointer-events':'none'});
-		$(this).find('i').removeClass().addClass('fa fa-spinner');
+        if (!(e.shiftKey || e.ctrlKey || e.metaKey)) {
+            $(this).css({'pointer-events':'none'});
+            $(this).find('i').removeClass().addClass('fa fa-spinner');
+        }
 	});
 
     $('.nav-title').filter(function() {
