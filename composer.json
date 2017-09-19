@@ -1,6 +1,6 @@
 {
     "name": "brackets/admin-ui",
-    "description": "Administration template",
+    "description": "Administration user interface template",
     "keywords": [
         "admin-ui",
         "template",
@@ -43,18 +43,18 @@
     "autoload": {
         "classmap": [],
         "psr-4": {
-            "Brackets\\Admin\\": "src/"
+            "Brackets\\AdminUI\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Brackets\\Admin\\Tests\\": "tests/"
+            "Brackets\\AdminUI\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Brackets\\Admin\\AdminServiceProvider"
+                "Brackets\\AdminUI\\AdminServiceProvider"
             ]
         }
     }

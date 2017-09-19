@@ -1,4 +1,4 @@
-<?php namespace Brackets\Admin\Console\Commands;
+<?php namespace Brackets\AdminUI\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;

@@ -1,6 +1,6 @@
-<?php namespace Brackets\Admin;
+<?php namespace Brackets\AdminUI;
 
-use Brackets\Admin\Console\Commands\AdminUIInstall;
+use Brackets\AdminUI\Console\Commands\AdminUIInstall;
 use Illuminate\Support\ServiceProvider;
 
 class AdminServiceProvider extends ServiceProvider

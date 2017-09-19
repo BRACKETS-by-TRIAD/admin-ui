@@ -1,8 +1,8 @@
 <?php
 
-namespace Brackets\Admin\Tests;
+namespace Brackets\AdminUI\Tests;
 
-use Brackets\Admin\AdminServiceProvider;
+use Brackets\AdminUI\AdminServiceProvider;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowser;
 use Brackets\AdminTranslations\Test\Exceptions\Handler;

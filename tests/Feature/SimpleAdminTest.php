@@ -1,8 +1,8 @@
 <?php
 
-namespace Brackets\Admin\Tests\Feature;
+namespace Brackets\AdminUI\Tests\Feature;
 
-use Brackets\Admin\Tests\TestCase;
+use Brackets\AdminUI\Tests\TestCase;
 
 class SimpleAdminTest extends TestCase
 {
