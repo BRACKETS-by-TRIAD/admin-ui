@@ -30,7 +30,7 @@ class AdminUIInstall extends Command
         $this->info('Installing package brackets/admin-ui');
 
         $this->call('vendor:publish', [
-            '--provider' => "Brackets\\Admin\\AdminUIServiceProvider",
+            '--provider' => "Brackets\\AdminUI\\AdminUIServiceProvider",
         ]);
 
         $this->frontendAdjustments($files);
