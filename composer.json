@@ -54,7 +54,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Brackets\\AdminUI\\AdminServiceProvider"
+                "Brackets\\AdminUI\\AdminUIServiceProvider"
             ]
         }
     }

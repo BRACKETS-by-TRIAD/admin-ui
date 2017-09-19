@@ -2,7 +2,7 @@
 
 namespace Brackets\AdminUI\Tests;
 
-use Brackets\AdminUI\AdminServiceProvider;
+use Brackets\AdminUI\AdminUIServiceProvider;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowser;
 use Brackets\AdminTranslations\Test\Exceptions\Handler;
@@ -35,7 +35,7 @@ abstract class TestCase extends OrchestraBrowser
     protected function getPackageProviders($app)
     {
         return [
-            AdminServiceProvider::class,
+            AdminUIServiceProvider::class,
         ];
     }
 

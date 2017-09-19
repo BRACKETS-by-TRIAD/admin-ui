@@ -3,7 +3,7 @@
 use Brackets\AdminUI\Console\Commands\AdminUIInstall;
 use Illuminate\Support\ServiceProvider;
 
-class AdminServiceProvider extends ServiceProvider
+class AdminUIServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
