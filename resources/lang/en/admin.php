@@ -4,7 +4,7 @@ return [
     'page_title_suffix' => 'Simpleweb',
 
     'operation' => [
-        'succeeded' => 'Operation was successful',
+        'succeeded' => 'Operation successful',
         'failed' => 'Operation failed',
         'not_allowed' => 'Operation not allowed',
     ],
@@ -24,8 +24,8 @@ return [
     ],
 
     'forms' => [
-        'select_a_date' => 'Select a date',
-        'select_a_time' => 'Select a time',
+        'select_a_date' => 'Select date',
+        'select_a_time' => 'Select time',
         'select_date_and_time' => 'Select date and time',
         'choose_translation_to_edit' => 'Choose translation to edit:',
         'manage_translations' => 'Manage translations',
