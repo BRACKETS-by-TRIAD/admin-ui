@@ -9,15 +9,20 @@ mix.js(['resources/assets/admin/js/admin.js'], 'public/build/admin/js')
 		}
 	})
 	.sass('resources/assets/admin/scss/app.scss', 'public/build/admin/css')
-	.extract([
-		'vue',
-		'jquery',
-		'vee-validate',
-		'axios',
-		'vue-notification',
-		'vue-quill-editor',
-		'vue-flatpickr-component',
-		'moment',
-		'lodash'
-	])
-	.version();
+	// There is an issue in Laravel Mix, that does not allow to have multiple extracts, that's why we don't use it yet
+	// .extract([
+	// 	'vue',
+	// 	'jquery',
+	// 	'vee-validate',
+	// 	'axios',
+	// 	'vue-notification',
+	// 	'vue-quill-editor',
+	// 	'vue-flatpickr-component',
+	// 	'moment',
+	// 	'lodash'
+	// ])
+;
+
+if (mix.inProduction()) {
+    mix.version();
+}
