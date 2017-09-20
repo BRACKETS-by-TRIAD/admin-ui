@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'page_title_suffix' => 'Simpleweb',
+    'page_title_suffix' => 'Craftable',
 
     'operation' => [
         'succeeded' => 'Akcia prebehla úspešne',
@@ -41,7 +41,7 @@ return [
     ],
 
     'logo' => [
-        'title' => 'Simpleweb',
+        'title' => 'Craftable',
     ],
 
     'profile_dropdown' => [
@@ -61,7 +61,7 @@ return [
     ],
 
     'footer' => [
-        'copyright' => 'SimpleWEB © :year BRACKETS by TRIAD s.r.o.',
+        'copyright' => 'Craftable © :year BRACKETS by TRIAD s.r.o.',
         'powered_by' => 'Powered by',
     ]
 
