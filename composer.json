@@ -36,7 +36,7 @@
         "illuminate/support": "5.5.*"
     },
     "require-dev": {
-        "orchestra/testbench-browser-kit": "~3.5",
+        "orchestra/testbench-browser-kit": "3.5.1",
         "phpunit/phpunit": "~6.3",
         "mockery/mockery": "0.9.*"
     },
