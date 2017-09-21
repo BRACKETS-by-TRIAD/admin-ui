@@ -1,5 +1,7 @@
 <a href="{{ url('admin') }}" class="navbar-brand">
-    {{-- You mae use img as logo instead of plain text --}}
-    {{--<img src="" alt="">--}}
-    {{ trans('brackets/admin-ui::admin.logo.title') }}
+    {{-- You mae use plain text as a logo instead of image --}}
+    <img src="{{ mix('/images/craftable.png') }}" alt="Craftable">
+
+    {{--Craftable--}}
+
 </a>

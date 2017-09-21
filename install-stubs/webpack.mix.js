@@ -23,6 +23,8 @@ mix.js(['resources/assets/admin/js/admin.js'], 'public/build/admin/js')
 	// ])
 ;
 
+mix.copy('vendor/brackets/admin-ui/resources/assets/img/craftable.png', 'public/images/craftable.png');
+
 if (mix.inProduction()) {
     mix.version();
 }
