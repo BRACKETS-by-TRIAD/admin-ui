@@ -5,7 +5,8 @@
 		<i class="fa fa-file-o"></i>
 	@endif
 
-	{{ $mediaCollection->getTitle() }}
+	{{-- How to work around this? We don't want that MediaCollection know about the form name. Maybe we can use trans() and our predefined translations path? --}}
+	{{-- $mediaCollection->getTitle() --}}
 	@if($mediaCollection->getMaxNumberOfFiles())
 		<small>{{ trans('brackets/admin-ui::admin.media_uploader.max_number_of_files', ['maxNumberOfFiles' => $mediaCollection->getMaxNumberOfFiles()]) }}</small>
 	@endif
