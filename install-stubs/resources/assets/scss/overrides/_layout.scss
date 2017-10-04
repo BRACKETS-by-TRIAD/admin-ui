@@ -1,0 +1,43 @@
+body {
+  background-color: #F5F8FF;
+}
+
+main.main {
+  margin-top: 1.5rem;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+.app-footer {
+  background: none;
+  border: none;
+  color: #7e878c;
+  font-size: 13px;
+  margin-top: -1.5rem;
+  a {
+    color: $primary;
+  }
+}
+
+.hidden-xs-up {
+  display: none;
+}
+
+.width-auto {
+  width: auto;
+}
+
+.breadcrumb {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .container-xl {
+    margin-right: auto;
+    margin-left: auto;
+    width: 1140px;
+    max-width: 100%;
+  }
+}

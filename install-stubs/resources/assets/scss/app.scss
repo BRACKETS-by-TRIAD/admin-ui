@@ -1,7 +1,8 @@
-/* VENDOR */
+// Vendor
 @import "../coreui/scss/style";
-@import "vendor/vendor";
+@import "vendor/index";
 
+// Own styles and overrides
 @import "variables";
-@import "style";
-@import "theme/buttons";
+@import "overrides/index";
+@import "styles/index";

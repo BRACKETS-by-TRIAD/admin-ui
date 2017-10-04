@@ -1,0 +1,66 @@
+.card {
+    border: 1px solid #d6dee3;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(207, 216, 220, 0.35);
+    color: $primary;
+    font-weight: 600;
+    padding: 1.25rem;
+}
+
+.card-footer {
+    background: white;
+    border: none;
+    padding: 1.25rem;
+    padding-top: 3rem;
+}
+
+.card small {
+    color: $mutedText;
+    a {
+        color: $primary
+    }
+}
+
+.card-block {
+    padding-bottom: 0;
+    .card-header {
+        border-bottom: 0;
+    }
+}
+
+.loading .card-block {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading .card-block:before {
+    content: $loader;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.75);
+    z-index: 3;
+}
+
+.form-edit,
+.form-create {
+    .card-block:before {
+        display: none !important;
+    }
+}
+
+@media (max-width: 450px) {
+    .card-header>.btn.pull-right {
+        display: block;
+        float: none;
+        margin-top: 15px;
+    }
+}

@@ -1,0 +1,38 @@
+.pagination {
+    margin-bottom: 28px;
+}
+
+.pagination-caption {
+    position: relative;
+    top: 6px;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.page-item.active .page-link,
+.pagination-datatables li.active .page-link,
+.pagination li.active .page-link,
+.page-item.active .pagination-datatables li a,
+.pagination-datatables li .page-item.active a,
+.pagination-datatables li.active a,
+.page-item.active .pagination li a,
+.pagination li .page-item.active a,
+.pagination li.active a {
+    background-color: $primary;
+    border-color: $primary;
+    &:hover {
+        color: white;
+    }
+}
+
+@media (max-width: 575px) {
+    .pagination-caption {
+        display: block;
+        text-align: center;
+        margin-bottom: 20px;
+        top: 0;
+    }
+    .pagination {
+        justify-content: center;
+    }
+}

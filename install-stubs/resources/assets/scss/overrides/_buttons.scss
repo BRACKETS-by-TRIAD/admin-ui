@@ -50,6 +50,12 @@
         color: white;
         box-shadow: none;
     }
+    &:hover {
+        .fa-trash-o {
+            animation: swing 1s;
+            transform-origin: top center;
+        }
+    }
     i.fa {
         color: white;
     }

@@ -1,0 +1,39 @@
+.multiselect__tag-icon:after {
+    color: white !important;
+}
+
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+    background: darken($success, 10) !important;
+}
+
+.multiselect__tag {
+    background: $success !important;
+}
+
+.multiselect__tag-icon {
+    background: $success;
+}
+
+.multiselect__tags {
+    border-radius: 0 !important;
+    border-color: $mutedText !important;
+}
+
+.multiselect__option--highlight {
+    background: $success !important;
+    &:after {
+        background: $success !important;
+    }
+}
+
+.multiselect__input::placeholder {
+    color: $mutedText;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+    background: $danger !important;
+    &:after {
+        background: $danger !important;
+    }
+}

@@ -1,0 +1,62 @@
+.ql-editor {
+  min-height: 200px;
+  padding-right: 2.2rem !important;
+  color: #3e515b;
+  &:after {
+    content: '';
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    right: 8px;
+    top: 10px;
+    background-position: center;
+  }
+}
+
+.ql-container .ql-editor.ql-blank::before {
+  font-style: normal;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  color: #B2BDC5;
+}
+
+.quill-editor .ql-container.ql-snow {
+  border: 1px solid $mutedText;
+}
+
+.has-danger .quill-editor .ql-container.ql-snow {
+  border: 1px solid $danger;
+}
+
+.quill-editor .ql-toolbar.ql-snow {
+  border: 1px solid $mutedText;
+  border-bottom: 1px solid #E9EDF2;
+}
+
+.has-danger .quill-editor .ql-toolbar.ql-snow {
+  border: 1px solid $danger;
+  border-bottom: 1px solid #E9EDF2;
+}
+
+.ql-snow .ql-picker-label {
+  color: #C7C7C7;
+}
+
+.quill-editor .ql-snow .ql-stroke {
+  stroke: #C7C7C7;
+}
+
+.quill-editor .ql-snow .ql-fill,
+.ql-snow .ql-stroke.ql-fill {
+  fill: #C7C7C7;
+}
+
+.has-success .ql-editor:after {
+  background-image: url('../coreui/img/correct.png');
+}
+
+.has-danger .ql-editor:after {
+  background-image: url('../coreui/img/error.png');
+}

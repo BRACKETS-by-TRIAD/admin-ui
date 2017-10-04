@@ -1,0 +1,19 @@
+.switch-success>.switch-input:checked~.switch-label {
+  background: $success !important;
+  border-color: $success;
+}
+
+.switch-danger>.switch-input:checked~.switch-label {
+  background: $danger !important;
+  border-color: $danger;
+}
+
+.switch-info>.switch-input:checked~.switch-label {
+  background: $primary !important;
+  border-color: $primary;
+}
+
+.switch-warning>.switch-input:checked~.switch-label {
+  background: $warning !important;
+  border-color: $warning;
+}

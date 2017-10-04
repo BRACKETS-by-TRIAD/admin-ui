@@ -1,0 +1,77 @@
+// Auth specific styles
+.auth {
+    min-height: 100vh;
+    .auth-header {
+        border-bottom: 1px solid #F2F5F9;
+        padding: 30px;
+    }
+    .auth-body {
+        padding: 30px;
+    }
+    .auth-title {
+        text-transform: uppercase;
+        color: #333D5D;
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .auth-subtitle {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #B9BBC6;
+        font-size: 12px;
+        letter-spacing: 0;
+        margin-bottom: 0;
+    }
+    .card-body,
+    .card-block {
+        padding: 0;
+    }
+    .form-group {
+        margin-bottom: 1.7rem;
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+    label {
+        color: #9FA6B9;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+    .form-control {
+        border-radius: 4px;
+        padding: 0.8rem 0.75rem;
+        border-color: $mutedText;
+    }
+    .input-group .form-control {
+        border: 1px solid $mutedText;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        border-left: none;
+    }
+    .has-danger .input-group .form-control {
+        border-color: $danger;
+    }
+    .input-group-addon {
+        border-color: $mutedText;
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+    .form-control-danger {
+        border: 1px solid $danger;
+    }
+    .form-control-feedback {
+        color: $danger;
+        font-weight: 500;
+    }
+    .btn-block {
+        padding: 1rem;
+        font-size: 16px;
+    }
+    .auth-ghost-link {
+        color: #9FA6B9;
+    }
+    .alert {
+        margin-bottom: 1.4rem;
+    }
+}

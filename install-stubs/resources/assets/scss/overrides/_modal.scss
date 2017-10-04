@@ -1,0 +1,26 @@
+.v--modal-overlay {
+    z-index: 9999 !important;
+    background-color: rgba(0, 0, 0, .4) !important;
+}
+
+.v--modal-overlay .v--modal-box {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+}
+
+.modal--translation .v--modal-box {
+    padding: 20px 30px 30px 30px;
+}
+
+.modal-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-submit {
+    margin-top: 30px;
+    padding: 10px 0;
+}
+
+.loading .v--modal-overlay {
+    display: none;
+}

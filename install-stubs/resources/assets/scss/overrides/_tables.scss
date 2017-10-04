@@ -1,0 +1,61 @@
+table th a:not([href]) {
+    cursor: pointer;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #EDF3FE;
+}
+
+.table thead th {
+    border: none;
+}
+
+.table thead tr {
+    border-bottom: 1px solid #F0F2F5;
+    border-top: 1px solid #DEE3E7;
+}
+
+.table td {
+    border-top: 1px solid #F0F2F5;
+    vertical-align: middle;
+}
+
+table .row.no-gutters .btn {
+    margin-right: 10px;
+    @media (max-width: 1319px) {
+        margin-bottom: 10px;
+    }
+}
+
+.table td:last-of-type {
+    min-width: 95px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+td>.switch {
+    top: 4px;
+}
+
+@media (max-width: 991px) {
+    .table {
+        th,
+        td {
+            display: none;
+        }
+        tr {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        th:last-of-type,
+        td:last-of-type,
+        th:nth-of-type(2),
+        td:nth-of-type(2) {
+            display: flex;
+        }
+    }
+    td:nth-of-type(2) {
+        overflow: hidden;
+    }
+}
