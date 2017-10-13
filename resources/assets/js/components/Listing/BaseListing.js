@@ -7,7 +7,7 @@ export default {
         return {
             pagination : {
                 state: {
-                    per_page: this.$cookie.get('per_page') || 10,    // required
+                    per_page: 10,//this.$cookie.get('per_page') || 10,    // required
                     current_page: 1, // required
                     last_page: 1,    // required
                     from: 1,
@@ -56,11 +56,11 @@ export default {
             var date = moment(date);
             return date.isValid() ? date.format(format) : "";
         },
-        datetime: function (datetime, format = 'YYYY-MM-DD kk:mm:ss') {
+        datetime: function (datetime, format = 'YYYY-MM-DD HH:mm:ss') {
             var date = moment(datetime);
             return date.isValid() ? date.format(format) : "";
         },
-        time: function (time, format = 'kk:mm:ss') {
+        time: function (time, format = 'HH:mm:ss') {
             // '2000-01-01' is here just because momentjs needs a date
             var date = moment('2000-01-01 ' + time);
             return date.isValid() ? date.format(format) : "";
