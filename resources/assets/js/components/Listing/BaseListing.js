@@ -7,7 +7,7 @@ export default {
         return {
             pagination : {
                 state: {
-                    per_page: 10,//this.$cookie.get('per_page') || 10,    // required
+                    per_page: this.$cookie.get('per_page') || 10,    // required
                     current_page: 1, // required
                     last_page: 1,    // required
                     from: 1,
