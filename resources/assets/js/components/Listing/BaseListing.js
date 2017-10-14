@@ -56,11 +56,11 @@ export default {
             var date = moment(date);
             return date.isValid() ? date.format(format) : "";
         },
-        datetime: function (datetime, format = 'YYYY-MM-DD kk:mm:ss') {
+        datetime: function (datetime, format = 'YYYY-MM-DD HH:mm:ss') {
             var date = moment(datetime);
             return date.isValid() ? date.format(format) : "";
         },
-        time: function (time, format = 'kk:mm:ss') {
+        time: function (time, format = 'HH:mm:ss') {
             // '2000-01-01' is here just because momentjs needs a date
             var date = moment('2000-01-01 ' + time);
             return date.isValid() ? date.format(format) : "";
