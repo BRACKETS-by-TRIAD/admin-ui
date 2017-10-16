@@ -48,6 +48,7 @@ const BaseForm = {
     data: function() {
         return {
             form: {},
+            mediaCollections: [],
             isFormLocalized: false,
             currentLocale: 'sk',
 	        submiting: false,
@@ -110,7 +111,19 @@ const BaseForm = {
 
     methods: {
         getPostData() {
-            return this.form
+            if(this.mediaCollections) {
+                this.mediaCollections.forEach((collection, index, arr)=>{
+                    if(this.form[collection]) {
+                        console.warn("MediaUploader warning: You've defined input with name '"+collection+"' already.");
+                    }
+
+                    if(this.$refs[collection+'_uploader']) {
+                         this.form[collection] = this.$refs[collection+'_uploader'].getFiles(); 
+                    }  
+                });
+            }
+
+            return this.form;
         },
 
 

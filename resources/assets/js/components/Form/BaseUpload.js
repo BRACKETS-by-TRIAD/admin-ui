@@ -118,19 +118,33 @@ const BaseUpload = {
     },
 
     getFiles: function() {
-      var files = this.mutableUploadedImages;
+      var files = []; 
+
+      _.each(this.mutableUploadedImages, (file, key) => {
+        if(file.deleted) {
+          files.push({
+              id: file.id,
+              collection_name: this.collection,
+              action: 'delete',
+          });
+        }
+      });
 
       _.each(this.$refs[this.collection].getAcceptedFiles(), (file, key) => {
         var response = JSON.parse(file.xhr.response);
 
         if(response.path) {
           files.push({
-              collection: this.collection,
-              name: file.name,  //TODO: editable in the future
-              file_name: file.name,
-              width: file.width,
-              height: file.height,
-              path: response.path
+              id: file.id,
+              collection_name: this.collection,
+              path: response.path,
+              action: file.deleted ? 'delete' : 'add', //TODO: update ie. meta_data.name
+              meta_data: {
+                name: file.name,  //TODO: editable in the future
+                file_name: file.name,
+                width: file.width,
+                height: file.height,
+              }
           });
         }
       });

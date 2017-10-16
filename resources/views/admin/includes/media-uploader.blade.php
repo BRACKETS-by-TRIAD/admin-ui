@@ -24,17 +24,15 @@
 		:collection="'{{ $mediaCollection->getName() }}'"
 		:url="'{{ route('brackets/media::upload') }}'"
 		@if($mediaCollection->getMaxNumberOfFiles())
-		:max-number-of-files="{{ $mediaCollection->getMaxNumberOfFiles() }}"
+			:max-number-of-files="{{ $mediaCollection->getMaxNumberOfFiles() }}"
 		@endif
 		@if($mediaCollection->getMaxFileSize())
-		:max-file-size-in-mb="{{ round($mediaCollection->getMaxFileSize()/1024/1024) }}"
+			:max-file-size-in-mb="{{ round($mediaCollection->getMaxFileSize()/1024/1024) }}"
 		@endif
 		@if($mediaCollection->getAcceptedFileTypes())
-		:accepted-file-types="'{{ $mediaCollection->getAcceptedFileTypes() }}'"
+			:accepted-file-types="'{{ implode($mediaCollection->getAcceptedFileTypes(), '') }}'"
 		@endif
-		@if(isset($media))
-		@if($media->getThumbsForCollection($mediaCollection->getName())->count() > 0)
-		:uploaded-images="{{ $media->getThumbsForCollection($mediaCollection->getName())->toJson() }}"
-		@endif
+		@if(isset($media) && $media->count() > 0)
+			:uploaded-images="{{ $media->toJson() }}"
 		@endif
 ></media-upload>
