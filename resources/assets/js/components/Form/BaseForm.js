@@ -40,6 +40,7 @@ const BaseForm = {
             // })
         }
 
+        //FIXME: now we can't add dynamic input in update type of form
         if (!_.isEmpty(this.data)) {
             this.form = this.data;
         }
