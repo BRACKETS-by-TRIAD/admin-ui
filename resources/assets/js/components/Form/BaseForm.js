@@ -38,6 +38,7 @@ const BaseForm = {
             //         _.set(form, l, {})
             //     }
             // })
+            this.currentLocale = this.otherLocales[0];
         }
 
         if (!_.isEmpty(this.data)) {
