@@ -115,7 +115,7 @@ const BaseForm = {
             if(this.mediaCollections) {
                 this.mediaCollections.forEach((collection, index, arr)=>{
                     if(this.form[collection]) {
-                        console.warn("MediaUploader warning: You've defined input with name '"+collection+"' already.");
+                        console.warn("MediaUploader warning: Media input must have a unique name, '"+collection+"' is already defined in regular inputs.");
                     }
 
                     if(this.$refs[collection+'_uploader']) {
