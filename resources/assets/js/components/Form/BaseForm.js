@@ -41,6 +41,7 @@ const BaseForm = {
             this.currentLocale = this.otherLocales[0];
         }
 
+        //FIXME: now we can't add dynamic input in update type of form
         if (!_.isEmpty(this.data)) {
             this.form = this.data;
         }
@@ -49,6 +50,7 @@ const BaseForm = {
     data: function() {
         return {
             form: {},
+            mediaCollections: [],
             isFormLocalized: false,
             currentLocale: 'sk',
 	        submiting: false,
@@ -111,7 +113,19 @@ const BaseForm = {
 
     methods: {
         getPostData() {
-            return this.form
+            if(this.mediaCollections) {
+                this.mediaCollections.forEach((collection, index, arr)=>{
+                    if(this.form[collection]) {
+                        console.warn("MediaUploader warning: Media input must have a unique name, '"+collection+"' is already defined in regular inputs.");
+                    }
+
+                    if(this.$refs[collection+'_uploader']) {
+                         this.form[collection] = this.$refs[collection+'_uploader'].getFiles(); 
+                    }  
+                });
+            }
+
+            return this.form;
         },
 
 

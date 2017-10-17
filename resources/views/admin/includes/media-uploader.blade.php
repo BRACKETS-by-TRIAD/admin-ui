@@ -4,9 +4,11 @@
 	@else
 		<i class="fa fa-file-o"></i>
 	@endif
+	
+	@if(isset($label))
+		{{ $label }}
+	@endif
 
-	{{-- How to work around this? We don't want that MediaCollection know about the form name. Maybe we can use trans() and our predefined translations path? --}}
-	{{-- $mediaCollection->getTitle() --}}
 	@if($mediaCollection->getMaxNumberOfFiles())
 		<small>{{ trans('brackets/admin-ui::admin.media_uploader.max_number_of_files', ['maxNumberOfFiles' => $mediaCollection->getMaxNumberOfFiles()]) }}</small>
 	@endif
@@ -24,17 +26,15 @@
 		:collection="'{{ $mediaCollection->getName() }}'"
 		:url="'{{ route('brackets/media::upload') }}'"
 		@if($mediaCollection->getMaxNumberOfFiles())
-		:max-number-of-files="{{ $mediaCollection->getMaxNumberOfFiles() }}"
+			:max-number-of-files="{{ $mediaCollection->getMaxNumberOfFiles() }}"
 		@endif
 		@if($mediaCollection->getMaxFileSize())
-		:max-file-size-in-mb="{{ round($mediaCollection->getMaxFileSize()/1024/1024) }}"
+			:max-file-size-in-mb="{{ round($mediaCollection->getMaxFileSize()/1024/1024) }}"
 		@endif
 		@if($mediaCollection->getAcceptedFileTypes())
-		:accepted-file-types="'{{ $mediaCollection->getAcceptedFileTypes() }}'"
+			:accepted-file-types="'{{ implode($mediaCollection->getAcceptedFileTypes(), '') }}'"
 		@endif
-		@if(isset($media))
-		@if($media->getThumbsForCollection($mediaCollection->getName())->count() > 0)
-		:uploaded-images="{{ $media->getThumbsForCollection($mediaCollection->getName())->toJson() }}"
-		@endif
+		@if(isset($media) && $media->count() > 0)
+			:uploaded-images="{{ $media->toJson() }}"
 		@endif
 ></media-upload>
