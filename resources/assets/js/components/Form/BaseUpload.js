@@ -93,6 +93,10 @@ const BaseUpload = {
       var deletedFileIndex = _.findIndex(this.mutableUploadedImages, {url: file.url});
       if(this.mutableUploadedImages[deletedFileIndex]) {
         this.mutableUploadedImages[deletedFileIndex]['deleted'] = true;
+
+        //dontSubstractMaxFiles fix
+        var currentMax = this.$refs[this.collection].dropzone.options.maxFiles;
+        this.$refs[this.collection].setOption('maxFiles', currentMax + 1);
       }
     },
 
@@ -105,7 +109,8 @@ const BaseUpload = {
                                                           size: file['size'], 
                                                           type: file['type'], 
                                                           url: file['url'],
-                                                        }, file['thumb_url'], 
+                                                        }, 
+                                                        file['thumb_url'], 
                                                         false,
                                                         false,
                                                         {
