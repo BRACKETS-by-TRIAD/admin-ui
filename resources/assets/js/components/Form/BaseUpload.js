@@ -197,7 +197,7 @@ const BaseUpload = {
       return `
               <div class="dz-preview dz-file-preview">
                   <div class="dz-image" style="width: 200px;height: 200px">
-                      <img data-dz-thumbnail />
+                      <img data-dz-thumbnail style="width: 100%; height: 100%; -webkit-object-fit: cover; object-fit: cover;" />
                   </div>
                   <div class="dz-details">
                     <div class="dz-size"><span data-dz-size></span></div>
