@@ -114,18 +114,76 @@ small select {
   margin: 0 10px;
 }
 
-.vue-dropzone {
+.vue-dropzone.dropzone {
   border: 1px solid $mutedText !important;
-}
+  
+  i {
+    color: #c7c7c7 !important;
+    font-size: 40px !important;
+    margin-bottom: 10px;
+  }
 
-.vue-dropzone i {
-  color: #c7c7c7 !important;
-  font-size: 30px !important;
-  margin-bottom: 10px;
-}
+  .dz-message {
+    color: $mutedText !important;
+  }
+  
+  //fixes https://github.com/rowanwins/vue-dropzone/issues/127
+  .dz-error-message { 
+    top: calc(100% + 10px) !important; 
+    left: calc(50% - 70px) !important; 
+  } 
 
-.dropzone .dz-message {
-  color: $mutedText !important;
+  .dz-preview {
+    .dz-image { 
+      width: 200px !important;
+      height: 200px !important;
+
+      img {
+        width: 100%; 
+        height: 100%; 
+        -webkit-object-fit: cover; 
+        object-fit: cover;
+      }
+
+      i {
+        width: 100%; 
+        height: 100%;
+        line-height: 200px; 
+        font-size: 70px !important;
+        text-align: center;
+        margin-bottom: 10px;
+
+        &+p {
+          position: absolute;
+          bottom: 0px;
+          width: 100%;
+          text-align: center;
+          height: 20px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          font-size: 12px;
+          line-height: 1.2;
+          padding: 0 15px;
+        }
+      }
+    }
+
+    .dz-details {
+      .dz-filename {
+        a {
+          cursor: pointer;
+          color:white;
+        }
+      }
+    }
+    
+    //fixes https://github.com/rowanwins/vue-dropzone/issues/127
+    .dz-error-mark { 
+      text-align: center; 
+      top: 25%!important;
+    }
+  }
 }
 
 @media (min-width: 576px) {
