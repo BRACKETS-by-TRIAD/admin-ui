@@ -63,10 +63,7 @@ const BaseUpload = {
                 
                 <input type="hidden" name="collection" :value="collection">
             </dropzone>`,
-  mounted: function () { 
-    //FIXME: temporary ugly fix until is fixed in package https://github.com/rowanwins/vue-dropzone/issues/127
-    $('head').append('<style>.dz-error-message { top: calc(100% + 10px) !important; left: calc(50% - 70px) !important; } .vue-dropzone .dz-preview .dz-error-mark { text-align: center; top: 25%!important;}</style>');
-    
+  mounted: function () {     
     this.attachAlreadyUploadedMedia();
   },
   methods: {
@@ -158,51 +155,47 @@ const BaseUpload = {
     },
 
     placeIcon: function(file) {
-      //FIXME iconStyleString, nameStyleString, linkStyleString
       //FIXME cele to je jqueryoidne, asi si budeme musiet spravit vlastny vue wrapper, tento je zbugovany
-      var iconStyleString = 'width:'+this.thumbnailWidth+'px; height:'+this.thumbnailWidth+'px; font-size: '+this.thumbnailWidth/2+'px; line-height: '+this.thumbnailWidth+'px; text-align: center',
-          nameStyleString =  'position: absolute;bottom: 0px;width: 100%;text-align: center;height: 20px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;font-size: 12px;line-height: 1.2;padding: 0 15px;',
-          linkStyleString = 'cursor: pointer;color:white;',
-          $previewElement = $(file.previewElement);
+      var $previewElement = $(file.previewElement);
 
       if(file.url) {
-        $previewElement.find('.dz-filename').html('<a href="'+file.url+'" target="_BLANK" style="'+linkStyleString+'" class="dz-btn dz-custom-download">'+file.name+'</a>');
+        $previewElement.find('.dz-filename').html('<a href="'+file.url+'" target="_BLANK" class="dz-btn dz-custom-download">'+file.name+'</a>');
       }
 
       if(file.type.includes('image')) {
         //nothing, default thumb
       }
       else if(file.type.includes('pdf')) {
-        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-pdf-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-pdf-o"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('word')) {
-        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-word-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-word-o"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('spreadsheet') || file.type.includes('csv')) {
-        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-excel-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-excel-o"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('presentation')) {
-        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-powerpoint-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-powerpoint-o"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('video')) {
-        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-video-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-video-o"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('text')) {
-        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-text-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-text-o"></i><p>'+file.name+'</p>');
       }
       else if(file.type.includes('zip') || file.type.includes('rar')) {
-        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-archive-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-archive-o"></i><p>'+file.name+'</p>');
       }
       else {
-        $previewElement.find('.dz-image').html('<i style="'+iconStyleString+'" class="fa fa-file-o"></i><p style="'+nameStyleString+'">'+file.name+'</p>');
+        $previewElement.find('.dz-image').html('<i class="fa fa-file-o"></i><p>'+file.name+'</p>');
       }
     },
 
     template: function() {
       return `
               <div class="dz-preview dz-file-preview">
-                  <div class="dz-image" style="width: 200px;height: 200px">
-                      <img data-dz-thumbnail style="width: 100%; height: 100%; -webkit-object-fit: cover; object-fit: cover;" />
+                  <div class="dz-image">
+                      <img data-dz-thumbnail />
                   </div>
                   <div class="dz-details">
                     <div class="dz-size"><span data-dz-size></span></div>
