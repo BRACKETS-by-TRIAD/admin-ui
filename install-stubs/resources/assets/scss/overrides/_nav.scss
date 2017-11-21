@@ -62,6 +62,7 @@
 }
 
 .sidebar-collapse {
+    margin-top: auto;
     display: flex;
     padding: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -86,6 +87,8 @@
 }
 
 .sidebar .nav {
+    height: 100%;
+    flex-wrap: nowrap;
     transition: all 0.3s;
     .nav-item {
         transition: none;
