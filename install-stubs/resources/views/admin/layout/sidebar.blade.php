@@ -12,11 +12,10 @@
             <li class="nav-title">{{ trans('brackets/admin-ui::admin.sidebar.settings') }}</li>
             {{-- Do not delete me :) I'm also used for auto-generation menu items --}}
             {{--<li class="nav-item"><a class="nav-link" href="{{ url('admin/configuration') }}"><i class="icon-settings"></i> <span class="nav-link-text">{{ __('Configuration') }}</span></a></li>--}}
+            <li class="sidebar-collapse">
+                <i class="fa fa-angle-double-left"></i>
+                <i class="fa fa-angle-double-right"></i>
+            </li>
         </ul>
-
-        <div class="sidebar-collapse">
-            <i class="fa fa-angle-double-left"></i>
-            <i class="fa fa-angle-double-right"></i>
-        </div>
     </nav>
 </div>
