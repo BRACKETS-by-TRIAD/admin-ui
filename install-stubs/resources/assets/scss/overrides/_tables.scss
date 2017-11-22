@@ -54,6 +54,9 @@ td>.switch {
         td:nth-of-type(2) {
             display: flex;
         }
+        td:last-of-type {
+            padding-right: 0;
+        }
     }
     td:nth-of-type(2) {
         overflow: hidden;
