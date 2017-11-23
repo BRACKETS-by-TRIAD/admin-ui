@@ -58,7 +58,7 @@ const BaseForm = {
             form: {},
             mediaCollections: [],
             isFormLocalized: false,
-            currentLocale: 'blah',
+            currentLocale: '',
 	        submiting: false,
             onSmallScreen: window.innerWidth < this.responsiveBreakpoint,
             datePickerConfig: {
@@ -199,7 +199,6 @@ const BaseForm = {
 
                 return this.isFormLocalized && this.currentLocale == locale;
             } else {
-                console.log(this.currentLocale);
                 return this.currentLocale == locale;
             }
         },
