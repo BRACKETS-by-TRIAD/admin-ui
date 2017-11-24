@@ -1,30 +1,29 @@
-import VeeValidate from 'vee-validate';
+import 'vue-multiselect/dist/vue-multiselect.min.css';
 import flatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
 import VueQuillEditor from 'vue-quill-editor';
 import Notifications from 'vue-notification';
 import Multiselect from 'vue-multiselect';
-import 'vue-multiselect/dist/vue-multiselect.min.css';
-import VModal from 'vue-js-modal'
+import VeeValidate from 'vee-validate';
+import 'flatpickr/dist/flatpickr.css';
 import VueCookie from 'vue-cookie';
+import { Admin } from 'craftable';
+import VModal from 'vue-js-modal'
 import Vue from 'vue';
 
-import Admin from 'admin';
-import bootstrap from './bootstrap';
-import coreui from '../coreui/js/app.js';
-import bootstrapComponents from './components/bootstrap';
-import index from './index';
+import './bootstrap';
+import './app-components/bootstrap';
+import './index';
 
-Vue.use(VeeValidate, {
-	strict: true
-});
-Vue.use(VueQuillEditor);
-Vue.use(Notifications);
+import 'craftable/coreui';
+
+Vue.component('multiselect', Multiselect);
+Vue.use(VeeValidate, {strict: true});
 Vue.component('datetime', flatPickr);
 Vue.use(VModal, { dialog: true });
+Vue.use(VueQuillEditor);
+Vue.use(Notifications);
 Vue.use(VueCookie);
-Vue.component('multiselect', Multiselect);
 
 new Vue({
-	mixins: [Admin],
+    mixins: [Admin],
 });
