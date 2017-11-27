@@ -61,7 +61,7 @@ class AdminUIInstall extends Command
      */
     private function frontendAdjustments(Filesystem $files) {
         // webpack
-        if ($this->appendIfNotExists('webpack.mix.js', '|vendor/brackets/admin|', "\n\n" . $files->get(__DIR__ . '/../../../install-stubs/webpack.mix.js'))) {
+        if ($this->appendIfNotExists('webpack.mix.js', '|resources/assets/admin|', "\n\n" . $files->get(__DIR__ . '/../../../install-stubs/webpack.mix.js'))) {
             $this->info('Webpack configuration updated');
         }
 
