@@ -1,8 +1,8 @@
+// Variables
+@import "variables";
+
 // Vendor
-@import "../coreui/scss/style";
 @import "vendor/index";
 
-// Own styles and overrides
-@import "variables";
-@import "overrides/index";
+// Your own, project specific styles
 @import "styles/index";
