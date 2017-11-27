@@ -70,16 +70,7 @@ class AdminUIInstall extends Command
         $packageJsonFile = base_path('package.json');
         $packageJson = $files->get($packageJsonFile);
         $packageJsonContent = json_decode($packageJson, JSON_OBJECT_AS_ARRAY);
-        $packageJsonContent['devDependencies']['vee-validate'] = '^2.0.0-rc.13';
-        $packageJsonContent['devDependencies']['vue'] = '^2.3.4';
-        $packageJsonContent['devDependencies']['vue-flatpickr-component'] = '^2.4.1';
-        $packageJsonContent['devDependencies']['vue-js-modal'] = '^1.2.8';
-        $packageJsonContent['devDependencies']['vue-multiselect'] = '^2.0.2';
-        $packageJsonContent['devDependencies']['vue-notification'] = '^1.3.2';
-        $packageJsonContent['devDependencies']['vue-quill-editor'] = '^2.3.0';
-        $packageJsonContent['devDependencies']['moment'] = '^2.18.1';
-        $packageJsonContent['devDependencies']['vue2-dropzone'] = '^2.3.5';
-        $packageJsonContent['devDependencies']['vue-cookie'] = '^1.1.4';
+        $packageJsonContent['devDependencies']['craftable'] = '^1.0.0';
         $files->put($packageJsonFile, json_encode($packageJsonContent, JSON_PRETTY_PRINT));
         $this->info('package.json changed');
     }
