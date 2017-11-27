@@ -69,6 +69,7 @@ p {
     line-height: 1.5em;
     margin-top: 0;
     text-align: left;
+    hyphens: none;
 }
 
 p.sub {
