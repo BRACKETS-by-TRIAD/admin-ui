@@ -28,6 +28,7 @@
     padding-bottom: 0;
     .card-header {
         border-bottom: 0;
+
     }
 }
 
@@ -54,6 +55,12 @@
 .form-create {
     .card-block:before {
         display: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .card-block .card-header {
+        padding-left: 0;
     }
 }
 

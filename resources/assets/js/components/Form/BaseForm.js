@@ -28,6 +28,10 @@ const BaseForm = {
                 return {};
             }
         },
+        'responsiveBreakpoint': {
+            type: Number,
+            default: 850
+        }
     },
 
     created: function() {
@@ -38,13 +42,15 @@ const BaseForm = {
             //         _.set(form, l, {})
             //     }
             // })
-            this.currentLocale = this.otherLocales[0];
+            this.currentLocale = this.defaultLocale;
         }
 
         //FIXME: now we can't add dynamic input in update type of form
         if (!_.isEmpty(this.data)) {
             this.form = this.data;
         }
+
+        window.addEventListener('resize', this.onResize);
     },
 
     data: function() {
@@ -52,8 +58,9 @@ const BaseForm = {
             form: {},
             mediaCollections: [],
             isFormLocalized: false,
-            currentLocale: 'sk',
+            currentLocale: '',
 	        submiting: false,
+            onSmallScreen: window.innerWidth < this.responsiveBreakpoint,
             datePickerConfig: {
                 dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
@@ -103,9 +110,10 @@ const BaseForm = {
             return this.locales.filter(x => x != this.defaultLocale);
         },
         showLocalizedValidationError: function() {
+            // TODO ked sme neni na mobile, tak pozerat zo vsetkych
             return this.otherLocales.some(lang => {
                 return this.errors.items.some(item => {
-                    return item.field.endsWith('_'+lang);
+                    return item.field.endsWith('_'+lang) || item.field.startsWith(lang+'_');
                 });
             });
         }
@@ -127,8 +135,6 @@ const BaseForm = {
 
             return this.form;
         },
-
-
         onSubmit() {
             return this.$validator.validateAll()
                 .then(result => {
@@ -177,6 +183,7 @@ const BaseForm = {
         },
         showLocalization() {
             this.isFormLocalized = true;
+            this.currentLocale = this.otherLocales[0];
             $('.container-xl').addClass('width-auto');
         },
         hideLocalization() {
@@ -185,6 +192,18 @@ const BaseForm = {
         },
         validate(event) {
             this.$validator.errors.remove(event.target.name);
+        },
+        shouldShowLangGroup(locale) {
+            if (!this.onSmallScreen) {
+                if(this.defaultLocale == locale) return true;
+
+                return this.isFormLocalized && this.currentLocale == locale;
+            } else {
+                return this.currentLocale == locale;
+            }
+        },
+        onResize() {
+            this.onSmallScreen = window.innerWidth < this.responsiveBreakpoint;
         }
     }
 };
