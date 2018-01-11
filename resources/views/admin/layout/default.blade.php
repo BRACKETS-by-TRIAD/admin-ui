@@ -14,6 +14,10 @@
 
         <main class="main">
 
+            @if(View::exists('admin.layout.breadcrumbs'))
+                @include('admin.layout.breadcrumbs')
+            @endif
+
             <div class="container-fluid" id="app" :class="{'loading': loading}">
                 <div class="modals">
                     <v-dialog/>
