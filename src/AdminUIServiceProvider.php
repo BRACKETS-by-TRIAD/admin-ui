@@ -17,7 +17,6 @@ class AdminUIServiceProvider extends ServiceProvider
         ]);
 
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'brackets/admin-ui');
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'brackets/admin-ui');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
