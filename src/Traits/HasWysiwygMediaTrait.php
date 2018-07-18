@@ -9,7 +9,10 @@ trait HasWysiwygMediaTrait {
     public static function bootHasWysiwygMediaTrait()
     {
         static::saved(function ($model) {
-            if($wysiwygMediaIds = request('wysiwygMedia')) {
+            $wysiwygMediaIds = collect(request('wysiwygMedia'))->filter(function($wysiwygId){
+                return is_int($wysiwygId);
+            });
+            if($wysiwygMediaIds->isNotEmpty()) {
                 WysiwygMedia::whereIn('id', $wysiwygMediaIds)->get()->each(function($item) use ($model) {
                     $model->wysiwygMedia()->save($item);
                 });
