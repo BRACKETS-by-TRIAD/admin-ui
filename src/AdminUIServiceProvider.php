@@ -17,6 +17,7 @@ class AdminUIServiceProvider extends ServiceProvider
         ]);
 
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'brackets/admin-ui');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'brackets/admin-ui');
 
         if ($this->app->runningInConsole()) {
@@ -27,6 +28,16 @@ class AdminUIServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../install-stubs/resources/views' => resource_path('views')
             ], 'views');
+
+            $this->publishes([
+                __DIR__ . '/../install-stubs/config/wysiwyg-media.php' => config_path('wysiwyg-media.php'),
+            ], 'config');
+
+            if (!glob(base_path('database/migrations/*_create_wysiwyg_media_table.php'))) {
+                $this->publishes([
+                    __DIR__ . '/../install-stubs/database/migrations/create_wysiwyg_media_table.php' => database_path('migrations').'/2018_07_18_000000_create_wysiwyg_media_table.php',
+                ], 'migrations');
+            }
         }
     }
 
