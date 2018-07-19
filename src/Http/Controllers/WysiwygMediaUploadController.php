@@ -29,7 +29,7 @@ class WysiwygMediaUploadController extends BaseController {
         if (!File::isDirectory(Config::get('wysiwyg-media.media_folder'))) {
             File::makeDirectory(Config::get('wysiwyg-media.media_folder'), 0755, true);
         }
-
+      
         // resize and save image
         Image::make($temporaryFile->path())
             ->resize(Config::get('wysiwyg-media.maximum_image_width'), null, function ($constraint) {
