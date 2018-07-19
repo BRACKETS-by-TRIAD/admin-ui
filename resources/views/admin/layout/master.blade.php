@@ -25,6 +25,7 @@
 
     @yield('footer')
 
+    @include('brackets/admin-ui::admin.partials.wysiwyg-svgs')
     @include('brackets/admin-ui::admin.partials.main-bottom-scripts')
     @yield('bottom-scripts')
 </body>

@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
 use Intervention\Image\Facades\Image;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Illuminate\Support\Facades\File;
 
 class WysiwygMediaUploadController extends BaseController {
 
@@ -24,6 +25,11 @@ class WysiwygMediaUploadController extends BaseController {
         // generate path that it will be saved to
         $savedPath = Config::get('wysiwyg-media.media_folder') . '/' . time() . $temporaryFile->getClientOriginalName();
 
+        // create directory in which we will be uploading into
+        if (!File::isDirectory(Config::get('wysiwyg-media.media_folder'))) {
+            File::makeDirectory(Config::get('wysiwyg-media.media_folder'), 0755, true);
+        }
+      
         // resize and save image
         Image::make($temporaryFile->path())
             ->resize(Config::get('wysiwyg-media.maximum_image_width'), null, function ($constraint) {
