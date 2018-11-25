@@ -18,7 +18,7 @@
 
 </head>
 
-<body class="app header-fixed sidebar-fixed">
+<body class="app header-fixed sidebar-fixed sidebar-lg-show">
     @yield('header')
 
     @yield('content')
