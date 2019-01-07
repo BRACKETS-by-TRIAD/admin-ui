@@ -1,5 +1,7 @@
 <header class="app-header navbar">
-	<button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">☰</button>
+    <button class="navbar-toggler sidebar-toggler d-lg-none" type="button" data-toggle="sidebar-show">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 	@if(View::exists('admin.layout.logo'))
         @include('admin.layout.logo')
 	@endif
