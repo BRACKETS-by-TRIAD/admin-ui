@@ -22,7 +22,8 @@ class AdminUIServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../install-stubs/resources/assets' => resource_path('assets/admin')
+                __DIR__.'/../install-stubs/resources/js/admin' => resource_path('js/admin'),
+                __DIR__.'/../install-stubs/resources/sass/admin' => resource_path('sass/admin')
             ], 'assets');
 
             $this->publishes([
