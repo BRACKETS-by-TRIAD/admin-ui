@@ -61,7 +61,7 @@ class AdminUIInstall extends Command
      */
     private function frontendAdjustments(Filesystem $files) {
         // webpack
-        if ($this->appendIfNotExists('webpack.mix.js', '|resources/assets/admin|', "\n\n" . $files->get(__DIR__ . '/../../../install-stubs/webpack.mix.js'))) {
+        if ($this->appendIfNotExists('webpack.mix.js', '|resources/js/admin|', "\n\n" . $files->get(__DIR__ . '/../../../install-stubs/webpack.mix.js'))) {
             $this->info('Webpack configuration updated');
         }
 
@@ -70,7 +70,7 @@ class AdminUIInstall extends Command
         $packageJsonFile = base_path('package.json');
         $packageJson = $files->get($packageJsonFile);
         $packageJsonContent = json_decode($packageJson, JSON_OBJECT_AS_ARRAY);
-        $packageJsonContent['devDependencies']['craftable'] = '^1.0.0';
+        $packageJsonContent['devDependencies']['craftable'] = '^2.0.0';
         $files->put($packageJsonFile, json_encode($packageJsonContent, JSON_PRETTY_PRINT));
         $this->info('package.json changed');
     }

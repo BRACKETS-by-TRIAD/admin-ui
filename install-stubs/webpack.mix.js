@@ -1,5 +1,5 @@
-mix.js(['resources/assets/admin/js/admin.js'], 'public/build/admin/js')
-    .sass('resources/assets/admin/scss/app.scss', 'public/build/admin/css');
+mix.js(['resources/js/admin/admin.js'], 'public/js')
+    .sass('resources/sass/admin/admin.scss', 'public/css');
 
 if (mix.inProduction()) {
     mix.version();

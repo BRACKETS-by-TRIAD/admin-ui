@@ -15,7 +15,7 @@ import Vue from 'vue';
 import './app-components/bootstrap';
 import './index';
 
-import 'craftable/coreui';
+import 'craftable/dist/ui';
 
 Vue.component('multiselect', Multiselect);
 Vue.use(VeeValidate, {strict: true});
