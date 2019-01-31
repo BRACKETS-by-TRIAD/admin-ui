@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\File;
 
 class WysiwygMedia extends Model
 {
-    protected $fillable = ["file_path", "parent_id"];
+    protected $fillable = ["file_path"];
 
     public static function boot() {
+	parent::boot();
+
         static::deleted(function($model) {
             File::delete(public_path() . '/' . $model->file_path);
         });
