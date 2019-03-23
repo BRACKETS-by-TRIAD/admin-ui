@@ -14,7 +14,7 @@ abstract class TestCase extends OrchestraBrowser
     /** @var \Brackets\AdminTranslations\Translation */
     protected $languageLine;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
