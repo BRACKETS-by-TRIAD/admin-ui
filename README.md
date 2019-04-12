@@ -8,3 +8,7 @@ Example of an administration interface built with this package:
 This packages is part of [Craftable](https://github.com/BRACKETS-by-TRIAD/craftable) (`brackets/craftable`) - an administration starter kit for Laravel 5. You should definitely have a look :)
 
 You can find full documentation at https://docs.getcraftable.com/#/admin-ui
+
+## Issues
+Where do I report issues?
+If something is not working as expected, please open an issue in the main repository https://github.com/BRACKETS-by-TRIAD/craftable.
