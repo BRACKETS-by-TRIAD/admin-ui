@@ -16,6 +16,7 @@ return [
         'delete' => 'Delete',
         'search' => 'Search',
         'new' => 'New',
+        'saved' => 'Saved',
     ],
 
     'index' => [
@@ -34,6 +35,8 @@ return [
         'hide' => 'Hide Translations',
         'select_an_option' => 'Select an option',
         'select_options' => 'Select options',
+        'publish' => 'Publish',
+        'history' => 'History',
     ],
 
     'placeholder' => [

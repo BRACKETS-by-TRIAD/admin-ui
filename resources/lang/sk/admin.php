@@ -14,6 +14,7 @@ return [
         'edit' => 'Upraviť',
         'delete' => 'Vymazať',
         'search' => 'Hľadať',
+        'saved' => 'Uložené',
     ],
 
     'index' => [
@@ -30,6 +31,8 @@ return [
         'more_can_be_managed' => '({{ otherLocales.length }} možno spravovať)',
         'currently_editing_translation' => 'Práve upravujete {{ this.defaultLocale.toUpperCase() }} (základný) preklad',
         'hide' => 'Skryť preklady',
+        'publish' => 'Pukblikácia',
+        'history' => 'História',
     ],
 
     'placeholder' => [
