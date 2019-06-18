@@ -31,7 +31,7 @@ return [
         'more_can_be_managed' => '({{ otherLocales.length }} možno spravovať)',
         'currently_editing_translation' => 'Práve upravujete {{ this.defaultLocale.toUpperCase() }} (základný) preklad',
         'hide' => 'Skryť preklady',
-        'publish' => 'Pukblikácia',
+        'publish' => 'Publikácia',
         'history' => 'História',
     ],
 
