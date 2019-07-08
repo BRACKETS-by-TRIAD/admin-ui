@@ -37,6 +37,10 @@ return [
         'select_options' => 'Select options',
         'publish' => 'Publish',
         'history' => 'History',
+        'created_by' => 'Created by',
+        'updated_by' => 'Updated by',
+        'created_on' => 'Created on',
+        'updated_on' => 'Updated on'
     ],
 
     'placeholder' => [

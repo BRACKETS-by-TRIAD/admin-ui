@@ -33,6 +33,10 @@ return [
         'hide' => 'Skryť preklady',
         'publish' => 'Publikácia',
         'history' => 'História',
+        'created_by' => 'Vytvoril',
+        'updated_by' => 'Aktualizoval',
+        'created_on' => 'Vytvorené',
+        'updated_on' => 'Aktualizované'
     ],
 
     'placeholder' => [
