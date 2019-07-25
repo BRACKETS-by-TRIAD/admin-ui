@@ -21,6 +21,12 @@ return [
         'try_changing_items' => 'Skúste zmeniť filter alebo pridať novú',
     ],
 
+    'listing' => [
+        'selected_items' => 'Vybrané položky',
+        'uncheck_all_items' => 'Odznačiť všetky položky',
+        'check_all_items' => 'Označiť všetky položky',
+    ],
+
     'forms' => [
         'select_a_date' => 'Zvoľte dátum',
         'select_a_time' => 'Zvoľte čas',

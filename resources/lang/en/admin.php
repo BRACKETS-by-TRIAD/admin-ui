@@ -23,6 +23,12 @@ return [
         'try_changing_items' => 'Try changing the filters or add a new one',
     ],
 
+    'listing' => [
+        'selected_items' => 'Selected items',
+        'uncheck_all_items' => 'Uncheck all items',
+        'check_all_items' => 'Check all items',
+    ],
+
     'forms' => [
         'select_a_date' => 'Select date',
         'select_a_time' => 'Select time',
