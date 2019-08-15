@@ -6,6 +6,62 @@ return [
     'operation' => [
         'succeeded' => 'Akcia prebehla úspešne',
         'failed' => 'Akcia sa nepodarila',
+        'not_allowed' => 'Operácia nie je povolená',
+        'publish_now' => 'Publikovať',
+        'unpublish_now' => 'Zrušiť publikovanie',
+        'publish_later' => 'Publikovať neskôr',
+    ],
+
+    'dialogs' => [
+        'duplicateDialog' => [
+            'title' => 'Varovanie!',
+            'text' => 'Naozaj chcete duplikovať túto položku?',
+            'yes' => 'Áno, duplikovať.',
+            'no' => 'Nie, zatvoriť.',
+            'success_title' => 'Úspešne!',
+            'success' => 'Položka úspešne duplikovaná.',
+            'error_title' => 'Chyba!',
+            'error' => 'Došlo k chybe.',
+        ],
+        'deleteDialog' => [
+            'title' => 'Varovanie!',
+            'text' => 'Naozaj chcete vymazať túto položku?',
+            'yes' => 'Áno, vymazať.',
+            'no' => 'Nie, zatvoriť.',
+            'success_title' => 'Úspešne!',
+            'success' => 'Položka úspešne odstránená.',
+            'error_title' => 'Chyba!',
+            'error' => 'Došlo k chybe.',
+        ],
+        'publishNowDialog' => [
+            'title' => 'Varovanie!',
+            'text' => 'Naozaj chcete publikovať túto položku?',
+            'yes' => 'Áno, publikovať.',
+            'no' => 'Nie, zatvoriť.',
+            'success_title' => 'Úspešne!',
+            'success' => 'Položka úspešne publikovaná.',
+            'error_title' => 'Chyba!',
+            'error' => 'Došlo k chybe.',
+        ],
+        'unpublishNowDialog' => [
+            'title' => 'Varovanie!',
+            'text' => 'Naozaj chcete zrušiť publikovanie tejto položky?',
+            'yes' => 'Áno, zrušiť puklikovanie.',
+            'no' => 'Nie, zatvoriť.',
+            'success_title' => 'Úspešne!',
+            'success' => 'Položka úspešne publikovaná.',
+            'error_title' => 'Chyba!',
+            'error' => 'Došlo k chybe.',
+        ],
+        'publishLaterDialog' => [
+            'text' => 'Prosím vyberťe dátum kedy má byť pooložka publikovaná:',
+            'yes' => 'Uložiť',
+            'no' => 'Zatvoriť',
+            'success_title' => 'Úspešne!',
+            'success' => 'Položka bola úspešne uložená.',
+            'error_title' => 'Chyba!',
+            'error' => 'Došlo k chybe.',
+        ],
     ],
 
     'btn' => [
@@ -14,6 +70,7 @@ return [
         'edit' => 'Upraviť',
         'delete' => 'Vymazať',
         'search' => 'Hľadať',
+        'saved' => 'Uložené',
     ],
 
     'index' => [
@@ -36,6 +93,12 @@ return [
         'more_can_be_managed' => '({{ otherLocales.length }} možno spravovať)',
         'currently_editing_translation' => 'Práve upravujete {{ this.defaultLocale.toUpperCase() }} (základný) preklad',
         'hide' => 'Skryť preklady',
+        'publish' => 'Publikácia',
+        'history' => 'História',
+        'created_by' => 'Vytvoril',
+        'updated_by' => 'Aktualizoval',
+        'created_on' => 'Vytvorené',
+        'updated_on' => 'Aktualizované'
     ],
 
     'placeholder' => [

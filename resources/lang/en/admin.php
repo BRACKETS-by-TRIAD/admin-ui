@@ -7,6 +7,61 @@ return [
         'succeeded' => 'Operation successful',
         'failed' => 'Operation failed',
         'not_allowed' => 'Operation not allowed',
+        'publish_now' => 'Publish now',
+        'unpublish_now' => 'Unpublish now',
+        'publish_later' => 'Publish later',
+    ],
+
+    'dialogs' => [
+        'duplicateDialog' => [
+            'title' => 'Warning!',
+            'text' => 'Do you really want to duplicate this item?',
+            'yes' => 'Yes, duplicate.',
+            'no' => 'No, cancel.',
+            'success_title' => 'Success!',
+            'success' => 'Item successfully duplicated.',
+            'error_title' => 'Error!',
+            'error' => 'An error has occured.',
+        ],
+        'deleteDialog' => [
+            'title' => 'Warning!',
+            'text' => 'Do you really want to delete this item?',
+            'yes' => 'Yes, delete.',
+            'no' => 'No, cancel.',
+            'success_title' => 'Success!',
+            'success' => 'Item successfully deleted.',
+            'error_title' => 'Error!',
+            'error' => 'An error has occured.',
+        ],
+        'publishNowDialog' => [
+            'title' => 'Warning!',
+            'text' => 'Do you really want to publish this item now?',
+            'yes' => 'Yes, publish now.',
+            'no' => 'No, cancel.',
+            'success_title' => 'Success!',
+            'success' => 'Item successfully published.',
+            'error_title' => 'Error!',
+            'error' => 'An error has occured.',
+        ],
+        'unpublishNowDialog' => [
+            'title' => 'Warning!',
+            'text' => 'Do you really want to unpublish this item now?',
+            'yes' => 'Yes, unpublish now.',
+            'no' => 'No, cancel.',
+            'success_title' => 'Success!',
+            'success' => 'Item successfully published.',
+            'error_title' => 'Error!',
+            'error' => 'An error has occured.',
+        ],
+        'publishLaterDialog' => [
+            'text' => 'Please choose the date when the item should be published:',
+            'yes' => 'Save',
+            'no' => 'Cancel',
+            'success_title' => 'Success!',
+            'success' => 'Item was successfully saved.',
+            'error_title' => 'Error!',
+            'error' => 'An error has occured.',
+        ],
     ],
 
     'btn' => [
@@ -16,6 +71,7 @@ return [
         'delete' => 'Delete',
         'search' => 'Search',
         'new' => 'New',
+        'saved' => 'Saved',
     ],
 
     'index' => [
@@ -40,6 +96,12 @@ return [
         'hide' => 'Hide Translations',
         'select_an_option' => 'Select an option',
         'select_options' => 'Select options',
+        'publish' => 'Publish',
+        'history' => 'History',
+        'created_by' => 'Created by',
+        'updated_by' => 'Updated by',
+        'created_on' => 'Created on',
+        'updated_on' => 'Updated on'
     ],
 
     'placeholder' => [
