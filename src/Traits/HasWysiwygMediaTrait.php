@@ -4,23 +4,23 @@ namespace Brackets\AdminUI\Traits;
 
 use Brackets\AdminUI\WysiwygMedia;
 
-trait HasWysiwygMediaTrait {
-
+trait HasWysiwygMediaTrait
+{
     public static function bootHasWysiwygMediaTrait()
     {
         static::saved(function ($model) {
-            $wysiwygMediaIds = collect(request('wysiwygMedia'))->filter(function($wysiwygId){
+            $wysiwygMediaIds = collect(request('wysiwygMedia'))->filter(function ($wysiwygId) {
                 return is_int($wysiwygId);
             });
-            if($wysiwygMediaIds->isNotEmpty()) {
-                WysiwygMedia::whereIn('id', $wysiwygMediaIds)->get()->each(function($item) use ($model) {
+            if ($wysiwygMediaIds->isNotEmpty()) {
+                WysiwygMedia::whereIn('id', $wysiwygMediaIds)->get()->each(function ($item) use ($model) {
                     $model->wysiwygMedia()->save($item);
                 });
             }
         });
 
-        static::deleted(function($model) {
-            $model->wysiwygMedia->each(function($item){
+        static::deleted(function ($model) {
+            $model->wysiwygMedia->each(function ($item) {
                 $item->delete();
             });
         });

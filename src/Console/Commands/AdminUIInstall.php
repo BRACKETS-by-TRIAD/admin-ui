@@ -1,4 +1,6 @@
-<?php namespace Brackets\AdminUI\Console\Commands;
+<?php
+
+namespace Brackets\AdminUI\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -23,6 +25,7 @@ class AdminUIInstall extends Command
     /**
      * Execute the console command.
      *
+     * @param Filesystem $files
      * @return mixed
      */
     public function handle(Filesystem $files)
@@ -38,7 +41,8 @@ class AdminUIInstall extends Command
         $this->info('Package brackets/admin-ui installed');
     }
 
-    private function strReplaceInFile($fileName, $ifExistsRegex, $find, $replaceWith) {
+    private function strReplaceInFile($fileName, $ifExistsRegex, $find, $replaceWith)
+    {
         $content = File::get($fileName);
         if (preg_match($ifExistsRegex, $content)) {
             return;
@@ -47,7 +51,8 @@ class AdminUIInstall extends Command
         return File::put($fileName, str_replace($find, $replaceWith, $content));
     }
 
-    private function appendIfNotExists($fileName, $ifExistsRegex, $append) {
+    private function appendIfNotExists($fileName, $ifExistsRegex, $append)
+    {
         $content = File::get($fileName);
         if (preg_match($ifExistsRegex, $content)) {
             return;
@@ -59,7 +64,8 @@ class AdminUIInstall extends Command
     /**
      * @param Filesystem $files
      */
-    private function frontendAdjustments(Filesystem $files) {
+    private function frontendAdjustments(Filesystem $files)
+    {
         // webpack
         if ($this->appendIfNotExists('webpack.mix.js', '|resources/js/admin|', "\n\n" . $files->get(__DIR__ . '/../../../install-stubs/webpack.mix.js'))) {
             $this->info('Webpack configuration updated');
