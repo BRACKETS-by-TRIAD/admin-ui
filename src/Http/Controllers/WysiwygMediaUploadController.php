@@ -6,12 +6,12 @@ use Brackets\AdminUI\WysiwygMedia;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
-use Illuminate\Support\Facades\File;
 
-class WysiwygMediaUploadController extends BaseController {
-
+class WysiwygMediaUploadController extends BaseController
+{
     public function upload(Request $request)
     {
         // get image from request and check validity

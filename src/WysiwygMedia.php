@@ -9,10 +9,11 @@ class WysiwygMedia extends Model
 {
     protected $fillable = ["file_path"];
 
-    protected static function boot() {
+    protected static function boot()
+    {
         parent::boot();
 
-        static::deleted(function($model) {
+        static::deleted(function ($model) {
             File::delete(public_path() . '/' . $model->file_path);
         });
     }
