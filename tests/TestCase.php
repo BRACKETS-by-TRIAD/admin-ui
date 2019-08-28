@@ -3,15 +3,17 @@
 namespace Brackets\AdminUI\Tests;
 
 use Brackets\AdminTranslations\Test\Exceptions\Handler;
+use Brackets\AdminTranslations\Translation;
 use Brackets\AdminUI\AdminUIServiceProvider;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraBrowser;
 
 abstract class TestCase extends OrchestraBrowser
 {
-    /** @var \Brackets\AdminTranslations\Translation */
+    /** @var Translation */
     protected $languageLine;
 
     public function setUp(): void
@@ -23,25 +25,29 @@ abstract class TestCase extends OrchestraBrowser
             return view('admin.test.index');
         });
 
-        File::copyDirectory(__DIR__.'/fixtures/public', public_path());
-        File::copyDirectory(__DIR__.'/fixtures/resources/views', resource_path('views'));
+        File::copyDirectory(__DIR__ . '/fixtures/public', public_path());
+        File::copyDirectory(__DIR__ . '/fixtures/resources/views', resource_path('views'));
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             AdminUIServiceProvider::class,
         ];
     }
 
-    public function disableExceptionHandling()
+    /**
+     * Disable exception handler
+     */
+    public function disableExceptionHandling(): void
     {
-        $this->app->instance(ExceptionHandler::class, new class extends Handler {
+        $this->app->instance(ExceptionHandler::class, new class extends Handler
+        {
             public function __construct()
             {
             }

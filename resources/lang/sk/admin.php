@@ -6,6 +6,7 @@ return [
     'operation' => [
         'succeeded' => 'Akcia prebehla úspešne',
         'failed' => 'Akcia sa nepodarila',
+        'not_allowed' => 'Akcia nie je povolená',
     ],
 
     'btn' => [
@@ -14,6 +15,7 @@ return [
         'edit' => 'Upraviť',
         'delete' => 'Vymazať',
         'search' => 'Hľadať',
+        'new' => 'Nové',
     ],
 
     'index' => [
@@ -30,6 +32,8 @@ return [
         'more_can_be_managed' => '({{ otherLocales.length }} možno spravovať)',
         'currently_editing_translation' => 'Práve upravujete {{ this.defaultLocale.toUpperCase() }} (základný) preklad',
         'hide' => 'Skryť preklady',
+        'select_an_option' => 'Zvolte možnosť',
+        'select_options' => 'Zvolte možnosti',
     ],
 
     'placeholder' => [
