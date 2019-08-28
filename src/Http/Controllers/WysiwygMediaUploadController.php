@@ -3,15 +3,20 @@
 namespace Brackets\AdminUI\Http\Controllers;
 
 use Brackets\AdminUI\WysiwygMedia;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
-use Illuminate\Support\Facades\File;
 
-class WysiwygMediaUploadController extends BaseController {
-
+class WysiwygMediaUploadController extends BaseController
+{
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function upload(Request $request)
     {
         // get image from request and check validity
@@ -32,7 +37,7 @@ class WysiwygMediaUploadController extends BaseController {
       
         // resize and save image
         Image::make($temporaryFile->path())
-            ->resize(Config::get('wysiwyg-media.maximum_image_width'), null, function ($constraint) {
+            ->resize(Config::get('wysiwyg-media.maximum_image_width'), null, static function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })

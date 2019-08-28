@@ -18,7 +18,5 @@ class SimpleAdminTest extends TestCase
         $this->assertContains("Here should be some custom code :)", $this->response->getContent());
 
         $this->assertContains("</html>", $this->response->getContent());
-
     }
-
 }

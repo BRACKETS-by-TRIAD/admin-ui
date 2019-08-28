@@ -70,6 +70,7 @@ return [
         'edit' => 'Upraviť',
         'delete' => 'Vymazať',
         'search' => 'Hľadať',
+        'new' => 'Nové',
         'saved' => 'Uložené',
     ],
 
@@ -93,6 +94,8 @@ return [
         'more_can_be_managed' => '({{ otherLocales.length }} možno spravovať)',
         'currently_editing_translation' => 'Práve upravujete {{ this.defaultLocale.toUpperCase() }} (základný) preklad',
         'hide' => 'Skryť preklady',
+        'select_an_option' => 'Zvolte možnosť',
+        'select_options' => 'Zvolte možnosti',
         'publish' => 'Publikácia',
         'history' => 'História',
         'created_by' => 'Vytvoril',
