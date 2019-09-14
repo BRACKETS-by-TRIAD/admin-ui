@@ -13,11 +13,11 @@ class SimpleAdminTest extends TestCase
     {
         $this->visit('/admin/test/index');
 
-        $this->assertContains("<title>Craftable - Craftable</title>", $this->response->getContent());
+        $this->assertRegexp("/\<title\>Craftable - Craftable\<\/title\>/", $this->response->getContent());
 
-        $this->assertContains("Here should be some custom code :)", $this->response->getContent());
+        $this->assertRegexp("/Here should be some custom code :\)/", $this->response->getContent());
 
-        $this->assertContains("</html>", $this->response->getContent());
+        $this->assertRegexp("/\<\/html\>/", $this->response->getContent());
 
     }
 
