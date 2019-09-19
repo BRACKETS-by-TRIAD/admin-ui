@@ -1,4 +1,7 @@
 <footer class="app-footer">
-    {{ trans('brackets/admin-ui::admin.footer.copyright', ['year' => '2017']) }}
-    <span class="float-right">{{ trans('brackets/admin-ui::admin.footer.powered_by') }} <a href="https://www.brackets.sk/en">BRACKETS</a></span>
+    <div class="container-fluid">
+        <div class="container-xl">
+            <span class="pull-right">{{ trans('brackets/admin-ui::admin.footer.powered_by') }} <a href="https://www.getcraftable.com">Craftable</a></span>
+        </div>
+    </div>
 </footer>

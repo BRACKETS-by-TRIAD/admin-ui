@@ -26,16 +26,10 @@
             </div>
         </main>
     </div>
+@endsection
 
-    <footer class="app-footer">
-        <div class="container-fluid">
-            <div class="container-xl">
-            <span class="pull-right">
-                Powered by <a href="https://docs.brackets.sk/" target="_blank">Craftable.</a>
-            </span>
-            </div>
-        </div>
-    </footer>
+@section('footer')
+    @include('brackets/admin-ui::admin.partials.footer')
 @endsection
 
 @section('bottom-scripts')
