@@ -133,7 +133,6 @@ return [
     ],
 
     'footer' => [
-        'copyright' => 'Craftable © :year BRACKETS by TRIAD s.r.o.',
         'powered_by' => 'Powered by',
     ]
 
