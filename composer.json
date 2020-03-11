@@ -15,29 +15,29 @@
         {
             "name": "Pavol Perdík",
             "email": "pavol.perdik@brackets.sk",
-            "homepage": "https://www.brackets.sk/en",
+            "homepage": "https://www.brackets.sk",
             "role": "Developer"
         },
         {
             "name": "Matej Minár",
             "email": "matej.minar@brackets.sk",
-            "homepage": "https://www.brackets.sk/en",
+            "homepage": "https://www.brackets.sk",
             "role": "Developer"
         },
         {
             "name": "Dušan Subally",
             "email": "dusan.subally@triad.sk",
-            "homepage": "https://www.brackets.sk/en",
+            "homepage": "https://www.brackets.sk",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^7.2",
-        "illuminate/support": "~6.0"
+        "php": "^7.2.5",
+        "illuminate/support": "^6.0|^7.0"
     },
     "require-dev": {
         "orchestra/testbench-browser-kit": "~4.0",
-        "phpunit/phpunit": "~8.0",
+        "phpunit/phpunit": "^8.5",
         "mockery/mockery": "0.9.*|^1.0"
     },
     "autoload": {
