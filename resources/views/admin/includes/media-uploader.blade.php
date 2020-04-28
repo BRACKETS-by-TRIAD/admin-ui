@@ -32,7 +32,7 @@
 			:max-file-size-in-mb="{{ round(($mediaCollection->getMaxFileSize()/1024/1024), 2) }}"
 		@endif
 		@if($mediaCollection->getAcceptedFileTypes())
-			:accepted-file-types="'{{ implode('', $mediaCollection->getAcceptedFileTypes()) }}'"
+			:accepted-file-types="'{{ implode(',', $mediaCollection->getAcceptedFileTypes()) }}'"
 		@endif
 		@if(isset($media) && $media->count() > 0)
 			:uploaded-images="{{ $media->toJson() }}"
