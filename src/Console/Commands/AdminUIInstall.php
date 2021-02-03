@@ -83,7 +83,7 @@ class AdminUIInstall extends Command
         $this->info('package.json changed');
 
         $this->call('npm install', [
-            '--save-dev', join(' ', $devDependencies)
+            '--save-dev', join(' ', $this->devDependencies)
         ]);
     }
 }
