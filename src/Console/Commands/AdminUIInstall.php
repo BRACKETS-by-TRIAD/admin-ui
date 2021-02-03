@@ -12,13 +12,6 @@ class AdminUIInstall extends Command
      * @var string
      */
     protected $signature = 'admin-ui:install';
-    
-    /**
-     * Dependencies required to run a development enviroment
-     *
-     * @var array
-     */
-    private $devDependencies = ['vue-loader', 'sass-loader', 'sass', 'resolve-url-loader'];
 
     /**
      * The console command description.
@@ -78,12 +71,12 @@ class AdminUIInstall extends Command
         $packageJson = $files->get($packageJsonFile);
         $packageJsonContent = json_decode($packageJson, JSON_OBJECT_AS_ARRAY);
         $packageJsonContent['devDependencies']['craftable'] = '^2.1.3';
+        $packageJsonContent['devDependencies']['vue-loader'] = '15.9.5';
+        $packageJsonContent['devDependencies']['sass-loader'] = '^8.0.2';
+        $packageJsonContent['devDependencies']['resolve-url-loader'] = '^3.1.0';
+        $packageJsonContent['devDependencies']['sass'] = '^1.32.6”';
 
         $files->put($packageJsonFile, json_encode($packageJsonContent, JSON_PRETTY_PRINT));
         $this->info('package.json changed');
-
-        $this->call('npm install', [
-            '--save-dev', join(' ', $this->devDependencies)
-        ]);
     }
 }
