@@ -27,6 +27,7 @@
 
     @include('brackets/admin-ui::admin.partials.wysiwyg-svgs')
     @include('brackets/admin-ui::admin.partials.main-bottom-scripts')
+    @include('brackets/admin-ui::admin.partials.cookie-consent-dialog')
     @yield('bottom-scripts')
 </body>
 
