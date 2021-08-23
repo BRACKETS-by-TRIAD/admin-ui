@@ -71,7 +71,7 @@ class AdminUIInstall extends Command
         $packageJson = $files->get($packageJsonFile);
         $packageJsonContent = json_decode($packageJson, JSON_OBJECT_AS_ARRAY);
         $packageJsonContent['devDependencies']['craftable'] = '^2.1.3';
-        $packageJsonContent['devDependencies']['vue-loader'] = '15.9.5';
+        $packageJsonContent['devDependencies']['vue-loader'] = '^15.9.8';
         $packageJsonContent['devDependencies']['sass-loader'] = '^8.0.2';
         $packageJsonContent['devDependencies']['resolve-url-loader'] = '^3.1.0';
         $packageJsonContent['devDependencies']['sass'] = '^1.32.6';
