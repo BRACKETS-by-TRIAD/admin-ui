@@ -34,6 +34,10 @@ class AdminUIServiceProvider extends ServiceProvider
                 __DIR__ . '/../install-stubs/config/wysiwyg-media.php' => config_path('wysiwyg-media.php'),
             ], 'config');
 
+            $this->publishes([
+                __DIR__ . '/../install-stubs/webpack.mix.js' => base_path('webpack.mix.js'),
+            ], 'webpack');
+
             if (!glob(base_path('database/migrations/*_create_wysiwyg_media_table.php'))) {
                 $this->publishes([
                     __DIR__ . '/../install-stubs/database/migrations/create_wysiwyg_media_table.php' => database_path('migrations').'/2018_07_18_000000_create_wysiwyg_media_table.php',
