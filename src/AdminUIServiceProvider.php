@@ -2,6 +2,7 @@
 
 use Brackets\AdminUI\Console\Commands\AdminUIInstall;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\File;
 
 class AdminUIServiceProvider extends ServiceProvider
 {
@@ -34,9 +35,11 @@ class AdminUIServiceProvider extends ServiceProvider
                 __DIR__ . '/../install-stubs/config/wysiwyg-media.php' => config_path('wysiwyg-media.php'),
             ], 'config');
 
-            $this->publishes([
-                __DIR__ . '/../install-stubs/webpack.mix.js' => base_path('webpack.mix.js'),
-            ], 'webpack');
+            if (!File::exists(base_path('webpack.mix.js'))){
+                $this->publishes([
+                    __DIR__ . '/../install-stubs/webpack.mix.js' => base_path('webpack.mix.js'),
+                ], 'webpack');
+            }
 
             if (!glob(base_path('database/migrations/*_create_wysiwyg_media_table.php'))) {
                 $this->publishes([

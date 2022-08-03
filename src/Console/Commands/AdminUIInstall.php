@@ -29,11 +29,11 @@ class AdminUIInstall extends Command
     {
         $this->info('Installing package brackets/admin-ui');
 
+        $this->frontendAdjustments($files);
+
         $this->call('vendor:publish', [
             '--provider' => "Brackets\\AdminUI\\AdminUIServiceProvider",
         ]);
-
-        $this->frontendAdjustments($files);
 
         $this->info('Package brackets/admin-ui installed');
     }
@@ -60,16 +60,25 @@ class AdminUIInstall extends Command
      * @param Filesystem $files
      */
     private function frontendAdjustments(Filesystem $files) {
+        // webpack
+        if (File::exists(base_path('webpack.mix.js')) && $this->appendIfNotExists('webpack.mix.js', '|resources/js/admin|', "\n\n" . $files->get(__DIR__ . '/../../../install-stubs/partial-webpack.mix.js'))) {
+            $this->info('Webpack configuration updated');
+        }
+
         //Change package.json
         $this->info('Changing package.json');
         $packageJsonFile = base_path('package.json');
         $packageJson = $files->get($packageJsonFile);
         $packageJsonContent = json_decode($packageJson, JSON_OBJECT_AS_ARRAY);
-        $packageJsonContent['scripts']['craftable-dev'] = 'mix';
-        $packageJsonContent['scripts']['craftable-watch'] = 'mix watch';
-        $packageJsonContent['scripts']['craftable-prod'] = 'mix --production';
+
+        if (!File::exists('webpack.mix.js')){
+            $packageJsonContent['scripts']['craftable-dev'] = 'mix';
+            $packageJsonContent['scripts']['craftable-watch'] = 'mix watch';
+            $packageJsonContent['scripts']['craftable-prod'] = 'mix --production';
+            $packageJsonContent['devDependencies']['laravel-mix'] = '^6.0.6';
+        }
+
         $packageJsonContent['devDependencies']['craftable'] = '^2.1.3';
-        $packageJsonContent['devDependencies']['laravel-mix'] = '^6.0.6';
         $packageJsonContent['devDependencies']['vue-loader'] = '^15.9.8';
         $packageJsonContent['devDependencies']['sass-loader'] = '^8.0.2';
         $packageJsonContent['devDependencies']['resolve-url-loader'] = '^3.1.0';
