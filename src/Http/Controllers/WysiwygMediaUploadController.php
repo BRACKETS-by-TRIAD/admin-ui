@@ -3,6 +3,7 @@
 namespace Brackets\AdminUI\Http\Controllers;
 
 use Brackets\AdminUI\WysiwygMedia;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Config;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\File;
 
 class WysiwygMediaUploadController extends BaseController {
 
-    public function upload(Request $request)
+    public function upload(Request $request): JsonResponse
     {
         // get image from request and check validity
         $temporaryFile = $request->file('fileToUpload');

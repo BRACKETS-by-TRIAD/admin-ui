@@ -3,13 +3,14 @@
 namespace Brackets\AdminUI;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\File;
 
 class WysiwygMedia extends Model
 {
     protected $fillable = ["file_path"];
 
-    protected static function boot() {
+    protected static function boot(): void {
         parent::boot();
 
         static::deleted(function($model) {
@@ -17,7 +18,7 @@ class WysiwygMedia extends Model
         });
     }
 
-    public function wysiwygable()
+    public function wysiwygable(): MorphTo
     {
         return $this->morphTo();
     }

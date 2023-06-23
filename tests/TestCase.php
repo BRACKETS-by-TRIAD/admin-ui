@@ -32,14 +32,14 @@ abstract class TestCase extends OrchestraBrowser
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             AdminUIServiceProvider::class,
         ];
     }
 
-    public function disableExceptionHandling()
+    public function disableExceptionHandling(): void
     {
         $this->app->instance(ExceptionHandler::class, new class extends Handler {
             public function __construct() {}
