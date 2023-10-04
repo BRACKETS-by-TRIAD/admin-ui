@@ -6,7 +6,7 @@ use Brackets\AdminUI\WysiwygMedia;
 
 trait HasWysiwygMediaTrait {
 
-    public static function bootHasWysiwygMediaTrait()
+    public static function bootHasWysiwygMediaTrait(): void
     {
         static::saved(function ($model) {
             $wysiwygMediaIds = collect(request('wysiwygMedia'))->filter(function($wysiwygId){
