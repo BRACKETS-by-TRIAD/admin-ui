@@ -83,7 +83,7 @@ class AdminUIInstall extends Command
         $packageJsonContent['devDependencies']['sass-loader'] = '^8.0.2';
         $packageJsonContent['devDependencies']['resolve-url-loader'] = '^3.1.0';
         $packageJsonContent['devDependencies']['sass'] = '^1.32.6';
-        unset($packageJsonContent['module']);
+        unset($packageJsonContent['type']);
 
         $files->put($packageJsonFile, json_encode($packageJsonContent, JSON_PRETTY_PRINT));
         $this->info('package.json changed');
